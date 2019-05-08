@@ -4,7 +4,7 @@
   "description": "Bogdej",
   "main": "streznik.js",
   "scripts": {
-    "start": "nodejs streznik.js",
+    "start": "node streznik.js",
     "test": "mocha ../test/ --exit"
   },
   "author": "Jure Vreček <jv9074@student.uni-lj.si>",
