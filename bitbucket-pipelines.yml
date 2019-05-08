@@ -18,7 +18,6 @@ pipelines:
           caches:
             - node
           script: # Modify the commands below to build your repository.
-            - cd src
             - npm install
             - npm test
             - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION.git production:master
@@ -30,7 +29,6 @@ pipelines:
           caches:
             - node
           script:
-            - cd src
             - npm install
             - npm test
             - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION.git master --force
