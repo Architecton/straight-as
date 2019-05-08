@@ -5,7 +5,7 @@
   "main": "streznik.js",
   "scripts": {
     "start": "nodejs streznik.js",
-    "test": "mocha --exit"
+    "test": "mocha ../test/ --exit"
   },
   "author": "Jure Vreček <jv9074@student.uni-lj.si>",
   "license": "ISC",
