@@ -10,7 +10,7 @@ var port = process.env.PORT || 3000;
 streznik.get('/', function (zahteva, odgovor) {
     odgovor.send(
         '<h1>Bogdej, Janez</h1>' +
-        '<p>Mislš da jst ne vem, da si se prpelu z </p>' +
+        '<p>Mislš da jst ne vem, da si se prpelu s </p>' +
         '<pre>' + zahteva.get('User-Agent') + '</pre>'
     );
 });
