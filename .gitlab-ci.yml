@@ -11,6 +11,8 @@ cache:
 
 install_dependencies:
   stage: build
+  tags:
+    - "main"
   script:
     - npm install
   artifacts:
@@ -19,8 +21,12 @@ install_dependencies:
 
 testing:
   stage: test
+  tags:
+    - "main"
   script: npm test
 
 heroku:
   stage: deploy
+  tags:
+    - "main"
   script: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION.git master --force
