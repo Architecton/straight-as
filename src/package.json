@@ -1,0 +1,20 @@
+{
+  "name": "straight-as",
+  "version": "1.0.0",
+  "description": "Bogdej",
+  "main": "streznik.js",
+  "scripts": {
+    "start": "nodejs streznik.js",
+    "test": "mocha --exit"
+  },
+  "author": "Jure Vreček <jv9074@student.uni-lj.si>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "latest"
+  },
+  "devDependencies": {
+    "mocha": "latest",
+    "supertest": "latest"
+  },
+  "private": true
+}
