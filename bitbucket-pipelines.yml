@@ -5,6 +5,12 @@
 # You can specify a custom docker image from Docker Hub as your build environment.
 image: node:10.15.3
 
+# Za posredovanje produkcijske različice aplikacije na Heroku
+# moramo izvesti celostno kloniranje
+clone:
+  depth:
+    full
+
 pipelines:
   branches:
     production:
@@ -15,3 +21,16 @@ pipelines:
             - cd src
             - npm install
             - npm test
+            - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION.git production:master
+  custom:
+    # Ročna zahteva za izvedbo postavitve, ki izvede vse teste
+    # in posreduje aplikacijo na Heroku
+    rocna-postavitev:
+      - step:
+          caches:
+            - node
+          script:
+            - cd src
+            - npm install
+            - npm test
+            - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION.git master --force
