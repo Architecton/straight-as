@@ -1,4 +1,4 @@
-var zahteva = require('../src/node_modules/supertest');
+var zahteva = require('supertest');
 var streznik = require('../src/streznik.js');
 
 
