@@ -5,7 +5,7 @@ var port = process.env.PORT || 3000;
 
 /**
  * Ko uporabnik obišče začetno stran,
- * izpiši začetni pozdrav jsjsjsjsjsjsjsjsj
+ * izpiši začetni pozdrav
  */
 streznik.get('/', function (zahteva, odgovor) {
     odgovor.send(
