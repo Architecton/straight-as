@@ -1,0 +1,32 @@
+image: node:latest
+
+stages:
+  - build
+  - test
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: build
+  tags:
+    - "main"
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+testing:
+  stage: test
+  tags:
+    - "main"
+  script: npm test
+
+heroku:
+  stage: deploy
+  tags:
+    - "main"
+  script: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION.git master --force
