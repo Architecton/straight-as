@@ -1,1 +1,1 @@
-web: node streznik.js
+web: node src/streznik.js
