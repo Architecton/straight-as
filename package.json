@@ -5,12 +5,15 @@
   "main": "src/streznik.js",
   "scripts": {
     "start": "node src/streznik.js",
-    "test": "mocha --exit"
+    "test": "mocha --exit",
+    "tsc": "tsc"
   },
   "author": "Jure Vreček <jv9074@student.uni-lj.si>",
   "license": "ISC",
   "dependencies": {
-    "express": "latest"
+    "express": "latest",
+    "typescript": "latest",
+    "@types/express": "latest"
   },
   "devDependencies": {
     "mocha": "latest",
