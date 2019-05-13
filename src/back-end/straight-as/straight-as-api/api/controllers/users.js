@@ -70,7 +70,7 @@ module.exports.nukeDBindexes = function(request, response) {
 module.exports.userGetAll = function(request, response) {
   // Return all users
   User
-    .find({}, '_id')
+    .find({}, '_id admin')
     .exec(function(error, users) {
       if (!users) {  // If user not found
         getJsonResponse(response, 404, {
