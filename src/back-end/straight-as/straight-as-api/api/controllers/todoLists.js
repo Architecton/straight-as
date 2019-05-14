@@ -11,7 +11,7 @@ var getJsonResponse = function(response, status, data) {
 };
 
 
-// GET ALL TODO LISTS FROM DATABSE //////////////////////////////////////
+// GET ALL todo LISTS FROM DATABSE //////////////////////////////////////
 
 // TODO only admin
 // todoListGetAll: get all todo lists of all users (Admin only)
@@ -19,19 +19,16 @@ module.exports.todoListGetAll = function(request, response) {
   User
     .find({})
     .exec(function(error, users) {
-      if (!users) {  // If user not found
+      if (!users) {
         getJsonResponse(response, 404, {
           "message": 
             "Cannot find any users in the database."
         });
         return;
-      // if error while executing function
       } else if (error) {
         getJsonResponse(response, 500, error);
         return;
       }
-      
-      // Get contacts of all users and concatenate in array and return as response.
       var todoLists = [];
       users.forEach(function(e) {
         todoLists = todoLists.concat(e.todoLists);
@@ -46,16 +43,13 @@ module.exports.todoListGetAll = function(request, response) {
 
 
 
-// MANAGING TODO LISTS /////////////////////////////////////////////////////
+// MANAGING todo LISTS /////////////////////////////////////////////////////
 
 // todoListCreate: add todo list to user with specified username 
 module.exports.todoListCreate = function(request, response) {
   getLoggedId(request, response, function(request, response, email) {
-    // get user's id
     var idUser = request.params.idUser;
-    // if idUser is not null and is equal to the username in JWT
     if (idUser && idUser == email) {
-      // find user by its id (username)
       User
         .findById(idUser)
         .select('todoLists')
@@ -81,20 +75,18 @@ module.exports.todoListCreate = function(request, response) {
 
 // addTodoListToUser: auxiliary function for todoListCreate (see above)
 var addTodoListToUser = function(request, response, user) {
-  // If user undefined.
   if (!user) {
     getJsonResponse(response, 404, {
       "message": "Cannot find user."
     });
   } else {
-    // Create new contact.
+    // Create new todo list.
     var newTodoList = {
       items: []
     };
     // Add todo list to user's list of todo lists.
     user.todoLists.push(newTodoList);
     user.save(function(error, user) {
-      // if encountered error
       if (error) {
         getJsonResponse(response, 500, error);
       } else {
@@ -134,7 +126,6 @@ var emailExists = function(username) {
 // ** todoListsGetUsersTodoLists: get all todo lists of user with given id
 module.exports.todoListGetUsersTodoLists = function(request, response) {
   getLoggedId(request, response, function(request, response, email) {
-    // if request has parameters, the parameters include idUser and idUser is same as username in JWT
     if (request.params && request.params.idUser && request.params.idUser == email) {
       User
         .findById(request.params.idUser)
@@ -152,7 +143,6 @@ module.exports.todoListGetUsersTodoLists = function(request, response) {
           }
           getJsonResponse(response, 200, user.todoLists);
         });
-    // else if no parameters or if parameters do not include idUser
     } else {
       getJsonResponse(response, 400, { 
         "message": "identifier idUser is missing."
@@ -165,7 +155,6 @@ module.exports.todoListGetUsersTodoLists = function(request, response) {
 // todoListGetSelected: return todo list with given id of user with given idUser (email)
 module.exports.todoListGetSelected = function(request, response) {
   getLoggedId(request, response, function(request, response, email) {
-    // if request has parameters and they include idUser and idContact and idUser is the same as the username in the JWT
     if (request.params && request.params.idUser && request.params.idTodoList && request.params.idUser == email) {
       User
         .findById(request.params.idUser)
@@ -173,33 +162,26 @@ module.exports.todoListGetSelected = function(request, response) {
         .exec(
           function(error, user) {
             var todoList;
-            // if user not found
             if (!user) {
               getJsonResponse(response, 404, {
                 "message": 
                   "Cannot find user."
               });
               return;
-              // if encountered error
             } else if (error) {
               getJsonResponse(response, 500, error);
               return;
             }
-            // if user has property contacts and user has at least one contact
             if (user.todoLists && user.todoLists.length > 0) {
-              // Get contact.
               todoList = user.todoLists.id(request.params.idTodoList);
-              // if contact not found
               if (!todoList) {
                 getJsonResponse(response, 404, {
                   "message": 
                     "Cannot find todo list."
                 });
               } else {
-                // Return signal object.
                 getJsonResponse(response, 200, todoList);
               }
-            // if no contacts found
             } else {
               getJsonResponse(response, 404, {
                 "message": "Cannot find any todo list."
@@ -217,11 +199,281 @@ module.exports.todoListGetSelected = function(request, response) {
 };
 
 
+
+// todoListDeleteSelected: delete todo list with specified id of user with specified id
+module.exports.todoListDeleteSelected = function(request, response) {
+  getLoggedId(request, response, function(request, response, email) {
+    if (!request.params.idUser || !request.params.idTodoList || request.params.idUser != email) {
+      getJsonResponse(response, 400, {
+        "message":"Bad request parameters"
+      });
+      return;
+    }
+    User
+      .findById(request.params.idUser)
+      .exec(
+        function(error, user) {
+          if (!user) {
+            getJsonResponse(response, 404, {
+              "message": "Cannot find user."
+            });
+            return;
+          } else if (error) {
+            getJsonResponse(response, 500, error);
+            return;
+          }
+          if (user.todoLists && user.todoLists.length > 0) {
+            if (!user.todoLists.id(request.params.idTodoList)) {
+              getJsonResponse(response, 404, {
+                "message": "Cannot find todo list."
+              });
+            } else {
+              user.todoLists.id(request.params.idTodoList).remove();
+              user.save(function(error) {
+                if (error) {
+                  getJsonResponse(response, 500, error);
+                } else {
+                  getJsonResponse(response, 204, null);
+                }
+              });
+            }
+          } else {
+            getJsonResponse(response, 404, {
+              "message": "No todo lists to delete."
+            });
+          }
+        }
+      );
+  });
+};
+
+// todoListGetItem: get todo list item with specified item from todo list with specified id of user with specified id.
+module.exports.todoListGetItem = function(request, response) {
+  getLoggedId(request, response, function(request, response, email) {
+    if (!request.params.idUser || !request.params.idTodoList || !request.params.idTodoListItem || request.params.idUser != email) {
+      getJsonResponse(response, 400, {
+          "message":"Bad request parameters"
+      });
+      return;
+    }
+    User
+      .findById(request.params.idUser)
+      .exec(
+        function(error, user) {
+          if   (!user) {
+            getJsonResponse(response, 404, {
+              "message": "Cannot find user."
+            });
+            return;
+          } else if (error) {
+            getJsonResponse(response, 500, error);
+            return;
+          }
+          if (user.todoLists && user.todoLists.length > 0) {
+            if (!user.todoLists.id(request.params.idTodoList).items) {
+              getJsonResponse(response, 404, {
+                "message" : "no items on todo list"
+              });
+              return;
+            }
+            var todoListItem = user.todoLists.id(request.params.idTodoList).items.id(request.params.idTodoListItem);
+            if (todoListItem) {
+              getJsonResponse(response, 200, todoListItem)
+            } else {
+              getJsonResponse(response, 404, {
+                "message" : "Cannot find specified todo list item."
+              });
+            }
+          } else {
+            getJsonResponse(response, 404, {
+              "message" : "Cannot find any todo lists"
+            });
+          }
+    });
+  });
+}
+
+// todoListAddItem: add item to todo list with specified id of user with specified id
+module.exports.todoListAddItem = function(request, response) {
+  getLoggedId(request, response, function(request, response, email) {
+    if (!request.params.idUser || !request.params.idTodoList || request.params.idUser != email) {
+      getJsonResponse(response, 400, {
+        "message" : "Bad request parameters"
+      });
+    } else {
+      User.findById(request.params.idUser)
+          .exec(function(error, user) {
+            if (!user) {
+              getJsonResponse(response, 404, {
+                "message" : "Cannot find specified user"
+              })
+              return;
+            } else if (error) {
+              getJsonResponse(response, 500, error);
+              return;
+            } 
+            if (user.todoLists) {
+              if (request.body.description && request.body.dueDate && !isNaN(request.body.dueDate)) {
+                var newTodoListItem = {
+                  "description" : request.body.description,
+                  "dueDate" : request.body.date,
+                  "completed" : false
+                }
+                user.todoLists.id(request.params.idTodoList).items.push(newTodoListItem)
+                user.save(function(error, user) {
+                  if (error) {
+                    getJsonResponse(response, 500, error);
+                  } else {
+                    getJsonResponse(response, 201, user.todoLists.id(request.params.idTodoList).items.slice(-1)[0]);
+                  }
+                })
+              } else {
+                getJsonResponse(response, 400, {
+                  "message" : "bad request parameters"
+                });
+              }
+            }
+          });  
+    }  
+  });
+}
+
+
+// todoListItemSetCompletion: set completed status of todo list item with specified id 
+// of todo list with specified id of user with specified id
+module.exports.todoListItemSetCompletion = function(request, response) {
+  console.log("Here");
+  getLoggedId(request, response, function(request, response, email) {
+    if (!request.params.idUser || !request.params.idTodoList ||
+      !request.params.idTodoListItem || request.params.idUser != email || 
+      !request.body.completed || 
+      !(request.body.completed == 'true' || request.body.completed == 'false')) {
+      getJsonResponse(response, 400, {
+        "message" : "bad request parameters"
+      });
+    } else {
+      User
+        .findById(request.params.idUser)
+        .select('todoLists')
+        .exec(
+          function(error, user) {
+            if (!user) {
+              getJsonResponse(response, 404, {
+                "message" : "user not found"
+              });
+              return;
+            } else if (error) {
+              getJsonResponse(response, 500, error); 
+              return;
+            }
+            if (user.todoLists && user.todoLists.length > 0) {
+              var selectedTodoList = user.todoLists.id(request.params.idTodoList);
+              if (selectedTodoList) {
+                if (selectedTodoList.items) {
+                  var selectedTodoListItem = selectedTodoList.items.id(request.params.idTodoListItem);
+                } else {
+                  getJsonResponse(response, 404, {
+                    "message" : "no items on specified todo list"
+                  });
+                  return;
+                }
+                if (selectedTodoListItem) {
+                  selectedTodoListItem.completed = request.body.completed;
+                  user.save(function(error) {
+                    if (error) {
+                      getJsonResponse(response, 500, error);
+                    } else {
+                      getJsonResponse(response, 200, selectedTodoListItem);
+                    }
+                  });
+                } else {
+                  getJsonResponse(response, 404, {
+                    "message" : "specified todo list item not found"
+                  });
+                }
+              } else {
+                getJsonResponse(response, 404, {
+                  "message" : "specified todo list not found"
+                });
+              }
+            } else {
+              getJsonResponse(response, 404, {
+                "message" : "no todo lists not found"
+              });
+            }
+          }
+        );
+    }
+  });
+}
+
+// todoListDeleteItem: delete todo list item with specified id from todo list with specified id of user with specified id
+module.exports.todoListDeleteItem = function(request, response) {
+  getLoggedId(request, response, function(request, response, email) {
+    if (!request.params.idUser || !request.params.idTodoList || 
+      !request.params.idTodoListItem || request.params.idUser != email) {
+      getJsonResponse(response, 400, {
+        "message" : "bad request parameters"
+      });
+    } else {
+      User
+        .findById(request.params.idUser)
+        .select('todoLists')
+        .exec(
+          function(error, user) {
+            if (!user) {
+              getJsonResponse(response, 404, {
+                "message" : "Cannot find user."
+              });
+              return;
+            } else if (error) {
+              getJsonResponse(response, 500, error);
+              return;
+            }
+            if (user.todoLists && user.todoLists.length > 0) {
+              var currentTodoList = user.todoLists.id(request.params.idTodoList);
+              if (currentTodoList) {
+                if (!currentTodoList.items) {
+                  getJsonResponse(response, 404, {
+                    "message" : "no items found"
+                  });
+                  return;
+                }
+                if (currentTodoList.items.id(request.params.idTodoListItem)) {
+                  currentTodoList.items.id(request.params.idTodoListItem).remove();
+                  user.save(function(error) {
+                    if (error) {
+                      getJsonResponse(response, 500, error); 
+                    } else {
+                      getJsonResponse(response, 204, null);
+                    }
+                  })
+                } else {
+                  getJsonResponse(response, 404, {
+                    "message" : "todo list item with specified id not found"
+                  });
+                }
+              } else {
+                getJsonResponse(response, 404, {
+                  "message" : "todo list with specified id not found"
+                });
+              }
+            } else {
+              getJsonResponse(response, 400, {
+                "message" : "bad request parameters"
+              });
+            }
+          });
+    }
+  });
+}
+
+
 // todoListUpdateSelected: update todo list with specified todo list ID of user with specified id
 module.exports.todoListUpdateSelected = function(request, response) {
   getLoggedId(request, response, function(request, response, email) {
     // If request parameters do not include idUser or idTodoItem or if idUser does not match email in JWT
-    if (!request.params.idUser || !request.params.idTodoList || request.params.idUser != email) {
+    if (!request.params.idUser || !request.params.idTodoList || !request.params.idTodoListItem || request.params.idUser != email) {
       getJsonResponse(response, 400, {
         "message":"Bad request parameters"
       });
@@ -232,18 +484,15 @@ module.exports.todoListUpdateSelected = function(request, response) {
       .select('todoLists')
       .exec(
         function(error, user) {
-          // if user not found
           if (!user) {
             getJsonResponse(response, 404, {
               "message": "Cannot find user."
             });
             return;
-          // If encountered error
           } else if (error) {
               getJsonResponse(response, 500, error);
             return;
           }
-          // If user has property contacts and user has at least one contact
           if (user.todoLists && user.todoLists.length > 0) {
             var currentTodoList = 
               user.todoLists.id(request.params.idTodoList);
@@ -252,36 +501,34 @@ module.exports.todoListUpdateSelected = function(request, response) {
                 "message": "Cannot find todo list."
               });
             } else {
-              var currentTodoListItem = user.todoLists.id(request.params.idTodoList).id(request.params.idTodoListItem);
-              
+              if (!currentTodoList.items) {
+                getJsonResponse(response, 404, {
+                  "message" : "no items found on todo list"
+                });
+                return;
+              }
+              var currentTodoListItem = user.todoLists.id(request.params.idTodoList).items.id(request.params.idTodoListItem); 
               if (!currentTodoListItem) {
                 getJsonResponse(response, 404, {
                   "message": "Cannot find item on todo list."
                 });
               } else {
-                // VALIDATE REQUESTED UPDATES
-                if (  // Validate contact properties types and values.
-                  typeof request.body.description === 'string' &&
-                  typeof request.body.date === 'number'
+                if (
+                  !isNaN(request.body.dueDate)
                   ) {
-                  // Update contact
                   currentTodoListItem.description = request.body.description;
                   currentTodoListItem.date = request.body.date;
                 } else {
-                  // If contact parameters are invalid.
                   getJsonResponse(response, 400, {
                     "message": "Invalid parameters."
                   });
                   return;
                 }
-                // Save user with modified todo list.
                 user.save(function(error, user) {
-                  // if encountered error
                   if (error) {
                     getJsonResponse(response, 400, error);
                   } else {
-                    // Return updated contact as response.
-                    getJsonResponse(response, 200, currentTodoList);
+                    getJsonResponse(response, 200, user.todoLists.id(request.params.idTodoList).items.id(request.params.idTodoListItem));
                   }
                 });
               }
@@ -296,68 +543,11 @@ module.exports.todoListUpdateSelected = function(request, response) {
   });
 };
 
-// todoListDeleteSelected: delete todo list with specified id of user with specified id
-module.exports.todoListDeleteSelected = function(request, response) {
-  getLoggedId(request, response, function(request, response, email) {
-    // If request parameters do not include user id or contact id or if idUser does not match username in JWT
-    if (!request.params.idUser || !request.params.idTodoList || request.params.idUser != email) {
-      getJsonResponse(response, 400, {
-        "message":"Bad request parameters"
-      });
-      return;
-    }
-    User
-      .findById(request.params.idUser)
-      .exec(
-        function(error, user) {
-          // if user not found
-          if (!user) {
-            getJsonResponse(response, 404, {
-              "message": "Cannot find user."
-            });
-            return;
-            // if encountered error
-          } else if (error) {
-            getJsonResponse(response, 500, error);
-            return;
-          }
-          // if user has property contacts and user has at least one contact
-          if (user.todoLists && user.todoLists.length > 0) {
-            // if contact with given idContact not found
-            if (!user.todoLists.id(request.params.idTodoList)) {
-              getJsonResponse(response, 404, {
-                "message": "Cannot find todo list."
-              });
-            } else {
-              // Remove contact with given idContact.
-              user.todoLists.id(request.params.idTodoList).remove();
-              // Save user state.
-              user.save(function(error) {
-                // if encountered error
-                if (error) {
-                  getJsonResponse(response, 500, error);
-                } else {
-                  // GONE
-                  getJsonResponse(response, 204, null);
-                }
-              });
-            }
-          // if contact not found
-          } else {
-            getJsonResponse(response, 404, {
-              "message": "No todo lists to delete."
-            });
-          }
-        }
-      );
-  });
-};
-
 //////////////////////////////////////////////////////////////////////////
 
 // Get user's id (username) from JWT
 var getLoggedId = function(request, response, callback) {
-  // If request contains a payload and the payload contains a username
+  // If request contains a payload and the payload contains the field "id"
   if (request.payload && request.payload.id) {
     User
       .findById(
@@ -375,7 +565,7 @@ var getLoggedId = function(request, response, callback) {
         }
         callback(request, response, user._id);
       });
-  } else {    // Else if no payload or if payload does not contain field username
+  } else {    // Else if no payload or if payload does not contain field "id"
     getJsonResponse(response, 400, {
       "message": "Inadequate data in token"
     });
