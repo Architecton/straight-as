@@ -53,7 +53,8 @@ var userSchema = new mongoose.Schema({
   hashValue: String,                                      // password hash value
   randomValue: String,                                    // random value used in hashing
   validationCode: String,                                 // Validation code used for generating address for account validation
-  admin : Boolean                                         // Is the user an administrator
+  admin : Boolean,                                        // Is the user an administrator
+  eventAdmin: Boolean 									  // Is the user an event administrator
 });
 
 

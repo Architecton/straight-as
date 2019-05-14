@@ -45,6 +45,7 @@ module.exports.initAdmins = function (adminEmail) {
     newUser.status = 1;
     newUser.setPassword(process.env.ADMIN_PASS);
     newUser.admin = true;
+	newUser.eventAdmin = true;
     User.create(newUser, function(error, user) {
         // If there was an error
         if (error) {
@@ -127,6 +128,7 @@ module.exports.authSignUp = function(request, response) {
         newUser.calendars = [];
         newUser.timetables = [];
         newUser.admin = false;
+		newUser.eventAdmin = false;
       // if passwords do not match
       } else {
         getJsonResponse(response, 400, {
@@ -200,7 +202,6 @@ var validateUser = function(newUser) {
     
   });
 };
-
 
 // usernameExists: check if user with given username exists in database
 var emailExists = function(email) {
@@ -282,6 +283,98 @@ module.exports.authConfirm = function(request, response) {
     });
   }
 };
+
+///////////////////////////////////////////////////////////////////////////////////
+
+// PROMOTIOS //////////////////////////////////////////////////////////////////////
+
+
+// promoteToAdmin: promote a user to an administrator.
+// Can only be done by an administrator.
+module.exports.promoteToAdmin = function(request, response) {
+  getLoggedId(request, response, function(request, response, email) {
+    if (email == process.env.ADMIN_EMAIL) {
+      if (request.params && request.params.idUser && request.body.admin 
+        && (request.body.admin == 'true' || request.body.admin == 'false')) {
+        User
+          .findById(request.params.idUser)
+          .exec(function(error, user) {
+          if (!user) {  // If user not found
+            getJsonResponse(response, 404, {
+              "message": 
+                "Cannot find user with given identifier idUser."
+            });
+            return;
+          // if error while executing function
+          } else if (error) {
+            getJsonResponse(response, 500, error);
+            return;
+          }
+          user.admin = request.body.admin;
+          user.save(function(error) {
+            if (error) {
+              getJsonResponse(response, 500, error);
+            } else {
+              getJsonResponse(response, 200, user);
+            }
+          })
+        });       
+      } else {
+        getJsonResponse(response, 404, {
+          "message" : "bad request parameters"
+        });
+      }
+    } else {
+      getJsonResponse(response, 401, {
+        "message" : "not authorized"
+      });
+    }
+  });
+}
+
+// promoteToEventAdmin: promote a user to an event administrator.
+// Can only be done by an administrator.
+module.exports.promoteToEventAdmin = function(request, response) {
+  getLoggedId(request, response, function(request, response, email) {
+    if (email == process.env.ADMIN_EMAIL) {
+      if (request.params && request.params.idUser && request.body.eventAdmin 
+        && (request.body.eventAdmin == 'true' || request.body.eventAdmin == 'false')) {
+        User
+          .findById(request.params.idUser)
+          .exec(function(error, user) {
+          if (!user) {  // If user not found
+            getJsonResponse(response, 404, {
+              "message": 
+                "Cannot find user with given identifier idUser."
+            });
+            return;
+          // if error while executing function
+          } else if (error) {
+            getJsonResponse(response, 500, error);
+            return;
+          }
+          user.eventAdmin = request.body.eventAdmin;
+          user.save(function(error) {
+            if (error) {
+              getJsonResponse(response, 500, error);
+            } else {
+              getJsonResponse(response, 200, user);
+            }
+          })
+        });       
+      } else {
+        getJsonResponse(response, 404, {
+          "message" : "bad request parameters"
+        });
+      }
+    } else {
+      getJsonResponse(response, 401, {
+        "message" : "not authorized"
+      });
+    }
+  });
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 
