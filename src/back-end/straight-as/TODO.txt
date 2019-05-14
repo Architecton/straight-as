@@ -1,5 +1,6 @@
-implement request to add new todo list item
 Write documentation for TODO list for paths concerning TODO lists
 Fix comments
 
-
+Add eventAdmin flag to users
+Create call to promote someone to eventAdmin
+Create call to promote someone to admin

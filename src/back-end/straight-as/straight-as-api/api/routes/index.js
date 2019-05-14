@@ -47,3 +47,4 @@ module.exports = router;
 // Detect presence of administrator account. If such an account is not found then it is
 // initialized from data specified in .env file.
 ctrlAuthentication.initAdmins(process.env.ADMIN_EMAIL);
+
