@@ -64,30 +64,49 @@ module.exports.nukeDBindexes = function(request, response) {
 
 // MANAGING USERS ////////////////////////////////////////////////////
 
-// TODO: only admin
-
 // userGetAll: get all users in database
 module.exports.userGetAll = function(request, response) {
-  // Return all users
-  User
-    .find({}, '_id admin')
-    .exec(function(error, users) {
-      if (!users) {  // If user not found
-        getJsonResponse(response, 404, {
-          "message": 
-            "Cannot find users."
-        });
-        return;
-      // if error while executing function
-      } else if (error) {
-        getJsonResponse(response, 500, error);
-        return;
-      }
-      // if success
-      getJsonResponse(response, 200, users);
-    });
+  getLoggedId(request, response, function(request, response, email) {
+    User
+      .findById(email)
+      .exec(function(error, user) {
+        if (!user) {
+          getJsonResponse(response, 404, {
+            "message" : "user not found"
+          });
+          return;
+        } else if (error) {
+          getJsonResponse(response, 500, error);
+          return;
+        }
+		console.log(user.admin);
+        if (user.admin == true) {
+          // Return all users
+          User
+            .find({}, '_id admin eventAdmin')
+            .exec(function(error, users) {
+              if (!users) {  // If user not found
+                getJsonResponse(response, 404, {
+                  "message": 
+                    "Cannot find users."
+                });
+                return;
+              // if error while executing function
+              } else if (error) {
+                getJsonResponse(response, 500, error);
+                return;
+              }
+              // if success
+              getJsonResponse(response, 200, users);
+            });		  
+        } else {
+          getJsonResponse(response, 401, {
+            "message" : "not authorized"
+          });
+        }
+      });
+  });
 };
-
 
 // userGetSelected: return user with given idUser (username)
 module.exports.userGetSelected = function(request, response) {

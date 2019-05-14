@@ -13,29 +13,50 @@ var getJsonResponse = function(response, status, data) {
 
 // GET ALL todo LISTS FROM DATABSE //////////////////////////////////////
 
-// TODO only admin
 // todoListGetAll: get all todo lists of all users (Admin only)
 module.exports.todoListGetAll = function(request, response) {
-  User
-    .find({})
-    .exec(function(error, users) {
-      if (!users) {
-        getJsonResponse(response, 404, {
-          "message": 
-            "Cannot find any users in the database."
-        });
-        return;
-      } else if (error) {
-        getJsonResponse(response, 500, error);
-        return;
-      }
-      var todoLists = [];
-      users.forEach(function(e) {
-        todoLists = todoLists.concat(e.todoLists);
+  getLoggedId(request, response, function(request, response, email) {
+
+    User
+      .findById(email)
+      .exec(function(error, user) {
+        if (!user) {
+          getJsonResponse(response, 404, {
+            "message" : "user not found"
+          });
+          return;
+        } else if (error) {
+          getJsonResponse(response, 500, error);
+          return;
+        }
+        if (user.admin) {
+          User
+            .find({})
+            .exec(function(error, users) {
+              if (!users) {
+                getJsonResponse(response, 404, {
+                  "message": 
+                    "Cannot find any users in the database."
+                });
+                return;
+              } else if (error) {
+                getJsonResponse(response, 500, error);
+                return;
+              }
+              var todoLists = [];
+              users.forEach(function(e) {
+                todoLists = todoLists.concat(e.todoLists);
+              });
+              
+              // return array of all todo lists.
+              getJsonResponse(response, 200, todoLists);
+            });
+        } else {
+          getJsonResponse(response, 401, {
+            "message" : "not authorized"
+          });
+        }
       });
-      
-      // return array of all todo lists.
-      getJsonResponse(response, 200, todoLists);
     });
 };
 

@@ -39,7 +39,7 @@ router.post('/users/:idUser/eventadmin', authentication, ctrlAuthentication.prom
 
 
 // Controlers for working with users
-router.get('/users', ctrlUsers.userGetAll);                                                                 // TESTED (13.5.2019) DOC
+router.get('/users', authentication, ctrlUsers.userGetAll);                                                 // TESTED (13.5.2019) DOC
 router.get('/users/:idUser', authentication, ctrlUsers.userGetSelected);                                    // TESTED (13.5.2019) DOC
 router.delete('/users/:idUser', authentication, ctrlUsers.userDeleteSelected);                              // TESTED (13.5.2019) DOC
 
