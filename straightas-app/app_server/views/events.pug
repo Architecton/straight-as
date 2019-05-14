@@ -1,0 +1,48 @@
+extends layout
+
+block content
+    .card.mx-auto.events-card.col-md-8
+        .card-header
+            | Events:
+        .card-body
+            table#events-table.table.table-striped
+                thead
+                    tr
+                        th Event name
+                        th Date
+                        th Organizer
+                        th Description
+                tbody
+                    for e in events.events
+                        tr
+                            td #{e.name}
+                            td #{e.date}
+                            td #{e.organizer}
+                            td #{e.description}
+        .card-footer
+            button#new-event-btn.btn.btn-info(type='button' data-toggle='modal' data-target='#create-new-event-modal') New event
+
+
+    #create-new-event-modal.modal
+        .modal-dialog
+            .modal-content
+                // Modal Header
+                .modal-header
+                    h4.modal-title New event
+                    button.close(type='button' data-dismiss='modal') &times;
+                // Modal body
+                .modal-body
+                    form#create-new-event-form
+                        .form-group
+                            label(for='new-event-name') Event name
+                            input#new-event-name.form-control(type='text')
+                        .form-group
+                            label(for='new-event-date') Event date:
+                            input#new-event-date.form-control(type='date')
+                        .form-group
+                            label(for='new-event-organizer') Event organizer:
+                            input#new-event-organizer.form-control(type='text')
+                        .form-group
+                            label(for='new-event-description') Note content:
+                            textarea#new-event-description(rows='5' cols='50')
+                        button#new-event-confirm-btn.btn.btn-primary(type='submit' data-dismiss='modal') Confirm

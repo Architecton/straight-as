@@ -1,0 +1,32 @@
+body {
+
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+html{
+  width:100%;
+  height:100%;
+}
+body{
+  width:100%;
+  height:100%;
+  background-color:#DDD;
+}
+
+.todoList {
+  max-height: 700px;
+}
+
+.login-card {
+  width: 500px;
+  margin-top: 50px;
+}
+
+.events-card {
+  margin-top: 50px;
+  padding: 2px;
+}
+
+a {
+  color: #00B7FF;
+}

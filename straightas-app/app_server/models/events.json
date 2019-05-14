@@ -1,0 +1,16 @@
+{
+  "events": [
+    {
+      "name": "Doomsday",
+      "date": "27.5.2019",
+      "organizer": "Archmage Deki",
+      "description": "The end is nigh."
+    },
+    {
+      "name": "Doomsday training",
+      "date": "16.5.2019",
+      "organizer": "Assistant Mage Luka",
+      "description": "We're not entirely doomed yet."
+    }
+  ]
+}

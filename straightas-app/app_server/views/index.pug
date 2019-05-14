@@ -1,0 +1,55 @@
+extends layout
+
+block content
+  if user != null
+    .container-fluid
+      .row
+        .col-md-6.half-segment
+          .card.col-md-12
+            .card-header
+              | Calendar - TODO
+          .card.col-md-12
+            .card-header
+              | Schedule - TODO
+        .col-md-6.half-segment
+          .card.col-md-12
+            .card-header
+              button#new-todo-btn.btn.btn-info.mr-2(type='button' data-toggle='modal' data-target='#create-new-todo-modal') + Add
+              button#remove-todo-btn.btn.btn-danger.mr-2(type='button' data-toggle='modal' data-target='#confirm-remove-todo-modal') - Remove
+            .card-body.overflow-auto.todoList
+                .row
+                  for todoNote in todo.todoNotes
+                    .card.col-md-6(style='padding:2px')
+                      .card-body
+                        | #{todoNote.content}
+
+  #create-new-todo-modal.modal
+    .modal-dialog
+      .modal-content
+        // Modal Header
+        .modal-header
+          h4.modal-title New TODO note
+          button.close(type='button' data-dismiss='modal') &times;
+        // Modal body
+        .modal-body
+          form#create-new-todo-form
+            .form-group
+              label(for='new-todo-content') Note content:
+              textarea#new-todo-content(rows='5' cols='50')
+            button#new-todo-confirm-btn.btn.btn-primary(type='submit' data-dismiss='modal') Confirm
+
+  #confirm-remove-todo-modal.modal
+    .modal-dialog
+      .modal-content
+        // Modal Header
+        .modal-header
+          h4.modal-title Are you sure you want to delete this content?
+          button.close(type='button' data-dismiss='modal') &times;
+        // Modal body
+        .modal-body
+          form
+            button#confirm-remove-todo-btn.btn.btn-danger.mr-2(type='button' data-dismiss='modal') Confirm
+            button#cancel-remove-todo-btn.btn.btn-default.mr-2(type='button' data-dismiss='modal') Cancel
+
+
+
