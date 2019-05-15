@@ -12,11 +12,7 @@ var scheduleData = null;
     If the user is not logged in, the userData attribute should be set to null.
  */
 
-/* GET home page */
-module.exports.index = function(req, res) {
-    // If user == null -> pug renders only BUS and FOOD else pug renders all RU features
-    res.render('index', {user: userData, todo: todoData, calendar: calendarData, schedule: scheduleData});
-};
+
 
 /* GET login page */
 module.exports.login = function(req, res) {
