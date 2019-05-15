@@ -111,7 +111,7 @@ var addTodoListToUser = function(request, response, user) {
       if (error) {
         getJsonResponse(response, 500, error);
       } else {
-        getJsonResponse(response, 201, newTodoList);
+        getJsonResponse(response, 201, user.todoLists.slice(-1)[0]);
       }
     });
   }
