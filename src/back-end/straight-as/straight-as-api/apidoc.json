@@ -1,0 +1,844 @@
+{
+  "openapi" : "3.0.0",
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/Architecton/StraightAs/1.0.0"
+  } ],
+  "info" : {
+    "description" : "Documentation for the StraightAs API\n",
+    "version" : "1.0.0",
+    "title" : "StraightAs"
+  },
+  "tags" : [ {
+    "name" : "Authentication",
+    "description" : "Log in and sign up"
+  }, {
+    "name" : "Users",
+    "description" : "User management"
+  }, {
+    "name" : "Timetable",
+    "description" : "Timetable management"
+  }, {
+    "name" : "Calendar",
+    "description" : "Calendar management"
+  }, {
+    "name" : "Todo",
+    "description" : "Todo list management"
+  }, {
+    "name" : "Database",
+    "description" : "Database management"
+  } ],
+  "paths" : {
+    "/users" : {
+      "get" : {
+        "tags" : [ "Users" ],
+        "summary" : "Get all users in the database",
+        "operationId" : "userGetAll",
+        "responses" : {
+          "200" : {
+            "description" : "Users were successfully retrieved",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Cannot find users"
+          },
+          "500" : {
+            "description" : "Error while getting users"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Add a new user to the database",
+        "operationId" : "userAddNew",
+        "responses" : {
+          "201" : {
+            "description" : "User successfully created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request parameters"
+          },
+          "500" : {
+            "description" : "Error creating new user or sending confirmation e-mail"
+          }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string"
+                  },
+                  "surname" : {
+                    "type" : "string"
+                  },
+                  "username" : {
+                    "type" : "string",
+                    "description" : "username - primary key"
+                  },
+                  "password" : {
+                    "type" : "string"
+                  },
+                  "email" : {
+                    "type" : "string"
+                  },
+                  "gender" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Log in",
+        "operationId" : "logIn",
+        "responses" : {
+          "200" : {
+            "description" : "Log in successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "token" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request parameters"
+          },
+          "401" : {
+            "description" : "Invalid log in credentials"
+          },
+          "500" : {
+            "description" : "Error trying to log in"
+          }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "email" : {
+                    "type" : "string"
+                  },
+                  "password" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{idUser}/{validationCode}" : {
+      "get" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "validate mail",
+        "operationId" : "validateMail",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "user's ID",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "validationCode",
+          "in" : "path",
+          "description" : "validation code associated with the account",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "validation successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request parameters"
+          }
+        }
+      }
+    },
+    "/users/{idUser}" : {
+      "get" : {
+        "tags" : [ "Users" ],
+        "summary" : "Find user by ID",
+        "description" : "Returns a single user matching the ID",
+        "operationId" : "getUserByID",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "user's ID",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "User successfully retrieved",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error retrieving user"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Users" ],
+        "summary" : "Delete a user from the database",
+        "operationId" : "userDelete",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "User id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "User successfully deleted"
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not founds"
+          }
+        }
+      }
+    },
+    "/todolists" : {
+      "get" : {
+        "tags" : [ "Todo" ],
+        "summary" : "Get all todo lists of all users",
+        "operationId" : "todolistGetAll",
+        "responses" : {
+          "200" : {
+            "description" : "Successfully retrieved todo lists",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TodoList"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request parameters"
+          },
+          "404" : {
+            "description" : "User or todo list with specified id not found"
+          },
+          "500" : {
+            "description" : "Error retrieving user with specified id or todo list with specified id"
+          }
+        }
+      }
+    },
+    "/users/{idUser}/todolists/{idTodoList}" : {
+      "get" : {
+        "tags" : [ "Todo" ],
+        "summary" : "Find todo list by ID",
+        "operationId" : "todoListGetByID",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTodoList",
+          "in" : "path",
+          "description" : "ID of todo list",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Todo list successfuly retrieved",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TodoList"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or todo list with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error retrieving todo list"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Todo" ],
+        "summary" : "Create new item on todo list",
+        "operationId" : "todoListAddNew",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTodoList",
+          "in" : "path",
+          "description" : "ID of todo list",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Todo list item successfuly created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TodoListItem"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or todo list with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error retrieving retrieving todo list or saving todo list item"
+          }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "description" : {
+                    "type" : "string"
+                  },
+                  "dueDate" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Todo" ],
+        "summary" : "Delete todo list with specified id",
+        "operationId" : "deleteTodoListByID",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTodoList",
+          "in" : "path",
+          "description" : "ID of todo list",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "todo list successfully deleted"
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or todo list with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error deleting todo list"
+          }
+        }
+      }
+    },
+    "/users/{idUser}/todolists" : {
+      "get" : {
+        "tags" : [ "Todo" ],
+        "summary" : "Get all todo lists of user",
+        "operationId" : "todoListGetAll",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "data successfully retrieved",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TodoList"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error retrieving todo lists"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Todo" ],
+        "summary" : "Create a new empty todo list",
+        "operationId" : "todoListGetData",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "todo list successfully created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TodoList"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error saving todo list"
+          }
+        }
+      }
+    },
+    "/users/{idUser}/todolists/{idTodoList}/{idTodoListItem}" : {
+      "get" : {
+        "tags" : [ "Todo" ],
+        "summary" : "Get todo list item by ID",
+        "operationId" : "todoListGetItemById",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTodoList",
+          "in" : "path",
+          "description" : "ID of todo list",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTodoListItem",
+          "in" : "path",
+          "description" : "ID of todo list item",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "data successfully retrieved",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TodoListItem"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or todo list with specified ID not found or todo list item with specified id not found"
+          },
+          "500" : {
+            "description" : "Error retrieving todo list or todo list item"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Todo" ],
+        "summary" : "Edit todo list item",
+        "operationId" : "todoListEditItemById",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTodoList",
+          "in" : "path",
+          "description" : "ID of todo list",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTodoListItem",
+          "in" : "path",
+          "description" : "ID of todo list item",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "data successfully edited",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TodoListItem"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or todo list with specified ID not found or todo list item with specified id not found"
+          },
+          "500" : {
+            "description" : "Error retrieving todo list or todo list item"
+          }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "description" : {
+                    "type" : "string"
+                  },
+                  "dueDate" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Todo" ],
+        "summary" : "delete todo list item",
+        "operationId" : "todoListDeleteItemById",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTodoList",
+          "in" : "path",
+          "description" : "ID of todo list",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTodoListItem",
+          "in" : "path",
+          "description" : "ID of todo list item",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "todo list item successfuly deleted"
+          },
+          "400" : {
+            "description" : "Bad parameters"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or todo list with specified ID not found or todo list item with specified item not found"
+          },
+          "500" : {
+            "description" : "Error retrieving todo list"
+          }
+        }
+      }
+    },
+    "/users/{idUser}/todolists/{idTodoList}/{idTodoListItem}/status" : {
+      "post" : {
+        "tags" : [ "Todo" ],
+        "summary" : "Set completion property of todo list item",
+        "operationId" : "setTodoItemStatus",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTodoList",
+          "in" : "path",
+          "description" : "ID of todo list",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTodoListItem",
+          "in" : "path",
+          "description" : "ID of todo list item",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "status updated successfuly",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TodoListItem"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Cannot find user with specified id or todo list with specified id or todo list item with specified id"
+          },
+          "500" : {
+            "description" : "Error saving updated todo list item"
+          }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "completed" : {
+                    "type" : "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nukeDB" : {
+      "delete" : {
+        "tags" : [ "Database" ],
+        "summary" : "Clear database",
+        "operationId" : "databaseNuke",
+        "responses" : {
+          "200" : {
+            "description" : "database sucessfully cleared"
+          },
+          "401" : {
+            "description" : "not authorized to clear database"
+          },
+          "500" : {
+            "description" : "error clearing database"
+          }
+        }
+      }
+    },
+    "/nukeDBindexes" : {
+      "delete" : {
+        "tags" : [ "Database" ],
+        "summary" : "Clear indexes from database",
+        "operationId" : "databaseClearIndexes",
+        "responses" : {
+          "200" : {
+            "description" : "indexes successfully cleared"
+          },
+          "401" : {
+            "description" : "not authorized to clear database"
+          },
+          "500" : {
+            "description" : "error clearning database"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "User" : {
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string",
+            "description" : "user's e-mail serves as the id"
+          },
+          "todoLists" : {
+            "type" : "object",
+            "description" : "list of user's todo lists"
+          },
+          "calendars" : {
+            "type" : "object",
+            "description" : "list of user's calendars"
+          },
+          "timetables" : {
+            "type" : "object",
+            "description" : "list of user's timetables"
+          },
+          "status" : {
+            "type" : "integer",
+            "description" : "status of account"
+          },
+          "hashValue" : {
+            "type" : "string",
+            "description" : "password hash value"
+          },
+          "randomValue" : {
+            "type" : "string",
+            "description" : "random value used in hashing"
+          },
+          "validationCode" : {
+            "type" : "string",
+            "description" : "value used to generate the address for account validation through e-mail"
+          },
+          "admin" : {
+            "type" : "boolean",
+            "description" : "true if administrator else false"
+          }
+        }
+      },
+      "TodoList" : {
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string",
+            "description" : "Mongo generated id"
+          },
+          "items" : {
+            "type" : "object",
+            "description" : "List of todo items"
+          }
+        }
+      },
+      "TodoListItem" : {
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string",
+            "description" : "Mongo generated id"
+          },
+          "dueDate" : {
+            "type" : "integer",
+            "description" : "due date for the todo item"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "description of the todo"
+          }
+        }
+      }
+    }
+  }
+}
