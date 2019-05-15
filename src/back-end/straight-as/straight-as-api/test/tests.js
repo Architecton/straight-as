@@ -14,6 +14,7 @@ var admin_jwt_token;
 var id_todo_list;
 var id_todo_list2;
 var id_todo_list_item;
+var dueDate_prev;
 
 // ########################### 1. AUTHENTICATION AND ADMINISTRATION TESTS ########################### 
 
@@ -277,6 +278,7 @@ describe('Working with todo list items', () => {
               expect(bodyObj.items.length).to.equal(1);
               const added_item = bodyObj.items[0];
               expect(added_item).to.haveOwnProperty('dueDate');
+              dueDate_prev = added_item.dueDate;
               expect(added_item).to.haveOwnProperty('_id');
               expect(added_item).to.haveOwnProperty('description');
               expect(added_item).to.haveOwnProperty('completed');
@@ -331,14 +333,63 @@ describe('Working with todo list items', () => {
 
 				});
 
-				it('The description of the todo item should change.', (done) => {
-          done();
+				it('The description and due date of the todo item should change.', (done) => {
+          request({
+            url : baseUrl + '/users/' + admin_account._id + '/todolists/' + id_todo_list2 + '/' + id_todo_list_item,
+            headers : {
+              'Authorization' : 'Bearer ' + admin_jwt_token
+            },
+            method : 'put',
+            form : {
+              'description' : 'something different',
+              'dueDate' : Date.now()
+            }
+          }, function(error, response, body) {
+            const bodyObj = JSON.parse(body);
+            expect(bodyObj).to.haveOwnProperty('description');
+            expect(bodyObj).to.haveOwnProperty('dueDate');
+            expect(bodyObj).to.haveOwnProperty('_id');
+            expect(bodyObj.description).to.equal('something different');
+            expect(bodyObj.dueDate).to.not.equal(dueDate_prev);
+            request({
+              url : baseUrl + '/users/' + admin_account._id + '/todolists/' + id_todo_list2 + '/' + id_todo_list_item,
+              headers : {
+                'Authorization' : 'Bearer ' + admin_jwt_token
+              },
+              method : 'get'
+            }, function(error, response, body) {
+              const bodyObj = JSON.parse(body);
+              expect(bodyObj).to.haveOwnProperty('description');
+              expect(bodyObj).to.haveOwnProperty('dueDate');
+              expect(bodyObj).to.haveOwnProperty('_id');
+              expect(bodyObj.description).to.equal('something different');
+              expect(bodyObj.dueDate).to.not.equal(dueDate_prev);
+              done();
+            });
+          });
 
 				});
 
 				it('The todo item should no longer be in the database after deleting it.', (done) => {
-          done();
-
+          request({
+            url : baseUrl + '/users/' + admin_account._id + '/todolists/' + id_todo_list2 + '/' + id_todo_list_item,
+            headers : {
+              'Authorization' : 'Bearer ' + admin_jwt_token
+            },
+            method : 'delete'
+          }, function(error, response, body) {
+            expect(response.statusCode).to.equal(204);
+            request({
+              url : baseUrl + '/users/' + admin_account._id + '/todolists/' + id_todo_list2 + '/' + id_todo_list_item,
+              headers : {
+                'Authorization' : 'Bearer ' + admin_jwt_token
+              },
+              method: 'get'
+            }, function(error, response, body) {
+              expect(response.statusCode).to.equal(404);
+              done();
+            });
+          });
 				});
 		});
 });
@@ -346,6 +397,60 @@ describe('Working with todo list items', () => {
 // ##################################################################################################
 
 
+
+// ########################### 3. users #############################################################
+
+describe('Information about users', () => {
+	describe('Users should be able to see information about their account and should be able to delete their accounts.', () => {
+		it('Administrator should be able to access information about all accounts.', (done) => {
+      request({
+        url : baseUrl + '/users',
+        headers : {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method : 'get'
+      }, function(error, response, body) {
+          const bodyObj = JSON.parse(body);
+          expect(bodyObj).to.haveOwnProperty('length');
+          expect(bodyObj.length).to.equal(1);
+          expect(bodyObj[0]).to.haveOwnProperty('_id');
+          done();
+      });
+		});
+
+		it('User should be able to see information about their account.', (done) => {
+      request({
+        url : baseUrl + '/users/' + admin_account._id,
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method : 'get'
+      }, function(error, response, body) {
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj).to.haveOwnProperty('_id');
+        expect(bodyObj._id).to.equal(admin_account._id);
+        done();
+      });
+		});
+
+		it('User should be able to delete their account.', (done) => {
+      request({
+        url : baseUrl + '/users/' + admin_account._id,
+        headers : {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method : 'delete'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(204);
+        done();
+      });
+		});
+	});
+});
+
+// ##################################################################################################
+
+/*
 describe('Database Management', () => {
   it('The database should be empty after nuking it.', (done) => {
     request({
@@ -369,48 +474,4 @@ describe('Database Management', () => {
     });
   });
 });
-
-
-/*
-
-// ########################### 3. users #############################################################
-
-describe('Information about users', () => {
-	describe('Users should be able to see information about their account and should be able to delete their accounts.', () => {
-		it('Administrator should be able to access all accounts.', (done) => {
-
-		});
-
-		it('User should be able to see information about their account.', (done) => {
-
-		});
-
-		it('User should be able to delete their account.', (done) => {
-
-		});
-	});
-
-	describe('Administrator should be able to promote an existing user to an event administrator', () => {
-			it('User should not be an event administrator initially', (done) => {
-
-			});
-			it('User should be an event administrator after being promoted by administrator', (done) => {
-
-			})
-	});
-
-	describe('Administrator should be able to promote an existing user to an administrator', () => {
-			it('User should not be an administrator initially', (done) => {
-
-			});
-
-			it('User should be an administrator after being promoted by an administrator', (done) => {
-
-			});
-	})	
-});
-
-
-// ##################################################################################################
-
 */

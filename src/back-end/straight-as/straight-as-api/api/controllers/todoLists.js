@@ -538,7 +538,7 @@ module.exports.todoListUpdateSelected = function(request, response) {
                   !isNaN(request.body.dueDate)
                   ) {
                   currentTodoListItem.description = request.body.description;
-                  currentTodoListItem.date = request.body.date;
+                  currentTodoListItem.dueDate = request.body.dueDate;
                 } else {
                   getJsonResponse(response, 400, {
                     "message": "Invalid parameters."
