@@ -10,13 +10,22 @@
   "author": "Jure Vreček <jv9074@student.uni-lj.si>",
   "license": "ISC",
   "dependencies": {
-    "express": "latest",
     "cookie-parser": "latest",
     "debug": "latest",
+    "express": "latest",
     "http-errors": "latest",
+    "mongoose": "latest",
     "morgan": "latest",
+    "passport": "latest",
     "pug": "latest",
-    "mongoose": "latest"
+    "dotenv": "latest",
+    "helmet": "latest",
+    "swagger-ui-express": "latest",
+    "jsonwebtoken": "latest",
+    "passport-local": "latest",
+    "express-jwt": "latest",
+    "nodemailer": "latest",
+    "request": "latest"
   },
   "devDependencies": {
     "mocha": "latest",
