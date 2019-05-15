@@ -1,4 +1,4 @@
-var passport = require('passport');
+var passport = require('src/app_server/straight-as-api/api/configuration/passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 var User = mongoose.model('User');

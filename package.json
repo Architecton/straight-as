@@ -15,7 +15,8 @@
     "debug": "latest",
     "http-errors": "latest",
     "morgan": "latest",
-    "pug": "latest"
+    "pug": "latest",
+    "mongoose": "latest"
   },
   "devDependencies": {
     "mocha": "latest",
