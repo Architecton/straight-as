@@ -1,1 +1,1 @@
-web: node src/streznik.js
+web: npm start

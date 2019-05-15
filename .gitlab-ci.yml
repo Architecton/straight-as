@@ -2,7 +2,6 @@ image: node:latest
 
 stages:
   - install
-  - build
   - test
   - deploy
 
@@ -19,13 +18,6 @@ install_dependencies:
   artifacts:
     paths:
       - node_modules/
-
-build_ts:
-  stage: build
-  tags:
-    - "main"
-  script:
-    - npm run tsc
 
 testing:
   stage: test

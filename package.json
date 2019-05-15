@@ -4,16 +4,18 @@
   "description": "Bogdej",
   "main": "src/streznik.js",
   "scripts": {
-    "start": "node src/streznik.js",
-    "test": "mocha --exit",
-    "tsc": "tsc"
+    "start": "node src/bin/www",
+    "test": "mocha --exit"
   },
   "author": "Jure Vreček <jv9074@student.uni-lj.si>",
   "license": "ISC",
   "dependencies": {
     "express": "latest",
-    "typescript": "latest",
-    "@types/express": "latest"
+    "cookie-parser": "latest",
+    "debug": "latest",
+    "http-errors": "latest",
+    "morgan": "latest",
+    "pug": "latest"
   },
   "devDependencies": {
     "mocha": "latest",

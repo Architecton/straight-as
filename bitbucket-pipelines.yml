@@ -19,7 +19,6 @@ pipelines:
             - node
           script: # Modify the commands below to build your repository.
             - npm install
-            - npm run tsc
             - npm test
             - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION.git production:master
   custom:
@@ -31,6 +30,5 @@ pipelines:
             - node
           script:
             - npm install
-            - npm run tsc
             - npm test
-            - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION.git master --force
+            - git push --force https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION.git master
