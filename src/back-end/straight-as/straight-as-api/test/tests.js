@@ -12,18 +12,13 @@ const login_password = "geselce";
 
 var admin_jwt_token;
 var id_todo_list;
-
+var id_todo_list2;
+var id_todo_list_item;
 
 // ########################### 1. AUTHENTICATION AND ADMINISTRATION TESTS ########################### 
 
-// (1.1.1) Test if administrator's account exists.
-// (1.1.2) Test if "admin" flag is set to true.
-// (1.2.1) Test if user that logs in receives JWT.
-
-describe('log in', () => {
-		describe('ogging in with existing account', () => {
-
-				// (1.2.1)
+describe('Log In', () => {
+		describe('Logging in with existing account', () => {
 				it('Upon logging in, user should receive JWT token.', (done) => {
 						request({
 								url : baseUrl + '/users/login',
@@ -45,8 +40,6 @@ describe('log in', () => {
 
 describe('administrator account', () => {
   describe('administrator account exists', () => {
-
-	// (1.1.1)
     it('administrator account should have specified email', (done) => {
         request.get(
             {
@@ -57,18 +50,16 @@ describe('administrator account', () => {
             },
             function(error, response, body) {
             	const bodyObj = JSON.parse(body);
-				for (var i = 0; i < bodyObj.length; i++) {
-					if (bodyObj[0]._id === 'je.vivod@gmail.com') {
-						done();
-						return
-					}
-				}
-				done(new Error('Administrator account with "_id" equal to' + admin_account._id + ' not found.'));
+              for (var i = 0; i < bodyObj.length; i++) {
+                if (bodyObj[0]._id === 'je.vivod@gmail.com') {
+                  done();
+                  return
+                }
+				      }
+				      done(new Error('Administrator account with "_id" equal to' + admin_account._id + ' not found.'));
             });
     });
 
-
-	// (1.1.2)
     it('administrator account should have "admin" property set to "true"', (done) => {
         request.get(
             { 
@@ -79,16 +70,15 @@ describe('administrator account', () => {
             },
             function(error, response, body) {
             	const bodyObj = JSON.parse(body);
-				for (var i = 0; i < bodyObj.length; i++) {
-					if (bodyObj[0]._id === admin_account._id && bodyObj[0].admin === admin_account.admin) {
-						done();
-						return
-					}
-				}
-				done(new Error('"admin" flag is not set for account with "_id" equal to ' + admin_account._id));
+				      for (var i = 0; i < bodyObj.length; i++) {
+					      if (bodyObj[0]._id === admin_account._id && bodyObj[0].admin === admin_account.admin) {
+                  done();
+                  return
+					      }
+				      }
+				      done(new Error('"admin" flag is not set for account with "_id" equal to ' + admin_account._id));
+            });
       });
-    });
-
   });
 });
 
@@ -101,8 +91,8 @@ describe('administrator account', () => {
 
 // ########################### 2. todo lists ########################################################
 
-describe('Working with todo lists', () => {
-		describe('Working with todo lists', () => {
+describe('Working with Todo Lists', () => {
+		describe('Adding Todo Lists', () => {
 				it('There should be no todo lists initialy.', (done) => {
 				request({
 						url : baseUrl + '/todolists',
@@ -127,7 +117,7 @@ describe('Working with todo lists', () => {
           }, function(error, response, body) {
             const bodyObj = JSON.parse(body);
             expect(bodyObj).to.haveOwnProperty('items');
-			id_todo_list = bodyObj._id;
+			      id_todo_list = bodyObj._id;
             request({
               url : baseUrl + '/todolists',
               headers : {
@@ -136,7 +126,7 @@ describe('Working with todo lists', () => {
               method : 'get'
             }, function(error, response, body) {
               const bodyObj = JSON.parse(body);
-              expect(bodyObj.length).to.be.greaterThan(0);
+              expect(bodyObj.length).to.equal(1);
               done();
             })
           })
@@ -172,7 +162,7 @@ describe('Working with todo lists', () => {
           })	
 				});
 		});
-		describe('Deleting a todo list', () => {
+		describe('Deleting Todo Lists', () => {
 				it('The todo list should no longer be in the database after being deleted.', (done) => {
           request({
             url : baseUrl + '/users/' + admin_account._id + '/todolists/' + id_todo_list,
@@ -197,7 +187,166 @@ describe('Working with todo lists', () => {
 		});
 });
 
-describe('Database management', () => {
+
+
+
+describe('Working with todo list items', () => {
+		describe('Adding, reading, updating and deleting items from a todo list', () => {
+				it('There should be no todo lists initialy.', (done) => {
+          request({
+            url : baseUrl + '/todolists',
+            headers : {
+              'Authorization' : 'Bearer ' + admin_jwt_token
+            },
+            method: 'get'
+          }, function(error, response, body) {
+            const bodyObj = JSON.parse(body);
+            expect(bodyObj.length).to.equal(0);
+            done();
+          });
+				});
+
+				it('There should be a single todo list after adding one.', (done) => {
+          request({
+            url : baseUrl + '/users/' + admin_account._id + '/todolists',
+            headers : {
+              'Authorization' : 'Bearer ' + admin_jwt_token
+            },
+            method: 'post'
+          }, function(error, response, body) {
+            const bodyObj = JSON.parse(body);
+            expect(bodyObj).to.haveOwnProperty('_id');
+            expect(bodyObj).to.haveOwnProperty('items');
+            id_todo_list2 = bodyObj._id;
+            request({
+              url : baseUrl + '/todolists',
+              headers : {
+                'Authorization' : 'Bearer ' + admin_jwt_token
+              },
+              method : 'get'
+            }, function(error, response, body) {
+              const bodyObj = JSON.parse(body);
+              expect(bodyObj.length).to.equal(1);
+              done();
+            });
+          });
+				});
+
+				it('There should be no items on the created todo list initialy.', (done) => {
+          request({
+            url : baseUrl + '/users/' + admin_account._id + '/todolists/' + id_todo_list2,
+            headers : {
+              'Authorization' : 'Bearer ' + admin_jwt_token
+            },
+            method : 'get'
+          }, function(error, response, body) {
+            const bodyObj = JSON.parse(body);
+            expect(bodyObj).to.haveOwnProperty('items');
+            expect(bodyObj.items.length).to.equal(0);
+            done();
+          });
+
+				});
+
+				it('There should be a single item on the todo list after adding it.', (done) => {
+          request({
+            url : baseUrl + '/users/' + admin_account._id + '/todolists/' + id_todo_list2,
+            headers : {
+              'Authorization' : 'Bearer ' + admin_jwt_token
+            },
+            method : 'post',
+            form : {
+              'dueDate' : Date.now(),
+              'description' : 'test'
+            }
+          }, function(error, response, body) {
+            const bodyObj = JSON.parse(body);
+            expect(bodyObj).to.haveOwnProperty('dueDate');
+            expect(bodyObj).to.haveOwnProperty('_id');
+            expect(bodyObj).to.haveOwnProperty('description');
+            expect(bodyObj).to.haveOwnProperty('completed');
+            request({
+              url : baseUrl + '/users/' + admin_account._id + '/todolists/' + id_todo_list2,
+              headers : {
+                'Authorization' : 'Bearer ' + admin_jwt_token
+              },
+              method : 'get'
+            }, function(error, response, body) {
+              const bodyObj = JSON.parse(body);
+              expect(bodyObj).to.haveOwnProperty('items');
+              expect(bodyObj.items.length).to.equal(1);
+              const added_item = bodyObj.items[0];
+              expect(added_item).to.haveOwnProperty('dueDate');
+              expect(added_item).to.haveOwnProperty('_id');
+              expect(added_item).to.haveOwnProperty('description');
+              expect(added_item).to.haveOwnProperty('completed');
+              id_todo_list_item = added_item._id;
+              done();
+            });
+          });
+				});
+
+				it('The initial value of the "completed" property of the item on the todo list should be "false".', (done) => {
+          request({
+            url : baseUrl + '/users/' + admin_account._id + '/todolists/' + id_todo_list2 + '/' + id_todo_list_item,
+            headers : {
+              'Authorization' : 'Bearer ' + admin_jwt_token
+            },
+            method : 'get'
+          }, function(error, response, body) {
+            const bodyObj = JSON.parse(body);
+            expect(bodyObj).to.haveOwnProperty('completed');
+            expect(bodyObj.completed).to.equal(false);
+            done();
+          });
+				});
+
+				it('The value of the "completed" property of the item on the todo list should be "true" after setting it.', (done) => {
+          request({
+            url : baseUrl + '/users/' + admin_account._id + '/todolists/' + id_todo_list2 + '/' + id_todo_list_item + '/status',
+            headers : {
+              'Authorization' : 'Bearer ' + admin_jwt_token
+            },
+            method : 'post',
+            form : {
+              'completed' : true
+            }
+          }, function(error, response, body) {
+            const bodyObj = JSON.parse(body);
+            expect(bodyObj).to.haveOwnProperty('completed');
+            expect(bodyObj.completed).to.equal(true);
+            request({
+              url : baseUrl + '/users/' + admin_account._id + '/todolists/' + id_todo_list2 + '/' + id_todo_list_item,
+              headers : {
+                'Authorization' : 'Bearer ' + admin_jwt_token
+              },
+              method : 'get'
+            }, function(error, response, body) {
+              const bodyObj = JSON.parse(body);
+              expect(bodyObj).to.haveOwnProperty('completed');
+              expect(bodyObj.completed).to.equal(true);
+              done();
+            });
+          });
+
+				});
+
+				it('The description of the todo item should change.', (done) => {
+          done();
+
+				});
+
+				it('The todo item should no longer be in the database after deleting it.', (done) => {
+          done();
+
+				});
+		});
+});
+
+// ##################################################################################################
+
+
+describe('Database Management', () => {
   it('The database should be empty after nuking it.', (done) => {
     request({
       url : baseUrl + '/nukeDB',
@@ -223,47 +372,6 @@ describe('Database management', () => {
 
 
 /*
-
-describe('Working with todo list items', () => {
-		describe('Adding, reading, updating and deleting items from a todo list', () => {
-				it('There should be no todo lists initialy.', (done) => {
-
-				});
-
-				it('There should be a single todo list after adding one.', (done) => {
-
-				});
-
-				it('There should be no items on the created todo list initialy.', (done) => {
-
-				});
-
-				it('There should be a single item on the todo list after adding it.', (done) => {
-
-				});
-
-				it('The initial value of the "completed" property of the item on the todo list should be "false".', (done) => {
-
-				});
-
-				it('The value of the "completed" property of the item on the todo list should be "true" after setting it.', (done) => {
-
-				});
-
-				it('The description of the todo item should change.', (done) => {
-
-				});
-
-				it('The todo item should no longer be in the database after deleting it.', (done) => {
-
-				});
-		});
-});
-
-// ##################################################################################################
-
-
-
 
 // ########################### 3. users #############################################################
 
