@@ -21,10 +21,12 @@ module.exports.index = function(req, res) {
 
 /* GET login page */
 module.exports.login = function(req, res) {
-    // If user.admin == true -> render 'admin_panel'
-    // if user.eventAdmin == true -> render 'events'
+    // If user.admin == true -> render 'admin_view'
+    // if user.eventAdmin == true -> render 'eventAdmin_view'
 
-    res.render('login', null);
+    console.log(req.fields);
+
+    res.redirect('/');
 }
 
 /* Logout */
@@ -42,8 +44,11 @@ module.exports.events = function(req, res) {
     res.render('events', {user: userData, events: eventData});
 }
 
-/* GET signup page */
+/* POST for new user */
 module.exports.signup = function(req, res) {
+
+    console.log(req.fields);
+
     res.render('signup', null);
 }
 
@@ -54,6 +59,8 @@ module.exports.food = function(req, res) {
 
 /* GET bus page */
 module.exports.bus = function(req, res) {
+
+    console.log(req.fields);
+
     res.render('bus', {user: userData, buses: busData});
 }
-

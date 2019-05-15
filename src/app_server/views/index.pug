@@ -12,14 +12,16 @@ block content
             .card-header
               | Schedule - TODO
         .col-md-6.half-segment.mt-5
-          .card.col-md-12
+          .card.col-xs-12
             .card-header
               button#new-todo-btn.btn.btn-info.mr-2(type='button' data-toggle='modal' data-target='#create-new-todo-modal') + Add
               button#remove-todo-btn.btn.btn-danger.mr-2(type='button' data-toggle='modal' data-target='#confirm-remove-todo-modal') - Remove
             .card-body.overflow-auto.todoList
                 .row
                   for todoNote in todo.todoNotes
-                    .card.col-md-6(style='padding:2px')
+                    .card.col-lg-4.col-md-12(style='padding:0px')
+                      .card-header
+                        | #{todoNote.id}
                       .card-body
                         | #{todoNote.content}
 

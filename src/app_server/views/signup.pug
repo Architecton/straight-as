@@ -9,12 +9,12 @@ block content
                 form#signup-form
                     .form-group
                         label(for='signup-email') Email address:
-                        input#signup-email.form-control(type='email')
+                        input#signup-email.form-control(type='email' name="email")
                     .form-group
                         label(for='signup-password') Password:
-                        input#signup-password.form-control(type='password')
+                        input#signup-password.form-control(type='password' name="password_1")
                     .form-group
                         label(for='signup-password-repeat') Repeat password:
-                        input#signup-password-repeat.form-control(type='password')
+                        input#signup-password-repeat.form-control(type='password' name="password_2")
 
                     button#signup-confirm-btn.btn.btn-primary(type='submit') Submit

@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    if user.admin
+        .card.mx-auto.login-card
+            .card-header
+                | New message:
+            .card-body.text-center
+                button#new-event-btn.btn.btn-danger(type='button' data-toggle='modal' data-target='#create-new-message-modal') New message
+
+        #create-new-message-modal.modal
+            .modal-dialog
+                .modal-content
+                    // Modal Header
+                    .modal-header
+                        h4.modal-title New message
+                        button.close(type='button' data-dismiss='modal') &times;
+                    // Modal body
+                    .modal-body
+                        form#create-new-message-form
+                            .form-group
+                                label(for='new-message-content') Message content:
+                                textarea#new-message-content(rows='5' cols='50' name="content")
+                            button#new-message-confirm-btn.btn.btn-primary(type='submit' data-dismiss='modal') Send
