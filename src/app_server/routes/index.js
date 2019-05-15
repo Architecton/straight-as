@@ -2,9 +2,10 @@ var express = require('express');
 var router = express.Router();
 var ctrlMain = require('../controllers/main');
 var ctrlService = require('../controllers/service');
+var indexCtrl = require('../controllers/indexCtrl');
 
 /* GET home page. */
-router.get('/', ctrlMain.index);
+router.get('/', indexCtrl.index);
 
 router.get('/login', ctrlMain.login);
 

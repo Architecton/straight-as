@@ -7,9 +7,6 @@ var scheduleData = null;
 /* GET home page */
 module.exports.index = function (req, res) {
     // If user == null -> pug renders only BUS and FOOD else pug renders all RU features
-    if(!user){
-        user=null;
-    }
     res.render('index', {
         user: userData,
         todo: todoData,

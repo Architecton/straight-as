@@ -16,7 +16,6 @@
     "http-errors": "latest",
     "mongoose": "latest",
     "morgan": "latest",
-    "pug": "latest",
     "express-formidable": "latest",
     "body-parser": "latest",
     "passport": "latest",
