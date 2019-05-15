@@ -3,7 +3,7 @@ extends layout
 block content
     .card.mx-auto.events-card.col-md-8
         .card-header
-            | Events:
+            h3 Events:
         .card-body
             table#events-table.table.table-striped
                 thead
@@ -19,8 +19,9 @@ block content
                             td #{e.date}
                             td #{e.organizer}
                             td #{e.description}
-        .card-footer
-            button#new-event-btn.btn.btn-info(type='button' data-toggle='modal' data-target='#create-new-event-modal') New event
+        if user.eventAdmin
+            .card-footer
+                button#new-event-btn.btn.btn-info(type='button' data-toggle='modal' data-target='#create-new-event-modal') New event
 
 
     #create-new-event-modal.modal
@@ -35,14 +36,14 @@ block content
                     form#create-new-event-form
                         .form-group
                             label(for='new-event-name') Event name
-                            input#new-event-name.form-control(type='text')
+                            input#new-event-name.form-control(type='text' name="name")
                         .form-group
                             label(for='new-event-date') Event date:
-                            input#new-event-date.form-control(type='date')
+                            input#new-event-date.form-control(type='date' name="date")
                         .form-group
                             label(for='new-event-organizer') Event organizer:
-                            input#new-event-organizer.form-control(type='text')
+                            input#new-event-organizer.form-control(type='text' name="organizer")
                         .form-group
                             label(for='new-event-description') Note content:
-                            textarea#new-event-description(rows='5' cols='50')
+                            textarea#new-event-description(rows='5' cols='50' name="description")
                         button#new-event-confirm-btn.btn.btn-primary(type='submit' data-dismiss='modal') Confirm

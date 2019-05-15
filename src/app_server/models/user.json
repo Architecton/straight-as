@@ -1,1 +1,5 @@
-{"username": "Potato", "admin": false, "eventAdmin": false}
+{
+  "username": "Potato",
+  "admin": true,
+  "eventAdmin": false
+}

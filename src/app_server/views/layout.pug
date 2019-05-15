@@ -26,6 +26,26 @@ html
             a.nav-link(href="/login") Login
           li.nav-item
             a.nav-link(href="/signup") Signup
+      else if user.admin
+        ul.navbar-nav.ml-auto
+          li.nav-item.dropdown
+            a#navbardrop.nav-link.dropdown-toggle(href='#' data-toggle='dropdown')
+              | #{user.username}
+            ul.dropdown-menu
+              li.nav-item
+                a.dropdown-item(href='/change_password') Change password
+              li.nav-item
+              a.dropdown-item(href='/logout') Logout
+      else if user.eventAdmin
+        ul.navbar-nav.ml-auto
+          li.nav-item.dropdown
+            a#navbardrop.nav-link.dropdown-toggle(href='#' data-toggle='dropdown')
+              | #{user.username}
+            ul.dropdown-menu
+              li.nav-item
+                a.dropdown-item(href='/change_password') Change password
+              li.nav-item
+              a.dropdown-item(href='/logout') Logout
       else
         ul.navbar-nav
           li.nav-item
@@ -41,9 +61,15 @@ html
           li.nav-item.dropdown
             a#navbardrop.nav-link.dropdown-toggle(href='#' data-toggle='dropdown')
               | #{user.username}
-            .dropdown-menu
-              a.dropdown-item(href='/change_password') Change password
+            ul.dropdown-menu
+              li.nav-item
+                a.dropdown-item(href='/change_password') Change password
+              li.nav-item
               a.dropdown-item(href='/logout') Logout
 
 
     block content
+
+//script(type='text/javascript' src='/javascripts/bus_search.js')
+//script(type='text/javascript' src='/javascripts/login.js')
+//script(type='text/javascript' src='/javascripts/signup.js')

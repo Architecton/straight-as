@@ -3,6 +3,7 @@ var userData = require("../models/user.json");
 var todoData = require("../models/todo.json");
 var foodData = require("../models/food.json");
 var eventData = require("../models/events.json");
+var busData = require("../models/bus.json");
 var calendarData = null;
 var scheduleData = null;
 
@@ -20,9 +21,12 @@ module.exports.index = function(req, res) {
 
 /* GET login page */
 module.exports.login = function(req, res) {
-    // If user.admin == true -> render 'admin_panel'
-    // if user.eventAdmin == true -> render 'events'
-    res.render('login', null);
+    // If user.admin == true -> render 'admin_view'
+    // if user.eventAdmin == true -> render 'eventAdmin_view'
+
+    console.log(req.fields);
+
+    res.redirect('/');
 }
 
 /* Logout */
@@ -40,17 +44,23 @@ module.exports.events = function(req, res) {
     res.render('events', {user: userData, events: eventData});
 }
 
-/* GET signup page */
+/* POST for new user */
 module.exports.signup = function(req, res) {
+
+    console.log(req.fields);
+
     res.render('signup', null);
 }
 
 /* GET food page */
 module.exports.food = function(req, res) {
-    res.render('food', null);
+    res.render('food', {user: userData, food: foodData});
 }
 
 /* GET bus page */
 module.exports.bus = function(req, res) {
-    res.render('bus', null);
+
+    console.log(req.fields);
+
+    res.render('bus', {user: userData, buses: busData});
 }
