@@ -4,7 +4,7 @@
   "description": "Bogdej",
   "main": "src/streznik.js",
   "scripts": {
-    "start": "node src/streznik.js",
+    "start": "node src/bin/www",
     "test": "mocha --exit",
     "tsc": "tsc"
   },
@@ -12,8 +12,11 @@
   "license": "ISC",
   "dependencies": {
     "express": "latest",
-    "typescript": "latest",
-    "@types/express": "latest"
+    "cookie-parser": "latest",
+    "debug": "latest",
+    "http-errors": "latest",
+    "morgan": "latest",
+    "pug": "latest"
   },
   "devDependencies": {
     "mocha": "latest",
