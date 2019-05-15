@@ -1,1 +1,19 @@
-{"id": null}
+{
+  "buses": [
+    {
+      "number": "14",
+      "direction": "Savlje",
+      "ETA": "6"
+    },
+    {
+      "number": "27",
+      "direction": "Letalička-BTC",
+      "ETA": "16"
+    },
+    {
+      "number": "6",
+      "direction": "Črnuče",
+      "ETA": "3"
+    }
+  ]
+}

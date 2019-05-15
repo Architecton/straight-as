@@ -20,7 +20,8 @@ block content
                             td #{e.organizer}
                             td #{e.description}
         .card-footer
-            button#new-event-btn.btn.btn-info(type='button' data-toggle='modal' data-target='#create-new-event-modal') New event
+            if user.eventAdmin
+                button#new-event-btn.btn.btn-info(type='button' data-toggle='modal' data-target='#create-new-event-modal') New event
 
 
     #create-new-event-modal.modal

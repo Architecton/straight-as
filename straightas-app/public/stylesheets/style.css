@@ -27,6 +27,10 @@ body{
   padding: 2px;
 }
 
+.arrivals-card {
+  width: 500px;
+}
+
 a {
   color: #00B7FF;
 }
