@@ -17,8 +17,8 @@ var helmet = require('helmet')
 var indexApi = require('./api/routes/index');
 
 // Set up Swagger user interface
-// var swaggerUi = require('swagger-ui-express');
-// var swaggerDocument = require('./apidoc.json');
+var swaggerUi = require('swagger-ui-express');
+var swaggerDocument = require('./apidoc.json');
 
 // app - the application
 var app = express();
@@ -36,7 +36,7 @@ app.use(function(req, res, next) {
 
 
 // Set up path for API documentation
-// app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // setup logger
 app.use(logger('dev'));
