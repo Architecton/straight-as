@@ -29,4 +29,4 @@ heroku:
   stage: deploy
   tags:
     - "main"
-  script: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION.git master --force
+  script: git push --force https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION.git HEAD:master

@@ -1,39 +1,40 @@
-{"todoNotes": [
-  {
-    "content": "Find potato.",
-    "id": "n1"
-  },
-  {
-    "content": "Find pot.",
-    "id": "n2"
-  },
-  {
-    "content": "Fill pot with water.",
-    "id": "n3"
-  },
-  {
-    "content": "Boil water in pot.",
-    "id": "n4"
-  },
-  {
-    "content": "Add potato to water.",
-    "id": "n5"
-  },
-  {
-    "content": "Cook potato.",
-    "id": "n6"
-  },
-  {
-    "content": "Remove potato from pot.",
-    "id": "n7"
-  },
-  {
-    "content": "Peel potato.",
-    "id": "n8"
-  },
-  {
-    "content": "Eat potato.",
-    "id": "n9"
-  }
-]
+{
+  "todoNotes": [
+    {
+      "content": "Find potato.",
+      "id": "n1"
+    },
+    {
+      "content": "Find pot.",
+      "id": "n2"
+    },
+    {
+      "content": "Fill pot with water.",
+      "id": "n3"
+    },
+    {
+      "content": "Boil water in pot.",
+      "id": "n4"
+    },
+    {
+      "content": "Add potato to water.",
+      "id": "n5"
+    },
+    {
+      "content": "Cook potato.",
+      "id": "n6"
+    },
+    {
+      "content": "Remove potato from pot.",
+      "id": "n7"
+    },
+    {
+      "content": "Peel potato.",
+      "id": "n8"
+    },
+    {
+      "content": "Eat potato.",
+      "id": "n9"
+    }
+  ]
 }
