@@ -1,5 +1,9 @@
 image: node:latest
 
+services:
+  - name: mongo:latest
+    command: ["mongod --dbpath=src/app_server/mongodb/data --nojournal"]
+
 stages:
   - install
   - test
