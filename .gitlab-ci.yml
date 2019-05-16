@@ -21,7 +21,8 @@ install_dependencies:
 
 testing:
   stage: test
-  services: mongo:latest
+  services:
+    - mongo:latest
   tags:
     - "main"
   script:
