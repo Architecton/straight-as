@@ -1,8 +1,5 @@
 image: node:latest
 
-services:
-  - name: mongo:latest
-
 stages:
   - install
   - test
@@ -24,10 +21,10 @@ install_dependencies:
 
 testing:
   stage: test
+  services: mongo:latest
   tags:
     - "main"
   script:
-    - mongod --dbpath=src/app_server/mongodb/data --nojournal
     - npm test
 
 heroku:
