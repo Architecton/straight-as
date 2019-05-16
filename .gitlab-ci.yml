@@ -2,7 +2,6 @@ image: node:latest
 
 services:
   - name: mongo:latest
-    command: ["mongod --dbpath=src/app_server/mongodb/data --nojournal"]
 
 stages:
   - install
@@ -27,7 +26,9 @@ testing:
   stage: test
   tags:
     - "main"
-  script: npm test
+  script:
+    - mongod --dbpath=src/app_server/mongodb/data --nojournal
+    - npm test
 
 heroku:
   stage: deploy
