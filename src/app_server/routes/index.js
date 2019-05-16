@@ -1,30 +1,36 @@
 var express = require('express');
 var router = express.Router();
-var ctrlMain = require('../controllers/main');
-var ctrlService = require('../controllers/service');
 var indexCtrl = require('../controllers/indexCtrl');
+var loginCtrl = require("../controllers/loginCtrl");
+var logoutCtrl = require("../controllers/logoutCtrl");
+var foodCtrl = require("../controllers/foodCtrl");
+var busCtrl = require("../controllers/busCtrl");
+var eventCtrl = require("../controllers/eventCtrl");
+var signupCtrl = require("../controllers/signupCtrl");
 
 /* GET home page. */
 router.get('/', indexCtrl.index);
 
-router.get('/login', ctrlMain.login);
+router.get('/login', loginCtrl.login);
 
-router.post('/login', ctrlService.login);
+router.post('/login', loginCtrl.loginPost);
 
-router.get('/logout', ctrlMain.logout);
+router.get('/logout', logoutCtrl.logout);
 
-router.get('/food', ctrlMain.food);
+router.get('/food', foodCtrl.food);
 
-router.get('/bus', ctrlMain.bus);
+router.get('/bus', busCtrl.bus);
 
-router.post('/bus', ctrlService.bus);
+router.post('/bus', busCtrl.busPost);
 
-router.get('/events', ctrlMain.events);
+router.get('/events', eventCtrl.events);
 
-router.get('/change_password', ctrlMain.change_password);
+router.get('/change_password', signupCtrl.change_password);
 
-router.get('/signup', ctrlMain.signup);
+router.post('/change_password', signupCtrl.change_passwordPost);
 
-router.post('/signup', ctrlService.signup);
+router.get('/signup', signupCtrl.signup);
+
+router.post('/signup', signupCtrl.signupPost);
 
 module.exports = router;

@@ -45,12 +45,7 @@ module.exports.events = function(req, res) {
 }
 
 /* POST for new user */
-module.exports.signup = function(req, res) {
 
-    console.log(req.fields);
-
-    res.render('signup', null);
-}
 
 /* GET food page */
 module.exports.food = function(req, res) {
@@ -58,9 +53,4 @@ module.exports.food = function(req, res) {
 }
 
 /* GET bus page */
-module.exports.bus = function(req, res) {
 
-    console.log(req.fields);
-
-    res.render('bus', {user: userData, buses: busData});
-}

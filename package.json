@@ -16,7 +16,6 @@
     "http-errors": "latest",
     "mongoose": "latest",
     "morgan": "latest",
-    "express-formidable": "latest",
     "body-parser": "latest",
     "passport": "latest",
     "pug": "latest",
@@ -27,7 +26,8 @@
     "passport-local": "latest",
     "express-jwt": "latest",
     "nodemailer": "latest",
-    "request": "latest"
+    "request": "latest",
+    "chai": "latest"
   },
   "devDependencies": {
     "mocha": "latest",

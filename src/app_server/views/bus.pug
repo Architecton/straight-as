@@ -5,7 +5,7 @@ block content
         .card-header
             | Search for bus arrivals:
         .card-body
-            form#bus-arrivals-form
+            form#bus-arrivals-form(action='/bus' method='post')
                 .form-group
                     label(for='bus-stop-id') Bus stop number or name:
                     input#bus-stop-id.form-control(type='text' name="id")
