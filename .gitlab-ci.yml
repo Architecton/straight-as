@@ -9,11 +9,6 @@ cache:
   paths:
     - node_modules/
 
-artifacts:
-  paths:
-    - node_modules/
-  expire_in: 1h
-
 install_dependencies:
   stage: install
   tags:
@@ -23,6 +18,7 @@ install_dependencies:
   artifacts:
     paths:
       - node_modules/
+    expire_in: 30 min
 
 testing:
   stage: test
