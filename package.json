@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Bogdej",
   "main": "src/streznik.js",
+  "engines": {
+    "npm": "latest",
+    "node": "latest"
+  },
   "scripts": {
     "start": "node src/bin/www",
     "test": "mocha --exit"
