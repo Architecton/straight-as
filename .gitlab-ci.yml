@@ -26,9 +26,12 @@ install_dependencies:
 
 testing:
   stage: test
+  services:
+    - mongo:latest
   tags:
     - "main"
-  script: npm test
+  script:
+    - npm test
 
 heroku:
   stage: deploy
