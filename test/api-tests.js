@@ -16,7 +16,9 @@ var id_todo_list2;
 var id_todo_list_item;
 var dueDate_prev;
 
-var timetableId;
+var timetable_id;
+var created_table_id;
+var created_event_Id;
 
 // ########################### 1. AUTHENTICATION AND ADMINISTRATION TESTS ########################### 
 
@@ -462,14 +464,14 @@ describe('CRUD operations on timetables', () => {
         expect(bodyObj.length).to.equal(1);
         expect(bodyObj[0]).to.haveOwnProperty('events');
         expect(bodyObj[0]).to.haveOwnProperty('_id');
-        timetableId = bodyObj[0]._id
+        timetable_id = bodyObj[0]._id
         done();
       });
     });
 
     it('User should be able to get specific timetable from database', (done) => {
       request({
-        url : baseUrl + '/users/' + admin_account._id + '/timetables/' + timetableId,
+        url : baseUrl + '/users/' + admin_account._id + '/timetables/' + timetable_id,
         headers: {
           'Authorization' : 'Bearer ' + admin_jwt_token
         },
@@ -484,7 +486,7 @@ describe('CRUD operations on timetables', () => {
 
     it('User should be able to delete their timetable from the database', (done) => {
       request({
-        url: baseUrl + '/users/' + admin_account._id + '/timetables/' + timetableId,
+        url: baseUrl + '/users/' + admin_account._id + '/timetables/' + timetable_id,
         headers: {
           'Authorization' : 'Bearer ' + admin_jwt_token
         },
@@ -514,37 +516,146 @@ describe('CRUD operations on timetables', () => {
 
   describe('Users should be able to manage items on their timetables', () => {
     it('There should be a single timetable in the database after adding it', (done) => {
-      done();
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/timetables',
+        headers: {
+          'Authorization': 'Bearer ' + admin_jwt_token
+        },
+        method: 'post'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(201);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj).to.haveOwnProperty('_id');
+        expect(bodyObj).to.haveOwnProperty('events');
+        request({
+          url: baseUrl + '/users/' + admin_account._id + '/timetables',
+          headers: {
+            'Authorization': 'Bearer ' + admin_jwt_token
+          },
+          method: 'get'
+        }, function(error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          const bodyObj = JSON.parse(body);
+          expect(bodyObj.length).to.equal(1);
+          expect(bodyObj[0]).to.haveOwnProperty('_id');
+          created_table_id = bodyObj[0]._id;
+          expect(bodyObj[0]).to.haveOwnProperty('events');
+          done();
+        });
+      })
+    });
+
+    it('There should be no events on the created timetable initially', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/timetables/' + created_table_id,
+        headers: {
+          'Authorization': 'Bearer ' + admin_jwt_token
+        },
+        method: 'get'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj).to.haveOwnProperty('events');
+        expect(bodyObj.events.length).to.equal(0);
+        done();
+      });
+    });
+
+    it('The user should be able to add an event to their timetable', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/timetables/' + created_table_id,
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'post',
+        form: {
+          'description': 'test',
+          'startDate': Date.now(),
+          'endDate': Date.now() + 100000
+        }
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(201);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj).to.haveOwnProperty('_id');
+        created_event_Id = bodyObj._id;
+        expect(bodyObj).to.haveOwnProperty('description');
+        expect(bodyObj).to.haveOwnProperty('startDate');
+        expect(bodyObj).to.haveOwnProperty('endDate');
+        expect(bodyObj.description).to.equal('test');
+        done();
+      });
 
     });
 
-    it('There should be no items on the created timetable initially', (done) => {
-      done();
+    it('User should be able to modify the item on their timetable', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/timetables/' + created_table_id + '/' + created_event_Id,
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'put',
+        form: {
+          'description': 'Apollo',
+          'startDate': Date.now(),
+          'endDate' : Date.now() + 1000000
+        }
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj).to.haveOwnProperty('_id');
+        const id_returned = bodyObj._id;
+        expect(bodyObj).to.haveOwnProperty('description');
+        expect(bodyObj).to.haveOwnProperty('startDate');
+        expect(bodyObj).to.haveOwnProperty('endDate');
+        expect(bodyObj.description).to.equal('Apollo');
+        request({
+          url: baseUrl + '/users/' + admin_account._id + '/timetables/' + created_table_id + '/' + created_event_Id,
+          headers: {
+            'Authorization': 'Bearer ' + admin_jwt_token
+          },
+          method: 'get'
+        }, function(error, response, body) {
+          expect(response.statusCode).to.equal(200); 
+          const bodyObj = JSON.parse(body);
+          expect(bodyObj).to.haveOwnProperty('_id');
+          expect(bodyObj._id).to.equal(id_returned);
+          expect(bodyObj).to.haveOwnProperty('startDate');
+          expect(bodyObj).to.haveOwnProperty('endDate');
+          expect(bodyObj).to.haveOwnProperty('description');
+          expect(bodyObj.description).to.equal('Apollo');
+          done();
+        });
+      });
 
     });
 
-    it('The user should be able to add an item to their timetable', (done) => {
-      done();
-
+    it('The user should be able to delete the item on their timetable.', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/timetables/' + created_table_id + '/' + created_event_Id,
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'delete'
+      }, function(request, response, body) {
+        expect(response.statusCode).to.equal(204);
+        done();
+      })
     });
 
-    it('The user should be able to modify the item on their timetable', (done) => {
-      done();
-
-    });
-
-    it('The user should be able to delete the item on their timetable', (done) => {
-      done();
-
-    });
-
-    it('There should be no items on the timetable after the deletion', (done) => {
-      done();
-
+    it('The deleted event should no longer be on the timetable on the timetabe.', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/timetables/' + created_table_id + '/' + created_event_Id,
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'get'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(404);
+        done();
+      })
     });
   });
-
-})
+});
 
 
 
@@ -585,7 +696,7 @@ describe('Information about users', () => {
       });
 		});
 
-		/*it('User should be able to delete their account.', (done) => {
+		it('User should be able to delete their account.', (done) => {
       request({
         url : baseUrl + '/users/' + admin_account._id,
         headers : {
@@ -596,13 +707,13 @@ describe('Information about users', () => {
         expect(response.statusCode).to.equal(204);
         done();
       });
-		});*/
+		});
 	});
 });
 
 // ##################################################################################################
 
-
+/*
 describe('Database Management', () => {
   it('The database should be empty after nuking it.', (done) => {
     request({
@@ -626,3 +737,4 @@ describe('Database Management', () => {
     });
   });
 });
+*/

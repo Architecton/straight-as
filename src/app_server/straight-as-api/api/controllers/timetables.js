@@ -269,10 +269,10 @@ module.exports.timetableDeleteSelected = function(request, response) {
 
 
 
-// timetableGetItem: get timetable event with specified id from timetable with specified id of user with specified id.
-module.exports.timetableGetItem = function(request, response) {
+// timetableGetEvent: get timetable event with specified id from timetable with specified id of user with specified id.
+module.exports.timetableGetEvent = function(request, response) {
   getLoggedId(request, response, function(request, response, email) {
-    if (!request.params.idUser || !request.params.idTimetable || !request.params.idTimetableItem || request.params.idUser != email) {
+    if (!request.params.idUser || !request.params.idTimetable || !request.params.idTimetableEvent || request.params.idUser != email) {
       getJsonResponse(response, 400, {
           "message":"Bad request parameters"
       });
@@ -298,9 +298,9 @@ module.exports.timetableGetItem = function(request, response) {
               });
               return;
             }
-            var timetableItem = user.timetables.id(request.params.idTimetable).events.id(request.params.idTimetableItem);
-            if (timetableItem) {
-              getJsonResponse(response, 200, timetableItem)
+            var timetableEvent = user.timetables.id(request.params.idTimetable).events.id(request.params.idTimetableEvent);
+            if (timetableEvent) {
+              getJsonResponse(response, 200, timetableEvent);
             } else {
               getJsonResponse(response, 404, {
                 "message" : "Cannot find specified timetable event."
@@ -315,8 +315,8 @@ module.exports.timetableGetItem = function(request, response) {
   });
 }
 
-// timetableAddItem: add event to timetable  with specified id of user with specified id
-module.exports.timetableAddItem = function(request, response) {
+// timetableAddEvent: add event to timetable with specified id of user with specified id
+module.exports.timetableAddEvent = function(request, response) {
   getLoggedId(request, response, function(request, response, email) {
     if (!request.params.idUser || !request.params.idTimetable || request.params.idUser != email) {
       getJsonResponse(response, 400, {
@@ -338,12 +338,19 @@ module.exports.timetableAddItem = function(request, response) {
               if (request.body.description && request.body.startDate 
 					  && request.body.endDate && !isNaN(request.body.startDate) 
 					  && !isNaN(request.body.endDate)) {
-                var newTimetableItem = {
+                var newTimetableEvent = {
                   "description" : request.body.description,
                   "startDate" : request.body.startDate,
                   "endDate" : request.body.endDate
                 }
-                user.timetables.id(request.params.idTimetable).events.push(newTimetableItem)
+                if (user.timetables.id(request.params.idTimetable)) {
+                  user.timetables.id(request.params.idTimetable).events.push(newTimetableEvent);
+                } else {
+                  getJsonResponse(response, 404, {
+                    'message' : 'Timetable not found.'
+                  });
+                  return;
+                }
                 user.save(function(error, user) {
                   if (error) {
                     getJsonResponse(response, 500, error);
@@ -364,11 +371,11 @@ module.exports.timetableAddItem = function(request, response) {
 
 
 
-// timetableDeleteItem: delete timetable event with specified id from timetable with specified id of user with specified id
-module.exports.timetableDeleteItem = function(request, response) {
+// timetableDeleteEvent: delete timetable event with specified id from timetable with specified id of user with specified id
+module.exports.timetableDeleteEvent = function(request, response) {
   getLoggedId(request, response, function(request, response, email) {
     if (!request.params.idUser || !request.params.idTimetable || 
-      !request.params.idTimetableItem || request.params.idUser != email) {
+      !request.params.idTimetableEvent || request.params.idUser != email) {
       getJsonResponse(response, 400, {
         "message" : "bad request parameters"
       });
@@ -396,8 +403,8 @@ module.exports.timetableDeleteItem = function(request, response) {
                   });
                   return;
                 }
-                if (currentTimetable.events.id(request.params.idTimetableItem)) {
-                  currentTimetable.events.id(request.params.idTimetableItem).remove();
+                if (currentTimetable.events.id(request.params.idTimetableEvent)) {
+                  currentTimetable.events.id(request.params.idTimetableEvent).remove();
                   user.save(function(error) {
                     if (error) {
                       getJsonResponse(response, 500, error); 
@@ -429,9 +436,9 @@ module.exports.timetableDeleteItem = function(request, response) {
 // timetableUpdateSelected: update timetable event with specified id of timetable with specified timetable ID of user with specified id
 module.exports.timetableUpdateSelected = function(request, response) {
   getLoggedId(request, response, function(request, response, email) {
-    // If request parameters do not include idUser or idTimetableItem or if idUser does not match email in JWT
+    // If request parameters do not include idUser or idTimetableEvent or if idUser does not match email in JWT
     if (!request.params.idUser || !request.params.idTimetable 
-			|| !request.params.idTimetableItem || request.params.idUser != email) {
+			|| !request.params.idTimetableEvent || request.params.idUser != email) {
       getJsonResponse(response, 400, {
         "message":"Bad request parameters"
       });
@@ -465,16 +472,16 @@ module.exports.timetableUpdateSelected = function(request, response) {
                 });
                 return;
               }
-              var currentTimetableItem = user.timetables.id(request.params.idTimetable).events.id(request.params.idTimetableItem); 
-              if (!currentTimetableItem) {
+              var currentTimetableEvent = user.timetables.id(request.params.idTimetable).events.id(request.params.idTimetableEvent); 
+              if (!currentTimetableEvent) {
                 getJsonResponse(response, 404, {
                   "message": "Cannot find event on timetable."
                 });
               } else {
                 if (!isNaN(request.body.startDate && !isNaN(request.body.endDate))) {
-                  currentTodoListItem.description = request.body.description;
-                  currentTodoListItem.startDate = request.body.startDate;
-                  currentTodoListItem.endDate = request.body.endDate;
+                  currentTimetableEvent.description = request.body.description;
+                  currentTimetableEvent.startDate = request.body.startDate;
+                  currentTimetableEvent.endDate = request.body.endDate;
                 } else {
                   getJsonResponse(response, 400, {
                     "message": "Invalid parameters."
@@ -485,7 +492,7 @@ module.exports.timetableUpdateSelected = function(request, response) {
                   if (error) {
                     getJsonResponse(response, 400, error);
                   } else {
-                    getJsonResponse(response, 200, user.timetables.id(request.params.idTimetable).events.id(request.params.idTimetableItem));
+                    getJsonResponse(response, 200, user.timetables.id(request.params.idTimetable).events.id(request.params.idTimetableEvent));
                   }
                 });
               }

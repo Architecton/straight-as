@@ -27,7 +27,8 @@ var administrativeMessageSchema = new mongoose.Schema({
 // Schema representing an event on the calendar
 var eventSchema = new mongoose.Schema({
   description: {type: String, required: true},           // event's description
-  date: {type: Date, "default": Date.now()}              // date of the event
+  startDate: {type: Date, "default": Date.now()},        // start date of the event
+  endDate: {type: Date, "default": Date.now()}           // end date of the event
 });
 
 

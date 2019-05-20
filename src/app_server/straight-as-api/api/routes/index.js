@@ -30,11 +30,15 @@ router.delete('/users/:idUser/todolists/:idTodoList/:idTodoListItem', authentica
 router.post('/users/:idUser/todolists/:idTodoList/:idTodoListItem/status', authentication, ctrlTodoLists.todoListItemSetCompletion)  // TESTED (14.5.2019) DOC
 
 // Controllers for working with timetables
-router.get('/timetables', authentication, ctrlTimetables.timetableGetAll);
-router.post('/users/:idUser/timetables', authentication, ctrlTimetables.timetableCreate);
-router.get('/users/:idUser/timetables', authentication, ctrlTimetables.timetabeGetUsersTimetables);
-router.get('/users/:idUser/timetables/:idTimetable', authentication, ctrlTimetables.timetableGetSelected);
-router.delete('/users/:idUser/timetables/:idTimetable', authentication, ctrlTimetables.timetableDeleteSelected);
+router.get('/timetables', authentication, ctrlTimetables.timetableGetAll); 											// TESTED (20.5.2019)
+router.post('/users/:idUser/timetables', authentication, ctrlTimetables.timetableCreate);							// TESTED (20.5.2019)
+router.get('/users/:idUser/timetables', authentication, ctrlTimetables.timetabeGetUsersTimetables); 				// TESTED (20.5.2019)
+router.get('/users/:idUser/timetables/:idTimetable', authentication, ctrlTimetables.timetableGetSelected);  		// TESTED (20.5.2019)
+router.delete('/users/:idUser/timetables/:idTimetable', authentication, ctrlTimetables.timetableDeleteSelected);	// TESTED (20.5.2019)
+router.post('/users/:idUser/timetables/:idTimetable', authentication, ctrlTimetables.timetableAddEvent);            // TESTED (20.5.2019)
+router.put('/users/:idUser/timetables/:idTimetable/:idTimetableEvent', authentication, ctrlTimetables.timetableUpdateSelected);
+router.get('/users/:idUser/timetables/:idTimetable/:idTimetableEvent', authentication, ctrlTimetables.timetableGetEvent);
+router.delete('/users/:idUser/timetables/:idTimetable/:idTimetableEvent', authentication, ctrlTimetables.timetableDeleteEvent);
 
 // Controllers for authentication
 router.post('/users', ctrlAuthentication.authSignUp);                                                       // TESTED (13.5.2019) DOC
