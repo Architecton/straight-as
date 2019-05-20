@@ -10,6 +10,7 @@ var authentication = jwt({
 // controller modules
 var ctrlUsers = require('../controllers/users');
 var ctrlTodoLists = require('../controllers/todoLists');
+var ctrlTimetables = require('../controllers/timetables');
 var ctrlAuthentication = require('../controllers/authentication');
 
 
@@ -28,14 +29,19 @@ router.get('/users/:idUser/todolists/:idTodoList/:idTodoListItem', authenticatio
 router.delete('/users/:idUser/todolists/:idTodoList/:idTodoListItem', authentication, ctrlTodoLists.todoListDeleteItem)         // TESTED (14.5.2019) DOC
 router.post('/users/:idUser/todolists/:idTodoList/:idTodoListItem/status', authentication, ctrlTodoLists.todoListItemSetCompletion)  // TESTED (14.5.2019) DOC
 
-
+// Controllers for working with timetables
+router.get('/timetables', authentication, ctrlTimetables.timetableGetAll);
+router.post('/users/:idUser/timetables', authentication, ctrlTimetables.timetableCreate);
+router.get('/users/:idUser/timetables', authentication, ctrlTimetables.timetabeGetUsersTimetables);
+router.get('/users/:idUser/timetables/:idTimetable', authentication, ctrlTimetables.timetableGetSelected);
+router.delete('/users/:idUser/timetables/:idTimetable', authentication, ctrlTimetables.timetableDeleteSelected);
 
 // Controllers for authentication
 router.post('/users', ctrlAuthentication.authSignUp);                                                       // TESTED (13.5.2019) DOC
 router.post('/users/login', ctrlAuthentication.authLogIn);                                                  // TESTED (13.5.2019) DOC
 router.get('/users/:idUser/:validationCode', ctrlAuthentication.authConfirm);                               // TESTED (13.5.2019) DOC
-router.post('/users/:idUser/admin', authentication, ctrlAuthentication.promoteToAdmin); 					// TESTED (13.5.2019)
-router.post('/users/:idUser/eventadmin', authentication, ctrlAuthentication.promoteToEventAdmin); 			// TESTED (13.5.2019)
+router.post('/users/:idUser/admin', authentication, ctrlAuthentication.promoteToAdmin); 					// TESTED (13.5.2019) DOC
+router.post('/users/:idUser/eventadmin', authentication, ctrlAuthentication.promoteToEventAdmin); 			// TESTED (13.5.2019) DOC
 
 
 // Controlers for working with users

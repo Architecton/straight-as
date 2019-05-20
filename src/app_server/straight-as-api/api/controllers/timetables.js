@@ -103,7 +103,7 @@ var addTimetableToUser = function(request, response, user) {
   } else {
     // Create new timetable.
     var newTimetable = {
-      items: []
+      events: []
     };
     // Add timetable to user's list of timetables.
     user.timetables.push(newTimetable);
@@ -248,7 +248,7 @@ module.exports.timetableDeleteSelected = function(request, response) {
                 "message": "Cannot find timetable."
               });
             } else {
-              user.timetable.id(request.params.idTimetable).remove();
+              user.timetables.id(request.params.idTimetable).remove();
               user.save(function(error) {
                 if (error) {
                   getJsonResponse(response, 500, error);
@@ -269,7 +269,7 @@ module.exports.timetableDeleteSelected = function(request, response) {
 
 
 
-// timetableGetItem: get timetable item with specified id from timetable with specified id of user with specified id.
+// timetableGetItem: get timetable event with specified id from timetable with specified id of user with specified id.
 module.exports.timetableGetItem = function(request, response) {
   getLoggedId(request, response, function(request, response, email) {
     if (!request.params.idUser || !request.params.idTimetable || !request.params.idTimetableItem || request.params.idUser != email) {
@@ -292,18 +292,18 @@ module.exports.timetableGetItem = function(request, response) {
             return;
           }
           if (user.timetables && user.timetables.length > 0) {
-            if (!user.timetables.id(request.params.idTimetable).items) {
+            if (!user.timetables.id(request.params.idTimetable).events) {
               getJsonResponse(response, 404, {
-                "message" : "no items on timetable"
+                "message" : "no events on timetable"
               });
               return;
             }
-            var timetableItem = user.timetables.id(request.params.idTimetable).items.id(request.params.idTimetableItem);
+            var timetableItem = user.timetables.id(request.params.idTimetable).events.id(request.params.idTimetableItem);
             if (timetableItem) {
               getJsonResponse(response, 200, timetableItem)
             } else {
               getJsonResponse(response, 404, {
-                "message" : "Cannot find specified timetable item."
+                "message" : "Cannot find specified timetable event."
               });
             }
           } else {
@@ -315,7 +315,7 @@ module.exports.timetableGetItem = function(request, response) {
   });
 }
 
-// timetableAddItem: add item to timetable  with specified id of user with specified id
+// timetableAddItem: add event to timetable  with specified id of user with specified id
 module.exports.timetableAddItem = function(request, response) {
   getLoggedId(request, response, function(request, response, email) {
     if (!request.params.idUser || !request.params.idTimetable || request.params.idUser != email) {
@@ -343,12 +343,12 @@ module.exports.timetableAddItem = function(request, response) {
                   "startDate" : request.body.startDate,
                   "endDate" : request.body.endDate
                 }
-                user.timetables.id(request.params.idTimetable).items.push(newTimetableItem)
+                user.timetables.id(request.params.idTimetable).events.push(newTimetableItem)
                 user.save(function(error, user) {
                   if (error) {
                     getJsonResponse(response, 500, error);
                   } else {
-                    getJsonResponse(response, 201, user.timetables.id(request.params.idTimetable).items.slice(-1)[0]);
+                    getJsonResponse(response, 201, user.timetables.id(request.params.idTimetable).events.slice(-1)[0]);
                   }
                 })
               } else {
@@ -364,7 +364,7 @@ module.exports.timetableAddItem = function(request, response) {
 
 
 
-// timetableDeleteItem: delete timetable item with specified id from timetable with specified id of user with specified id
+// timetableDeleteItem: delete timetable event with specified id from timetable with specified id of user with specified id
 module.exports.timetableDeleteItem = function(request, response) {
   getLoggedId(request, response, function(request, response, email) {
     if (!request.params.idUser || !request.params.idTimetable || 
@@ -390,14 +390,14 @@ module.exports.timetableDeleteItem = function(request, response) {
             if (user.timetables && user.timetables.length > 0) {
               var currentTimetable = user.timetables.id(request.params.idTimetable);
               if (currentTimetable) {
-                if (!currentTimetable.items) {
+                if (!currentTimetable.events) {
                   getJsonResponse(response, 404, {
-                    "message" : "no items found"
+                    "message" : "no events found"
                   });
                   return;
                 }
-                if (currentTimetable.items.id(request.params.idTimetableItem)) {
-                  currentTimetable.items.id(request.params.idTimetableItem).remove();
+                if (currentTimetable.events.id(request.params.idTimetableItem)) {
+                  currentTimetable.events.id(request.params.idTimetableItem).remove();
                   user.save(function(error) {
                     if (error) {
                       getJsonResponse(response, 500, error); 
@@ -407,7 +407,7 @@ module.exports.timetableDeleteItem = function(request, response) {
                   })
                 } else {
                   getJsonResponse(response, 404, {
-                    "message" : "timetable item with specified id not found"
+                    "message" : "timetable event with specified id not found"
                   });
                 }
               } else {
@@ -426,7 +426,7 @@ module.exports.timetableDeleteItem = function(request, response) {
 }
 
 
-// timetableUpdateSelected: update timetable item with specified id of timetable with specified timetable ID of user with specified id
+// timetableUpdateSelected: update timetable event with specified id of timetable with specified timetable ID of user with specified id
 module.exports.timetableUpdateSelected = function(request, response) {
   getLoggedId(request, response, function(request, response, email) {
     // If request parameters do not include idUser or idTimetableItem or if idUser does not match email in JWT
@@ -459,16 +459,16 @@ module.exports.timetableUpdateSelected = function(request, response) {
                 "message": "Cannot find timetable."
               });
             } else {
-              if (!currentTimetable.items) {
+              if (!currentTimetable.events) {
                 getJsonResponse(response, 404, {
-                  "message" : "no items found on timetable"
+                  "message" : "no events found on timetable"
                 });
                 return;
               }
-              var currentTimetableItem = user.timetables.id(request.params.idTimetable).items.id(request.params.idTimetableItem); 
+              var currentTimetableItem = user.timetables.id(request.params.idTimetable).events.id(request.params.idTimetableItem); 
               if (!currentTimetableItem) {
                 getJsonResponse(response, 404, {
-                  "message": "Cannot find item on timetable."
+                  "message": "Cannot find event on timetable."
                 });
               } else {
                 if (!isNaN(request.body.startDate && !isNaN(request.body.endDate))) {
@@ -485,7 +485,7 @@ module.exports.timetableUpdateSelected = function(request, response) {
                   if (error) {
                     getJsonResponse(response, 400, error);
                   } else {
-                    getJsonResponse(response, 200, user.timetables.id(request.params.idTimetable).items.id(request.params.idTimetableItem));
+                    getJsonResponse(response, 200, user.timetables.id(request.params.idTimetable).events.id(request.params.idTimetableItem));
                   }
                 });
               }

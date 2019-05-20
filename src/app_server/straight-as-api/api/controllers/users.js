@@ -79,7 +79,6 @@ module.exports.userGetAll = function(request, response) {
           getJsonResponse(response, 500, error);
           return;
         }
-		console.log(user.admin);
         if (user.admin == true) {
           // Return all users
           User
