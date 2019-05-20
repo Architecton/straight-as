@@ -806,6 +806,10 @@
           "admin" : {
             "type" : "boolean",
             "description" : "true if administrator else false"
+          },
+          "eventAdmin" : {
+            "type" : "boolean",
+            "description" : "true if event administrator else false"
           }
         }
       },
