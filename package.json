@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "node src/bin/www",
-    "test": "mocha --exit"
+    "test": "mocha --exit",
+	"test-api" : "xeyes"
   },
   "author": "Jure Vreček <jv9074@student.uni-lj.si>",
   "license": "ISC",
