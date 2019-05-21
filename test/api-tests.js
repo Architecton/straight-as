@@ -20,6 +20,8 @@ var timetable_id;
 var created_table_id;
 var created_event_Id;
 
+var created_calendar_id;
+
 // ########################### 1. AUTHENTICATION AND ADMINISTRATION TESTS ########################### 
 
 describe('Log In', () => {
@@ -514,7 +516,7 @@ describe('CRUD operations on timetables', () => {
   });
 
 
-  describe('Users should be able to manage items on their timetables', () => {
+  describe('Users should be able to manage events on their timetables', () => {
     it('There should be a single timetable in the database after adding it', (done) => {
       request({
         url: baseUrl + '/users/' + admin_account._id + '/timetables',
@@ -661,7 +663,285 @@ describe('CRUD operations on timetables', () => {
 
 // ##################################################################################################
 
-// ### 3. USERS #####################################################################################
+// ### 4. CALENDARS  ################################################################################
+
+describe('CRUD operations on calendars', () => {
+  describe('Users should be able to manage their calendars', () => {
+    it('There should be no calendars initially.', (done) => {
+      request({
+        url: baseUrl + '/calendars',
+        headers: {
+          'Authorization': 'Bearer ' + admin_jwt_token
+        },
+        method: 'get'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj.length).to.equal(0);
+        done();
+      })
+    });
+
+    it('User should be able to add a calendar.', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/calendars',
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'post'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(201);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj).to.haveOwnProperty('_id');
+        expect(bodyObj).to.haveOwnProperty('events');
+        done();
+      });
+    });
+
+    it('There should be a single calendar after adding it.', (done) => {
+      request({
+        url: baseUrl + '/calendars',
+        headers : {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'get'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj.length).to.equal(1);
+        expect(bodyObj[0]).to.haveOwnProperty('_id');
+        created_calendar_id = bodyObj[0]._id;
+        expect(bodyObj[0]).to.haveOwnProperty('events');
+        done();
+      });
+    });
+
+    it('Users should be able to access a list of all their calendars', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/calendars',
+        headers : {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method : 'get'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj.length).to.equal(1);
+        expect(bodyObj[0]).to.haveOwnProperty('id');
+        expect(bodyObj[0]).to.haveOwnProperty('events');
+        done();
+      });
+    });
+
+    it('Users should be able to acces a calendar by its id', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/calendars/' + created_calendar_id,
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'get'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj).to.haveOwnProperty('_id');
+        expect(bodyObj).to.haveOwnProperty('events');
+        done();
+      });
+    });
+
+    it('Users should be able to delete their calendars', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/calendars/' + created_calendar_id,
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'delete'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(204);
+        done();
+      })
+    });
+
+    it('There should be no calendars in the database after the deletion', (done) => {
+      request({
+        url: baseUrl + '/calendars',
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'get'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj.length).to.equal(0);
+        done();
+      });
+    });
+  });
+
+  describe('CRUD operations on events on calendars', () => {
+    it('There should be a single calendar in the database after adding it.', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/calendars',
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'post'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(201);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj).to.haveOwnProperty('_id');
+        created_calendar_id = bodyObj._id;
+        expect(bodyObj).to.haveOwnProperty('events');
+        request({
+          url: baseUrl + '/calendars',
+          headers: {
+            'Authorization' : 'Bearer ' + admin_jwt_token
+          },
+          method: 'get',
+        }, function(error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          const bodyObj = JSON.parse(body);
+          expect(bodyObj.length).to.equal(1);
+          expect(bodyObj[0]).to.haveOwnProperty('_id');
+          expect(bodyObj[0]._id).to.equal(created_calendar_id);
+          expect(bodyObj[1]).to.haveOwnProperty('events');
+        });
+      })
+    });
+
+    it('There should be no events on the created calendar initially', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/calendars/' + created_calendar_id,
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'get'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        const bodyObj = JSON.parse(body);
+        expect(body).to.haveOwnProperty('_id');
+        expect(body).to.haveOwnProperty('events');
+        expect(body.events.length).to.equal(0);
+      });
+    });
+
+    it('Users should be able to add an event on their calendars', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/calendars/' + created_calendar_id,
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'post',
+        form: {
+          'description': 'test',
+          'startDate': Date.now(),
+          'endDate': Date.now() + 10000
+        }
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(201);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj).to.haveOwnProperty('_id');
+        created_event_id = bodyObj._id;
+        expect(bodyObj).to.haveOwnProperty('description');
+        expect(bodyObj).to.haveOwnProperty('startDate');
+        expect(bodyObj).to.haveOwnProperty('endDate');
+        done();
+      });
+    });
+
+    it('User should be able to get all events from a specific calendar.', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/calendars/' + created_calendar_id,
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'get0'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj).to.haveOwnProperty('events');
+        expect(bodyObj.events.length).to.equal(1);
+        expect(bodyObj.events[0]).to.haveOwnProperty('_id');
+        expect(bodyObj.events[0]).to.haveOwnProperty('startDate');
+        expect(bodyObj.events[0]).to.haveOwnProperty('endDate');
+        expect(bodyObj.events[0]).to.haveOwnProperty('description');
+        done();
+      });
+    });
+
+    it('Users should be able to retrieve a specific events from their calendar.', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/calendars/' + created_calendar_id + '/' + created_event_id,
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'get'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj).to.haveOwnProperty('_id');
+        expect(bodyObj).to.haveOwnProperty('description');
+        expect(bodyObj).to.haveOwnProperty('startDate');
+        expect(bodyObj).to.haveOwnProperty('endDate');
+        done();
+      });
+    });
+
+    it('Users should be able to modify events on their calendars.', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/calendars/' + created_calendar_id + '/' + created_event_id,
+        headers: {
+          'Authorization' : 'Bearer ' + admin_jwt_token
+        },
+        method: 'put',
+        form: {
+          'description': 'Zeus',
+          'startDate': Date.now(),
+          'endDate': Date.now() + 10000
+        }
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj).to.haveOwnProperty('_id');
+        expect(bodyObj).to.haveOwnProperty('startDate');
+        expect(bodyObj).to.haveOwnProperty('endDate');
+        expect(bodyObj).to.haveOwnProperty('description');
+        done();
+      });
+    });
+
+    it('Users should be able to delete events from their calendars.', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/calendars/' + created_calendar_id + '/' + created_event_id,
+        headers: {
+          'Authorization': 'Authorization ' + admin_jwt_token
+        },
+        method: 'delete'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(204);
+      });
+    });
+
+    it('There should be no events on the calendar after the deletion.', (done) => {
+      request({
+        url: baseUrl + '/users/' + admin_account._id + '/calendars/' + created_calendar_id,
+        headers: {
+          'Authorization': 'Bearer ' + admin_jwt_token
+        },
+        method: 'get'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        const bodyObj = JSON.parse(body);
+        expect(body).to.haveOwnProperty('events')
+        expect(body.events.length).to.equal(0);
+        done();
+      });
+    });
+  });
+});
+
+
+// ### 5. USERS #####################################################################################
 
 describe('Information about users', () => {
 	describe('Users should be able to see information about their account and should be able to delete their accounts.', () => {

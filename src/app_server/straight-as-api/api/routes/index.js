@@ -36,9 +36,11 @@ router.get('/users/:idUser/timetables', authentication, ctrlTimetables.timetabeG
 router.get('/users/:idUser/timetables/:idTimetable', authentication, ctrlTimetables.timetableGetSelected);  		// TESTED (20.5.2019)
 router.delete('/users/:idUser/timetables/:idTimetable', authentication, ctrlTimetables.timetableDeleteSelected);	// TESTED (20.5.2019)
 router.post('/users/:idUser/timetables/:idTimetable', authentication, ctrlTimetables.timetableAddEvent);            // TESTED (20.5.2019)
-router.put('/users/:idUser/timetables/:idTimetable/:idTimetableEvent', authentication, ctrlTimetables.timetableUpdateSelected);
-router.get('/users/:idUser/timetables/:idTimetable/:idTimetableEvent', authentication, ctrlTimetables.timetableGetEvent);
-router.delete('/users/:idUser/timetables/:idTimetable/:idTimetableEvent', authentication, ctrlTimetables.timetableDeleteEvent);
+router.put('/users/:idUser/timetables/:idTimetable/:idTimetableEvent', authentication, ctrlTimetables.timetableUpdateSelected);  // TESTED (20.5.2019)
+router.get('/users/:idUser/timetables/:idTimetable/:idTimetableEvent', authentication, ctrlTimetables.timetableGetEvent);  // TESTED (20.5.2019)
+router.delete('/users/:idUser/timetables/:idTimetable/:idTimetableEvent', authentication, ctrlTimetables.timetableDeleteEvent);  // TESTED (20.5.2019)
+
+
 
 // Controllers for authentication
 router.post('/users', ctrlAuthentication.authSignUp);                                                       // TESTED (13.5.2019) DOC
