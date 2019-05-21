@@ -47,7 +47,7 @@ router.post('/users/:idUser/calendars', authentication, ctrlCalendars.calendarCr
 router.get('/users/:idUser/calendars', authentication, ctrlCalendars.calendarGetUsersCalendars);
 router.get('/users/:idUser/calendars/:idCalendar', authentication, ctrlCalendars.calendarGetSelected);
 router.delete('/users/:idUser/calendars/:idCalendar', authentication, ctrlCalendars.calendarDeleteSelected);
-router.post('/users/:idUser/calendars/:idCalendars', authentication, ctrlCalendars.calendarAddEvent);
+router.post('/users/:idUser/calendars/:idCalendar', authentication, ctrlCalendars.calendarAddEvent);
 router.put('/users/:idUser/calendars/:idCalendar/:idCalendarEvent', authentication, ctrlCalendars.calendarUpdateSelected);
 router.get('/users/:idUser/calendars/:idCalendar/:idCalendarEvent', authentication, ctrlCalendars.calendarGetEvent);
 router.delete('/users/:idUser/calendars/:idCalendar/:idCalendarEvent', authentication, ctrlCalendars.calendarDeleteEvent);

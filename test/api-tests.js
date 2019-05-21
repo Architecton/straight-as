@@ -727,13 +727,14 @@ describe('CRUD operations on calendars', () => {
         expect(response.statusCode).to.equal(200);
         const bodyObj = JSON.parse(body);
         expect(bodyObj.length).to.equal(1);
-        expect(bodyObj[0]).to.haveOwnProperty('id');
+        expect(bodyObj[0]).to.haveOwnProperty('_id');
         expect(bodyObj[0]).to.haveOwnProperty('events');
         done();
       });
     });
 
     it('Users should be able to acces a calendar by its id', (done) => {
+      console.log('AMEEN ' + created_calendar_id);
       request({
         url: baseUrl + '/users/' + admin_account._id + '/calendars/' + created_calendar_id,
         headers: {
@@ -804,7 +805,8 @@ describe('CRUD operations on calendars', () => {
           expect(bodyObj.length).to.equal(1);
           expect(bodyObj[0]).to.haveOwnProperty('_id');
           expect(bodyObj[0]._id).to.equal(created_calendar_id);
-          expect(bodyObj[1]).to.haveOwnProperty('events');
+          expect(bodyObj[0]).to.haveOwnProperty('events');
+	        done();
         });
       })
     });
@@ -819,9 +821,10 @@ describe('CRUD operations on calendars', () => {
       }, function(error, response, body) {
         expect(response.statusCode).to.equal(200);
         const bodyObj = JSON.parse(body);
-        expect(body).to.haveOwnProperty('_id');
-        expect(body).to.haveOwnProperty('events');
-        expect(body.events.length).to.equal(0);
+        expect(bodyObj).to.haveOwnProperty('_id');
+        expect(bodyObj).to.haveOwnProperty('events');
+        expect(bodyObj.events.length).to.equal(0);
+        done();
       });
     });
 
@@ -855,7 +858,7 @@ describe('CRUD operations on calendars', () => {
         headers: {
           'Authorization' : 'Bearer ' + admin_jwt_token
         },
-        method: 'get0'
+        method: 'get'
       }, function(error, response, body) {
         expect(response.statusCode).to.equal(200);
         const bodyObj = JSON.parse(body);
@@ -914,11 +917,12 @@ describe('CRUD operations on calendars', () => {
       request({
         url: baseUrl + '/users/' + admin_account._id + '/calendars/' + created_calendar_id + '/' + created_event_id,
         headers: {
-          'Authorization': 'Authorization ' + admin_jwt_token
+          'Authorization': 'Bearer ' + admin_jwt_token
         },
         method: 'delete'
       }, function(error, response, body) {
         expect(response.statusCode).to.equal(204);
+        done();
       });
     });
 
@@ -932,8 +936,8 @@ describe('CRUD operations on calendars', () => {
       }, function(error, response, body) {
         expect(response.statusCode).to.equal(200);
         const bodyObj = JSON.parse(body);
-        expect(body).to.haveOwnProperty('events')
-        expect(body.events.length).to.equal(0);
+        expect(bodyObj).to.haveOwnProperty('events')
+        expect(bodyObj.events.length).to.equal(0);
         done();
       });
     });
