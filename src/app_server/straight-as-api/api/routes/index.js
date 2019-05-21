@@ -11,6 +11,7 @@ var authentication = jwt({
 var ctrlUsers = require('../controllers/users');
 var ctrlTodoLists = require('../controllers/todoLists');
 var ctrlTimetables = require('../controllers/timetables');
+var ctrlCalendars = require('../controllers/calendars');
 var ctrlAuthentication = require('../controllers/authentication');
 
 
@@ -39,6 +40,17 @@ router.post('/users/:idUser/timetables/:idTimetable', authentication, ctrlTimeta
 router.put('/users/:idUser/timetables/:idTimetable/:idTimetableEvent', authentication, ctrlTimetables.timetableUpdateSelected);  // TESTED (20.5.2019)
 router.get('/users/:idUser/timetables/:idTimetable/:idTimetableEvent', authentication, ctrlTimetables.timetableGetEvent);  // TESTED (20.5.2019)
 router.delete('/users/:idUser/timetables/:idTimetable/:idTimetableEvent', authentication, ctrlTimetables.timetableDeleteEvent);  // TESTED (20.5.2019)
+
+// Controllers for working with calendars
+router.get('/calendars', authentication, ctrlCalendars.calendarGetAll);
+router.post('/users/:idUser/calendars', authentication, ctrlCalendars.calendarCreate);
+router.get('/users/:idUser/calendars', authentication, ctrlCalendars.calendarGetUsersCalendars);
+router.get('/users/:idUser/calendars/:idCalendar', authentication, ctrlCalendars.calendarGetSelected);
+router.delete('/users/:idUser/calendars/:idCalendar', authentication, ctrlCalendars.calendarDeleteSelected);
+router.post('/users/:idUser/calendars/:idCalendars', authentication, ctrlCalendars.calendarAddEvent);
+router.put('/users/:idUser/calendars/:idCalendar/:idCalendarEvent', authentication, ctrlCalendars.calendarUpdateSelected);
+router.get('/users/:idUser/calendars/:idCalendar/:idCalendarEvent', authentication, ctrlCalendars.calendarGetEvent);
+router.delete('/users/:idUser/calendars/:idCalendar/:idCalendarEvent', authentication, ctrlCalendars.calendarDeleteEvent);
 
 
 
