@@ -77,7 +77,7 @@ module.exports.timetableCreate = function(request, response) {
         .exec(
           function(error, user) {
             if (error) {
-              getJsonResponse(response, 400, error);
+              getJsonResponse(response, 500, error);
             } else {
               addTimetableToUser(request, response, user);
             }
@@ -335,14 +335,22 @@ module.exports.timetableAddEvent = function(request, response) {
               return;
             } 
             if (user.timetables) {
-              if (request.body.description && request.body.startDate 
-					  && request.body.endDate && !isNaN(request.body.startDate) 
-					  && !isNaN(request.body.endDate)) {
+              if (request.body.title 
+                      && request.body.title 
+					  && request.body.day 
+					  && request.body.hour
+					  && request.body.duration
+					  && request.body.color
+                      && !isNaN(request.body.day) 
+                      && !isNaN(request.body.hour) 
+                      && !isNaN(request.body.duration)) {
                 var newTimetableEvent = {
-                  "description" : request.body.description,
-                  "startDate" : request.body.startDate,
-                  "endDate" : request.body.endDate
-                }
+                  "title" : request.body.title,
+                  "day" : request.body.day,
+                  "hour" : request.body.hour,
+                  "duration": request.body.duration,
+                  "color": request.body.color
+                };
                 if (user.timetables.id(request.params.idTimetable)) {
                   user.timetables.id(request.params.idTimetable).events.push(newTimetableEvent);
                 } else {
@@ -478,13 +486,16 @@ module.exports.timetableUpdateSelected = function(request, response) {
                   "message": "Cannot find event on timetable."
                 });
               } else {
-                if (!isNaN(request.body.startDate && !isNaN(request.body.endDate))) {
-                  currentTimetableEvent.description = request.body.description;
-                  currentTimetableEvent.startDate = request.body.startDate;
-                  currentTimetableEvent.endDate = request.body.endDate;
+                if (request.body.title 
+                  && request.body.color
+                  && request.body.duration
+                  && !isNaN(request.body.duration)) {
+                  currentTimetableEvent.title = request.body.title;
+                  currentTimetableEvent.color = request.body.color;
+                  currentTimetableEvent.duration = request.body.duration;
                 } else {
                   getJsonResponse(response, 400, {
-                    "message": "Invalid parameters."
+                    "message": "Bad request parameters."
                   });
                   return;
                 }

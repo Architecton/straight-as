@@ -571,19 +571,23 @@ describe('CRUD operations on timetables', () => {
         },
         method: 'post',
         form: {
-          'description': 'test',
-          'startDate': Date.now(),
-          'endDate': Date.now() + 100000
+          'title': 'test',
+          'day': 1,
+          'hour': 5,
+          'duration': 2,
+          'color': "0xFFFF"
         }
       }, function(error, response, body) {
         expect(response.statusCode).to.equal(201);
         const bodyObj = JSON.parse(body);
         expect(bodyObj).to.haveOwnProperty('_id');
         created_event_Id = bodyObj._id;
-        expect(bodyObj).to.haveOwnProperty('description');
-        expect(bodyObj).to.haveOwnProperty('startDate');
-        expect(bodyObj).to.haveOwnProperty('endDate');
-        expect(bodyObj.description).to.equal('test');
+        expect(bodyObj).to.haveOwnProperty('title');
+        expect(bodyObj).to.haveOwnProperty('day');
+        expect(bodyObj).to.haveOwnProperty('hour');
+        expect(bodyObj).to.haveOwnProperty('duration');
+        expect(bodyObj).to.haveOwnProperty('color');
+        expect(bodyObj.title).to.equal('test');
         done();
       });
 
@@ -597,19 +601,21 @@ describe('CRUD operations on timetables', () => {
         },
         method: 'put',
         form: {
-          'description': 'Apollo',
-          'startDate': Date.now(),
-          'endDate' : Date.now() + 1000000
+          'title': 'Apollo',
+          'color': '0x0000',
+          'duration' : 3
         }
       }, function(error, response, body) {
         expect(response.statusCode).to.equal(200);
         const bodyObj = JSON.parse(body);
         expect(bodyObj).to.haveOwnProperty('_id');
         const id_returned = bodyObj._id;
-        expect(bodyObj).to.haveOwnProperty('description');
-        expect(bodyObj).to.haveOwnProperty('startDate');
-        expect(bodyObj).to.haveOwnProperty('endDate');
-        expect(bodyObj.description).to.equal('Apollo');
+        expect(bodyObj).to.haveOwnProperty('title');
+        expect(bodyObj).to.haveOwnProperty('day');
+        expect(bodyObj).to.haveOwnProperty('hour');
+        expect(bodyObj).to.haveOwnProperty('duration');
+        expect(bodyObj).to.haveOwnProperty('color');
+        expect(bodyObj.title).to.equal('Apollo');
         request({
           url: baseUrl + '/users/' + admin_account._id + '/timetables/' + created_table_id + '/' + created_event_Id,
           headers: {
@@ -621,10 +627,12 @@ describe('CRUD operations on timetables', () => {
           const bodyObj = JSON.parse(body);
           expect(bodyObj).to.haveOwnProperty('_id');
           expect(bodyObj._id).to.equal(id_returned);
-          expect(bodyObj).to.haveOwnProperty('startDate');
-          expect(bodyObj).to.haveOwnProperty('endDate');
-          expect(bodyObj).to.haveOwnProperty('description');
-          expect(bodyObj.description).to.equal('Apollo');
+          expect(bodyObj).to.haveOwnProperty('title');
+          expect(bodyObj).to.haveOwnProperty('day');
+          expect(bodyObj).to.haveOwnProperty('hour');
+          expect(bodyObj).to.haveOwnProperty('duration');
+          expect(bodyObj).to.haveOwnProperty('color');
+          expect(bodyObj.title).to.equal('Apollo');
           done();
         });
       });
@@ -836,18 +844,22 @@ describe('CRUD operations on calendars', () => {
         },
         method: 'post',
         form: {
+          'title': 'test',
           'description': 'test',
-          'startDate': Date.now(),
-          'endDate': Date.now() + 10000
+          'year': 2019,
+          'month': 5,
+          'day': 24,
         }
       }, function(error, response, body) {
         expect(response.statusCode).to.equal(201);
         const bodyObj = JSON.parse(body);
         expect(bodyObj).to.haveOwnProperty('_id');
         created_event_id = bodyObj._id;
+        expect(bodyObj).to.haveOwnProperty('title');
         expect(bodyObj).to.haveOwnProperty('description');
-        expect(bodyObj).to.haveOwnProperty('startDate');
-        expect(bodyObj).to.haveOwnProperty('endDate');
+        expect(bodyObj).to.haveOwnProperty('year');
+        expect(bodyObj).to.haveOwnProperty('month');
+        expect(bodyObj).to.haveOwnProperty('day');
         done();
       });
     });
@@ -865,9 +877,11 @@ describe('CRUD operations on calendars', () => {
         expect(bodyObj).to.haveOwnProperty('events');
         expect(bodyObj.events.length).to.equal(1);
         expect(bodyObj.events[0]).to.haveOwnProperty('_id');
-        expect(bodyObj.events[0]).to.haveOwnProperty('startDate');
-        expect(bodyObj.events[0]).to.haveOwnProperty('endDate');
+        expect(bodyObj.events[0]).to.haveOwnProperty('title');
         expect(bodyObj.events[0]).to.haveOwnProperty('description');
+        expect(bodyObj.events[0]).to.haveOwnProperty('year');
+        expect(bodyObj.events[0]).to.haveOwnProperty('month');
+        expect(bodyObj.events[0]).to.haveOwnProperty('day');
         done();
       });
     });
@@ -883,9 +897,11 @@ describe('CRUD operations on calendars', () => {
         expect(response.statusCode).to.equal(200);
         const bodyObj = JSON.parse(body);
         expect(bodyObj).to.haveOwnProperty('_id');
+        expect(bodyObj).to.haveOwnProperty('title');
         expect(bodyObj).to.haveOwnProperty('description');
-        expect(bodyObj).to.haveOwnProperty('startDate');
-        expect(bodyObj).to.haveOwnProperty('endDate');
+        expect(bodyObj).to.haveOwnProperty('year');
+        expect(bodyObj).to.haveOwnProperty('month');
+        expect(bodyObj).to.haveOwnProperty('day');
         done();
       });
     });
@@ -898,17 +914,21 @@ describe('CRUD operations on calendars', () => {
         },
         method: 'put',
         form: {
+          'title': 'Zeus',
           'description': 'Zeus',
-          'startDate': Date.now(),
-          'endDate': Date.now() + 10000
+          'year': 2030,
+          'month': 6,
+          'day': 2
         }
       }, function(error, response, body) {
         expect(response.statusCode).to.equal(200);
         const bodyObj = JSON.parse(body);
         expect(bodyObj).to.haveOwnProperty('_id');
-        expect(bodyObj).to.haveOwnProperty('startDate');
-        expect(bodyObj).to.haveOwnProperty('endDate');
+        expect(bodyObj).to.haveOwnProperty('title');
         expect(bodyObj).to.haveOwnProperty('description');
+        expect(bodyObj).to.haveOwnProperty('year');
+        expect(bodyObj).to.haveOwnProperty('month');
+        expect(bodyObj).to.haveOwnProperty('day');
         done();
       });
     });

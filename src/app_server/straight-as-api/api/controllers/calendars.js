@@ -335,13 +335,19 @@ module.exports.calendarAddEvent = function(request, response) {
               return;
             } 
             if (user.calendars) {
-              if (request.body.description && request.body.startDate 
-					  && request.body.endDate && !isNaN(request.body.startDate) 
-					  && !isNaN(request.body.endDate)) {
+              if (request.body.title && request.body.description 
+					  && request.body.year 
+                      && request.body.month
+                      && request.body.day
+                      && !isNaN(request.body.year) 
+                      && !isNaN(request.body.month) 
+					  && !isNaN(request.body.day)) {
                 var newCalendarEvent = {
+                  "title" : request.body.title,
                   "description" : request.body.description,
-                  "startDate" : request.body.startDate,
-                  "endDate" : request.body.endDate
+                  "year" : request.body.year,
+                  "month": request.body.month,
+                  "day": request.body.day
                 }
                 if (user.calendars.id(request.params.idCalendar)) {
                   user.calendars.id(request.params.idCalendar).events.push(newCalendarEvent);
@@ -478,10 +484,16 @@ module.exports.calendarUpdateSelected = function(request, response) {
                   "message": "Cannot find event on calendar."
                 });
               } else {
-                if (!isNaN(request.body.startDate && !isNaN(request.body.endDate))) {
+                if (!isNaN(request.body.year) 
+                  && !isNaN(request.body.month)
+                  && !isNaN(request.body.day)
+                  && request.body.title
+                  && request.body.description) {
+                  currentCalendarEvent.title = request.body.title;
                   currentCalendarEvent.description = request.body.description;
-                  currentCalendarEvent.startDate = request.body.startDate;
-                  currentCalendarEvent.endDate = request.body.endDate;
+                  currentCalendarEvent.year = request.body.year;
+                  currentCalendarEvent.month = request.body.month;
+                  currentCalendarEvent.day = request.body.day;
                 } else {
                   getJsonResponse(response, 400, {
                     "message": "Invalid parameters."

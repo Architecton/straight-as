@@ -24,23 +24,33 @@ var administrativeMessageSchema = new mongoose.Schema({
 });
 
 
-// Schema representing an event on the calendar
-var eventSchema = new mongoose.Schema({
-  description: {type: String, required: true},           // event's description
-  startDate: {type: Date, "default": Date.now()},        // start date of the event
-  endDate: {type: Date, "default": Date.now()}           // end date of the event
+var timetableEventSchema = new mongoose.Schema({
+  title: {type: String, required: true},
+  day: {type: Number, required: true, min: 1, max: 31},
+  hour: {type: Number, required: true, min: 0, max: 23},
+  duration: {type: Number, required: true},
+  color: {type: String, "default": "red"}
+});
+
+
+var calendarEventSchema = new mongoose.Schema({
+  title: {type: String, required: true},
+  description: {type: String, required: true},
+  year: {type: Number, required: true},
+  month: {type: Number, required: true, min: 1, max: 12},
+  day: {type: Number, required: true, min: 1, max: 31}
 });
 
 
 // Schema representing a user's calendar
 var calendarShema = new mongoose.Schema({
-  events: [eventSchema]                                 // Calendar has events.
+  events: [calendarEventSchema]                           // Calendar has events.
 });
 
 
 // Schema representing a user's timetable
 var timetableSchema = new mongoose.Schema({
-  events: [eventSchema]                                 // Timetable has events
+  events: [timetableEventSchema]                          // Timetable has events.
 });
 
 

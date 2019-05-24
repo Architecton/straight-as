@@ -6,4 +6,6 @@ npm-debug.log
 src/app_server/mongodb/data/diagnostic.data/*
 mongodb/data
 *.swp
+*.wt
+*.swn
 *.swo
