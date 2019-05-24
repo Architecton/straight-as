@@ -4,11 +4,13 @@
       "number": "14",
       "direction": "Savlje",
       "arrivals": [6, 17, 24]
+
     },
     {
       "number": "27",
       "direction": "Letališka-BTC",
       "arrivals": [11, 22]
+
     },
     {
       "number": "6",

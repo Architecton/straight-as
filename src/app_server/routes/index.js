@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+
 var indexCtrl = require('../controllers/indexCtrl');
 var loginCtrl = require("../controllers/loginCtrl");
 var logoutCtrl = require("../controllers/logoutCtrl");
@@ -8,6 +9,7 @@ var busCtrl = require("../controllers/busCtrl");
 var eventCtrl = require("../controllers/eventCtrl");
 var signupCtrl = require("../controllers/signupCtrl");
 
+
 /* GET home page. */
 router.get('/', indexCtrl.index);
 
@@ -15,9 +17,11 @@ router.get('/login', loginCtrl.login);
 
 router.post('/login', loginCtrl.loginPost);
 
+
 router.get('/logout', logoutCtrl.logout);
 
 router.get('/food', foodCtrl.food);
+
 
 router.get('/bus', busCtrl.bus);
 

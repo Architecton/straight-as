@@ -38,7 +38,9 @@ html
               li.nav-item
                 a.dropdown-item(href='/change_password') Change password
               li.nav-item
+
               a.dropdown-item(href='/logout' onclick="logout()") Logout
+
       else if user.eventAdmin
         ul.navbar-nav.ml-auto
           li.nav-item.dropdown
@@ -48,7 +50,9 @@ html
               li.nav-item
                 a.dropdown-item(href='/change_password') Change password
               li.nav-item
+
               a.dropdown-item(href='/logout' onclick="logout()") Logout
+
       else
         ul.navbar-nav
           li.nav-item
@@ -68,12 +72,12 @@ html
               li.nav-item
                 a.dropdown-item(href='/change_password') Change password
               li.nav-item
+
               a.dropdown-item(href='/logout' onclick="logout()") Logout
+
 
 
     block content
 
-//script(type='text/javascript' src='/javascripts/bus_search.js')
-//script(type='text/javascript' src='/javascripts/login.js')
-//script(type='text/javascript' src='/javascripts/signup.js')
 script(src='javascripts/vanillaCalendar.js')
+

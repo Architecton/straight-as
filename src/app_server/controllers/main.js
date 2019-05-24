@@ -3,6 +3,7 @@ var userData = require("../models/user.json");
 var todoData = require("../models/todo.json");
 var foodData = require("../models/food.json");
 var eventData = require("../models/events.json");
+var busData = require("../models/bus.json");
 var calendarData = null;
 var scheduleData = null;
 
@@ -24,5 +25,4 @@ var scheduleData = null;
 /* GET signup page */
 
 
-/* GET bus page */
 
