@@ -1,40 +1,49 @@
 {
   "todoNotes": [
     {
+      "title": "Step 1",
       "content": "Find potato.",
-      "id": "n1"
+      "_id": "id_1"
     },
     {
+      "title": "Step 2",
       "content": "Find pot.",
-      "id": "n2"
+      "_id": "id_2"
     },
     {
+      "title": "Step 3",
       "content": "Fill pot with water.",
-      "id": "n3"
+      "_id": "id_3"
     },
     {
+      "title": "Step 4",
       "content": "Boil water in pot.",
-      "id": "n4"
+      "_id": "id_4"
     },
     {
+      "title": "Step 5",
       "content": "Add potato to water.",
-      "id": "n5"
+      "_id": "id_5"
     },
     {
+      "title": "Step 6",
       "content": "Cook potato.",
-      "id": "n6"
+      "_id": "id_6"
     },
     {
+      "title": "Step 7",
       "content": "Remove potato from pot.",
-      "id": "n7"
+      "_id": "id_7"
     },
     {
+      "title": "Step 8",
       "content": "Peel potato.",
-      "id": "n8"
+      "_id": "id_8"
     },
     {
+      "title": "Step 9",
       "content": "Eat potato.",
-      "id": "n9"
+      "_id": "id_9"
     }
   ]
 }

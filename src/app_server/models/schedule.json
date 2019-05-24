@@ -1,0 +1,54 @@
+{
+  "schedule": [
+        [{"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "RIS", "colour": "orange", "_id": "ris_id"},     {"name": "OIM", "colour": "lightgreen", "_id": "oim_id"},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "RIS", "colour": "orange", "_id": "ris_id"},     {"name": "OIM", "colour": "lightgreen", "_id": "oim_id"},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "RIS", "colour": "orange", "_id": "ris_id"},     {"name": "OIM", "colour": "lightgreen", "_id": "oim_id"},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "OIM-V", "colour": "lightblue", "_id": "oim-v_id"},     {"name": "OO", "colour": "pink", "_id": "oo_id"},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "OIM-V", "colour": "lightblue", "_id": "oim-v_id"},     {"name": "OO", "colour": "pink", "_id": "oo_id"},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "", "colour": "white", "_id": null},     {"name": "OO", "colour": "pink", "_id": "oo_id"},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}],
+        [{"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null},     {"name": "", "colour": "white", "_id": null}]
+  ],
+  "schedule-entries": [
+    {
+      "name": "RIS",
+      "colour": "orange",
+      "day": 0,
+      "hour": 11,
+      "duration": 3,
+      "_id": "ris_id"
+    },
+    {
+      "name": "OIM-V",
+      "colour": "lightblue",
+      "day": 0,
+      "hour": 14,
+      "duration": 2,
+      "_id": "oim-v_id"
+    },
+    {
+      "name": "OIM",
+      "colour": "lightgreen",
+      "day": 1,
+      "hour": 11,
+      "duration": 3,
+      "_id": "oim_id"
+    },
+    {
+      "name": "OO",
+      "colour": "pink",
+      "day": 1,
+      "hour": 14,
+      "duration": 3,
+      "_id": "oo_id"
+    }
+  ]
+}

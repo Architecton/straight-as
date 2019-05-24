@@ -3,17 +3,17 @@
     {
       "number": "14",
       "direction": "Savlje",
-      "ETA": [6, 17, 24]
+      "arrivals": [6, 17, 24]
     },
     {
       "number": "27",
       "direction": "Letališka-BTC",
-      "ETA": [11, 22]
+      "arrivals": [11, 22]
     },
     {
       "number": "6",
       "direction": "Črnuče",
-      "ETA": [1, 9, 17]
+      "arrivals": [1, 9, 17]
     }
   ],
   "found": true
