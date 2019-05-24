@@ -4,7 +4,7 @@
 node_modules/
 npm-debug.log
 src/app_server/mongodb/data/diagnostic.data/*
-mongodb/data
+mongodb/data/
 *.swp
 *.wt
 *.swn
