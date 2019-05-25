@@ -248,7 +248,7 @@ var sendMail = function(emailAddress, idUser, validationCode) {
       from: 'payup.app.2019@gmail.com',
       to: emailAddress,
       subject: 'Confirm e-mail',
-      text: 'Please click the link below to confirm your e-mail account.\n https://sp-projekt2-excogitator.c9users.io/api/users/' + idUser + '/' + validationCode
+      text: 'Please click the link below to confirm your e-mail account.\n https://sp-projekt2-excogitator.c9users.io/users/' + idUser + '/' + validationCode
     };
     // Send mail via transporter.
     transporter.sendMail(HelperOptions, (error, info) => {
