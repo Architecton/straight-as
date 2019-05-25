@@ -1679,6 +1679,162 @@
         }
       }
     },
+    "/station/closest" : {
+      "get" : {
+        "tags" : [ "External" ],
+        "summary" : "Get data for closest LPP stations",
+        "operationId" : "closestLPP",
+        "responses" : {
+          "200" : {
+            "description" : "Data successfuly retrieved"
+          },
+          "500" : {
+            "description" : "Error"
+          }
+        }
+      }
+    },
+    "/station/arrivals/{stationName}" : {
+      "get" : {
+        "tags" : [ "External" ],
+        "summary" : "Get arrivals for specified LPP station",
+        "operationId" : "LPPArrivalData",
+        "parameters" : [ {
+          "name" : "stationName",
+          "in" : "path",
+          "description" : "Station name",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Data successfuly retrieved"
+          },
+          "500" : {
+            "description" : "Error"
+          }
+        }
+      }
+    },
+    "/restavracije/closest" : {
+      "get" : {
+        "tags" : [ "External" ],
+        "summary" : "Get data of closest restaurants",
+        "operationId" : "restaurantClosestData",
+        "responses" : {
+          "200" : {
+            "description" : "Data successfuly retrieved"
+          },
+          "500" : {
+            "description" : "Error"
+          }
+        }
+      }
+    },
+    "/restavracije" : {
+      "get" : {
+        "tags" : [ "External" ],
+        "summary" : "Get data of all restaurants",
+        "operationId" : "restaurantAllData",
+        "responses" : {
+          "200" : {
+            "description" : "Data successfuly retrieved"
+          },
+          "500" : {
+            "description" : "Error"
+          }
+        }
+      }
+    },
+    "/restavracije/{idRestaurant}" : {
+      "get" : {
+        "tags" : [ "External" ],
+        "summary" : "Get data of restaurant with specified id",
+        "operationId" : "restaurantAllData",
+        "parameters" : [ {
+          "name" : "idRestaurant",
+          "in" : "path",
+          "description" : "id of restaurant",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Data successfuly retrieved"
+          },
+          "500" : {
+            "description" : "Error"
+          }
+        }
+      }
+    },
+    "/restavracije/name/{nameRestaurant}" : {
+      "get" : {
+        "tags" : [ "External" ],
+        "summary" : "Get data of restaurant with specified id",
+        "operationId" : "restaurantbyNameData",
+        "parameters" : [ {
+          "name" : "nameRestaurant",
+          "in" : "path",
+          "description" : "name of restaurant",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Data successfuly retrieved"
+          },
+          "500" : {
+            "description" : "Error"
+          }
+        }
+      }
+    },
+    "/mesta" : {
+      "get" : {
+        "tags" : [ "External" ],
+        "summary" : "Get all unique cities",
+        "operationId" : "uniqueCities",
+        "responses" : {
+          "200" : {
+            "description" : "Data successfuly retrieved"
+          },
+          "500" : {
+            "description" : "Error"
+          }
+        }
+      }
+    },
+    "/restavracije/mesto/{cityName}" : {
+      "get" : {
+        "tags" : [ "External" ],
+        "summary" : "Get data of restaurant for specified city",
+        "operationId" : "restaurantbyCityData",
+        "parameters" : [ {
+          "name" : "cityName",
+          "in" : "path",
+          "description" : "name of city",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Data successfuly retrieved"
+          },
+          "500" : {
+            "description" : "Error"
+          }
+        }
+      }
+    },
     "/nukeDB" : {
       "delete" : {
         "tags" : [ "Database" ],
