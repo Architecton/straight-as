@@ -10,7 +10,7 @@ let transporter = nodemailer.createTransport({
   secure: false,
   port: 25,
   auth: {
-    user: 'payup.app.2019',
+    user: 'straight.as.app',
     pass: process.env.EMAIL_PASSWORD
   },
   tls: {
@@ -245,7 +245,7 @@ var sendMail = function(emailAddress, idUser, validationCode) {
   return new Promise(function(resolve, reject) {
     // Define helper options.
     let HelperOptions = {
-      from: 'payup.app.2019@gmail.com',
+      from: 'straight.as.app@gmail.com',
       to: emailAddress,
       subject: 'Confirm e-mail',
       text: 'Please click the link below to confirm your e-mail account.\n https://straight-asss.herokuapp.com/users/' + idUser + '/' + validationCode
