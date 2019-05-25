@@ -1,5 +1,6 @@
 var request = require('request');
-const baseUrl = 'https://tpo-api-lpp.herokuapp.com';
+const baseUrlLpp = 'https://tpo-api-lpp.herokuapp.com';
+const baseUrlRestavracije = 'https://tpo-api-restavracije.herokuapp.com';
 
 // getJsonResponse: take response, status and JSON data and add status and data to response.
 var getJsonResponse = function(response, status, data) {
@@ -11,7 +12,7 @@ var getJsonResponse = function(response, status, data) {
 // getClosestStationArrivals: get list of arrivals on station closest to user.
 module.exports.getClosestStationArrivals = function(req, res) {
   request({
-    url: baseUrl + '/station/closest',
+    url: baseUrlRestavracije + '/station/closest',
     qs: {
       lat: req.body.lat,
       lon: req.body.lng
@@ -31,7 +32,7 @@ module.exports.getClosestStationArrivals = function(req, res) {
 module.exports.getStationArrivals = function(req, res) {
   if (req.params && req.params.stationName) {
     request({
-      url: baseUrl + '/station/arrivals/' + req.params.stationName,
+      url: baseUrlRestavracije + '/station/arrivals/' + req.params.stationName,
       method: 'get'
     }, function(error, response, body) {
       if (error) {
@@ -53,7 +54,7 @@ module.exports.getStationArrivals = function(req, res) {
 module.exports.getClosestRestaurantsData = function(req, res) {
   if (req.body && req.body.lat && req.body.lon) {
     request({
-      url: baseUrl + '/restavracije/closest',
+      url: baseUrlRestavracije + '/restavracije/closest',
       qs: {
         lat: req.body.lat,
         lon: req.body.lon
@@ -76,7 +77,7 @@ module.exports.getClosestRestaurantsData = function(req, res) {
 
 module.exports.getAllRestaurants = function(req, res) {
   request({
-    url: baseUrl + '/restavracije',
+    url: baseUrlRestavracije + '/restavracije',
     method: 'get'
   }, function(error, response, body) {
     if (error) {
@@ -91,7 +92,7 @@ module.exports.getAllRestaurants = function(req, res) {
 module.exports.getRestaurantById = function(req, res) {
   if (req.params && req.params.idRestaurant) {
     request({
-      url: baseUrl + '/restavracije/' + req.params.idRestaurant,
+      url: baseUrlRestavracije + '/restavracije/' + req.params.idRestaurant,
       method: 'get'
     }, function(error, response, body) {
       if (error) {
@@ -111,7 +112,7 @@ module.exports.getRestaurantById = function(req, res) {
 module.exports.getRestaurantByName = function(req, res) {
   if (req.params && req.params.nameRestaurant) {
     request({
-      url: baseUrl + '/restavracije/name/' + req.params.nameRestaurant,
+      url: baseUrlRestavracije + '/restavracije/name/' + req.params.nameRestaurant,
       method: 'get'
     }, function(error, response, body) {
       if (error) {
@@ -130,7 +131,7 @@ module.exports.getRestaurantByName = function(req, res) {
 
 module.exports.getUniqueCities = function(req, res) {
   request({
-    url: baseUrl + '/mesta',
+    url: baseUrlRestavracije + '/mesta',
     method: 'get'
   }, function(error, response, body) {
     if (error) {
@@ -145,7 +146,7 @@ module.exports.getUniqueCities = function(req, res) {
 module.exports.getRestaurantsOfCity = function(req, res) {
   if (req.params && req.params.cityName) {
     request({
-      url: baseUrl + '/restavracije/mesto' + req.params.cityName,
+      url: baseUrlRestavracije + '/restavracije/mesto' + req.params.cityName,
       method: 'get'
     }, function(error, response, body) {
       if (error) {

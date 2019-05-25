@@ -1,11 +1,7 @@
 var mongoose = require('mongoose');
 
-var dbURI = '';
-// link za mLab bazo:
-// var dbURI = 'mongodb://payup:payup123@ds123844.mlab.com:23844/payup-tm';
+var dbURI = 'mongodb://straightas:nimamdomislije123@ds261096.mlab.com:61096/tpo-straightas';
 
-// Dodamo povezavo na lokalno bazo.
-// var dbURI = 'mongodb://localhost/mongodb';
 
 // If production, connect to MLAB
 if (process.env.NODE_ENV === 'production') {
