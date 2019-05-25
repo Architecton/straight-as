@@ -11,7 +11,7 @@
   },
   "tags" : [ {
     "name" : "Authentication",
-    "description" : "Log in and sign up"
+    "description" : "Log in, sign up, rights"
   }, {
     "name" : "Users",
     "description" : "User management"
@@ -149,6 +149,114 @@
                   },
                   "password" : {
                     "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{idUser}/admin" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Promote user to an administrator",
+        "operationId" : "promoteUserToAdmin",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "user's ID",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "User successfully promoted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request parameters"
+          },
+          "401" : {
+            "description" : "Not authorized to perform action"
+          },
+          "404" : {
+            "description" : "User with specified id not found"
+          },
+          "500" : {
+            "description" : "Error saving user data"
+          }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "admin" : {
+                    "type" : "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{idUser}/eventadmin" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Promote user to an event administrator",
+        "operationId" : "promoteUserToEventAdmin",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "user's ID",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "User successfully promoted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request parameters"
+          },
+          "401" : {
+            "description" : "Not authorized to perform action"
+          },
+          "404" : {
+            "description" : "User with specified id not found"
+          },
+          "500" : {
+            "description" : "Error saving user data"
+          }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "admin" : {
+                    "type" : "boolean"
                   }
                 }
               }
@@ -729,6 +837,848 @@
         }
       }
     },
+    "/timetables" : {
+      "get" : {
+        "tags" : [ "Timetable" ],
+        "summary" : "Get all timetables of all users",
+        "operationId" : "timetableGetAll",
+        "responses" : {
+          "200" : {
+            "description" : "Successfully retrieved todo lists",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Timetable"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request parameters"
+          },
+          "404" : {
+            "description" : "User or todo list with specified id not found"
+          },
+          "500" : {
+            "description" : "Error retrieving user with specified id or todo list with specified id"
+          }
+        }
+      }
+    },
+    "/users/{idUser}/timetables/{idTimetable}" : {
+      "get" : {
+        "tags" : [ "Timetable" ],
+        "summary" : "Find timetable by ID",
+        "operationId" : "timetableGetByID",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTimetable",
+          "in" : "path",
+          "description" : "ID of timetable",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Timetable list successfuly retrieved",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Timetable"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or timetable with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error retrieving timetables"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Timetable" ],
+        "summary" : "Create new event on timetable",
+        "operationId" : "TimetableItemAddNew",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTimetable",
+          "in" : "path",
+          "description" : "ID of timetable",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Timetable successfuly created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TimetableEvent"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or timetable with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error retrieving retrieving timetable or saving timetable event"
+          }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "title" : {
+                    "type" : "string"
+                  },
+                  "day" : {
+                    "type" : "integer"
+                  },
+                  "hour" : {
+                    "type" : "integer"
+                  },
+                  "duration" : {
+                    "type" : "integer"
+                  },
+                  "color" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Timetable" ],
+        "summary" : "Delete timetable with specified id",
+        "operationId" : "deleteTimetableById",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTimetable",
+          "in" : "path",
+          "description" : "ID of Timetable",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Timetable successfully deleted"
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or timetable with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error deleting timetable"
+          }
+        }
+      }
+    },
+    "/users/{idUser}/timetables" : {
+      "get" : {
+        "tags" : [ "Timetable" ],
+        "summary" : "Get all timetables of user",
+        "operationId" : "timetableGetAllUser",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "data successfully retrieved",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Timetable"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error retrieving timetables"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Timetable" ],
+        "summary" : "Create a new empty timetable",
+        "operationId" : "timetableGetData",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "timetable successfully created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Timetable"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error saving timetable"
+          }
+        }
+      }
+    },
+    "/users/{idUser}/timetables/{idTimetable}/{idTimetableEvent}" : {
+      "get" : {
+        "tags" : [ "Timetable" ],
+        "summary" : "Get timetable event by ID",
+        "operationId" : "timetableGetItemById",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTimetable",
+          "in" : "path",
+          "description" : "ID of timetable",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTimetableEvent",
+          "in" : "path",
+          "description" : "ID of timetable item",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "data successfully retrieved",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TimetableEvent"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or timetable with specified ID not found or timetable item with specified id not found"
+          },
+          "500" : {
+            "description" : "Error retrieving timetable or timetable item"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Timetable" ],
+        "summary" : "Edit timetable event",
+        "operationId" : "timetableEditEventById",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTimetable",
+          "in" : "path",
+          "description" : "ID of timetable",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTimetableEvent",
+          "in" : "path",
+          "description" : "ID of timetable event",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "data successfully edited",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TimetableEvent"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or timetable with specified ID not found or timetable event with specified id not found"
+          },
+          "500" : {
+            "description" : "Error retrieving timetable or timetable event"
+          }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "title" : {
+                    "type" : "string"
+                  },
+                  "color" : {
+                    "type" : "string"
+                  },
+                  "duration" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Timetable" ],
+        "summary" : "delete timetable event",
+        "operationId" : "timetableEventDeleteById",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTimetable",
+          "in" : "path",
+          "description" : "ID of timetable",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idTimetableEvent",
+          "in" : "path",
+          "description" : "ID of timetable event",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "timetable event successfuly deleted"
+          },
+          "400" : {
+            "description" : "Bad parameters"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or timetable with specified ID not found or timetable event with specified item not found"
+          },
+          "500" : {
+            "description" : "Error retrieving timetables"
+          }
+        }
+      }
+    },
+    "/calendars" : {
+      "get" : {
+        "tags" : [ "Calendar" ],
+        "summary" : "Get all calendars of all users",
+        "operationId" : "calendarGetAll",
+        "responses" : {
+          "200" : {
+            "description" : "Successfully retrieved calendars",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Calendar"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request parameters"
+          },
+          "404" : {
+            "description" : "User or calendar with specified id not found"
+          },
+          "500" : {
+            "description" : "Error retrieving calendar with specified id or calendar with specified id"
+          }
+        }
+      }
+    },
+    "/users/{idUser}/calendars/{idCalendar}" : {
+      "get" : {
+        "tags" : [ "Calendar" ],
+        "summary" : "Find calendar by ID",
+        "operationId" : "calendarGetByID",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idCalendar",
+          "in" : "path",
+          "description" : "ID of calendar",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Calendar list successfuly retrieved",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Calendar"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or calendar with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error retrieving calendars"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Calendar" ],
+        "summary" : "Create new event on calendar",
+        "operationId" : "CalendarEventAddNew",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idCalendar",
+          "in" : "path",
+          "description" : "ID of calendar",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Calendar successfuly created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CalendarEvent"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or calendar with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error retrieving retrieving calendar or saving calendar event"
+          }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "title" : {
+                    "type" : "string"
+                  },
+                  "description" : {
+                    "type" : "integer"
+                  },
+                  "year" : {
+                    "type" : "integer"
+                  },
+                  "month" : {
+                    "type" : "integer"
+                  },
+                  "day" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Calendar" ],
+        "summary" : "Delete calendar with specified id",
+        "operationId" : "deleteCalendarById",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idCalendar",
+          "in" : "path",
+          "description" : "ID of Calendar",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Calendar successfully deleted"
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or calendar with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error deleting calendar"
+          }
+        }
+      }
+    },
+    "/users/{idUser}/calendars" : {
+      "get" : {
+        "tags" : [ "Calendar" ],
+        "summary" : "Get all calendars of user",
+        "operationId" : "calendarGetAllUser",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "data successfully retrieved",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Calendar"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error retrieving calendars"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Calendar" ],
+        "summary" : "Create a new empty calendar",
+        "operationId" : "calendarGetData",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "calendar successfully created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Calendar"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found"
+          },
+          "500" : {
+            "description" : "Error saving calendar"
+          }
+        }
+      }
+    },
+    "/users/{idUser}/calendars/{idCalendar}/{idCalendarEvent}" : {
+      "get" : {
+        "tags" : [ "Calendar" ],
+        "summary" : "Get calendar event by ID",
+        "operationId" : "calendarGetItemById",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idCalendar",
+          "in" : "path",
+          "description" : "ID of calendar",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idCalendarEvent",
+          "in" : "path",
+          "description" : "ID of calendar item",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "data successfully retrieved",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CalendarEvent"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or calendar with specified ID not found or calendar event with specified id not found"
+          },
+          "500" : {
+            "description" : "Error retrieving calendar or calendar item"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Calendar" ],
+        "summary" : "Edit calendar event",
+        "operationId" : "calendarEditEventById",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idCalendar",
+          "in" : "path",
+          "description" : "ID of timetable",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idCalendarEvent",
+          "in" : "path",
+          "description" : "ID of calendar event",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "data successfully edited",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CalendarEvent"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or calendar with specified ID not found or calendar event with specified id not found"
+          },
+          "500" : {
+            "description" : "Error retrieving calendar or calendar event"
+          }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "title" : {
+                    "type" : "string"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  },
+                  "year" : {
+                    "type" : "integer"
+                  },
+                  "month" : {
+                    "type" : "integer"
+                  },
+                  "day" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Calendar" ],
+        "summary" : "delete calendar event",
+        "operationId" : "calendarEventDeleteById",
+        "parameters" : [ {
+          "name" : "idUser",
+          "in" : "path",
+          "description" : "ID of user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idCalendar",
+          "in" : "path",
+          "description" : "ID of timetable",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "idCalendarEvent",
+          "in" : "path",
+          "description" : "ID of calendar event",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "calendar event successfuly deleted"
+          },
+          "400" : {
+            "description" : "Bad parameters"
+          },
+          "404" : {
+            "description" : "User with specified ID not found or calendar with specified ID not found or calendar event with specified item not found"
+          },
+          "500" : {
+            "description" : "Error retrieving calendar"
+          }
+        }
+      }
+    },
     "/nukeDB" : {
       "delete" : {
         "tags" : [ "Database" ],
@@ -806,10 +1756,6 @@
           "admin" : {
             "type" : "boolean",
             "description" : "true if administrator else false"
-          },
-          "eventAdmin" : {
-            "type" : "boolean",
-            "description" : "true if event administrator else false"
           }
         }
       },
@@ -840,6 +1786,90 @@
           "description" : {
             "type" : "string",
             "description" : "description of the todo"
+          }
+        }
+      },
+      "Calendar" : {
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string",
+            "description" : "Mongo generated id"
+          },
+          "events" : {
+            "type" : "object",
+            "description" : "List of events on the calendar"
+          }
+        }
+      },
+      "CalendarEvent" : {
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string",
+            "description" : "Mongo generated id"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "Title of event on calendar"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "description of the calendar event"
+          },
+          "year" : {
+            "type" : "integer",
+            "description" : "Year of calendar event"
+          },
+          "month" : {
+            "type" : "integer",
+            "description" : "Month of calendar event"
+          },
+          "day" : {
+            "type" : "integer",
+            "description" : "Day of calendar event"
+          }
+        }
+      },
+      "Timetable" : {
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string",
+            "description" : "Mongo generated id"
+          },
+          "events" : {
+            "type" : "object",
+            "description" : "List of events on timetable"
+          }
+        }
+      },
+      "TimetableEvent" : {
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string",
+            "description" : "Mongo generated id"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "Title of event on timetable"
+          },
+          "day" : {
+            "type" : "integer",
+            "description" : "Day of event on timetable"
+          },
+          "hour" : {
+            "type" : "integer",
+            "description" : "Hour of event on timetable"
+          },
+          "duration" : {
+            "type" : "integer",
+            "description" : "Duration of event on timetable"
+          },
+          "color" : {
+            "type" : "string",
+            "description" : "Hexadecimal color code of the item on timetable"
           }
         }
       }
