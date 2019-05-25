@@ -1718,11 +1718,26 @@
         }
       }
     },
-    "/restavracije/closest" : {
+    "/restavracije/closest/distance" : {
       "get" : {
         "tags" : [ "External" ],
-        "summary" : "Get data of closest restaurants",
-        "operationId" : "restaurantClosestData",
+        "summary" : "Get data of closest restaurants sorted by distance",
+        "operationId" : "restaurantClosestDataSortedDistance",
+        "responses" : {
+          "200" : {
+            "description" : "Data successfuly retrieved"
+          },
+          "500" : {
+            "description" : "Error"
+          }
+        }
+      }
+    },
+    "/restavracije/closest/alphabetical" : {
+      "get" : {
+        "tags" : [ "External" ],
+        "summary" : "Get data of closest restaurants sorted alphabetically",
+        "operationId" : "restaurantClosestDataSortedAlphabetically",
         "responses" : {
           "200" : {
             "description" : "Data successfuly retrieved"
