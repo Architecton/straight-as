@@ -53,6 +53,18 @@ router.get('/users/:idUser/calendars/:idCalendar/:idCalendarEvent', authenticati
 router.delete('/users/:idUser/calendars/:idCalendar/:idCalendarEvent', authentication, ctrlCalendars.calendarDeleteEvent);
 
 
+// Controllers for working with external sources
+router.get('/station/closest', ctrlExternal.getClosestStationArrivals);
+router.get('/station/arrivals/:stationName', ctrlExternal.getStationArrivals);
+router.get('/station/arrivals/:stationName', ctrlExternal.getStationArrivals);
+router.get('/restavracije/closest', ctrlExternal.getClosestRestaurantsData);
+router.get('/restavracije', ctrlExternal.getAllRestaurants);
+router.get('/restavracije/:idRestaurant', ctrlExternal.getRestaurantById);
+router.get('/restavracije/name/:nameRestaurant', ctrlExternal.getRestaurantByName);
+router.get('/mesta', ctrlExternal.getUniqueCities);
+router.get('/restavracije/mesto/:cityName', ctrlExternal.getRestaurantsOfCity);
+
+
 
 // Controllers for authentication
 router.post('/users', ctrlAuthentication.authSignUp);                                                       // TESTED (13.5.2019) DOC
