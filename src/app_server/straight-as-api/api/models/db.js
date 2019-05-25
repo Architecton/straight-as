@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var dbURI = '';
+var dbURI = 'mongodb://jernej:tralalahopsasa1@ds261096.mlab.com:61096/straight-as';
 // link za mLab bazo:
 // var dbURI = 'mongodb://payup:payup123@ds123844.mlab.com:23844/payup-tm';
 
