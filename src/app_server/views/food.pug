@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    .row
+        .card.col-md-8
+            .card-header
+                h4 Nearby restaurants
+            .card-body
+                #map
+        .card.col-md-4
+            .card-header
+                table.table.table-striped#restaurant-table
+                    thead
+                        tr
+                            th Name
+                            th Address
+                            th Price
+                    tbody
+
+
+block scripts
+    script(async='' defer='' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBViR6_Ihs8Q3XQsJVct9vjGqLeoSNzfHo&callback=initMap')
+    script(src='javascripts/food.js')
