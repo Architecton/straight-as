@@ -11,6 +11,7 @@ var authentication = jwt({
 var ctrlUsers = require('../controllers/users');
 var ctrlTodoLists = require('../controllers/todoLists');
 var ctrlTimetables = require('../controllers/timetables');
+var ctrlExternal = require('../controllers/extern');
 var ctrlCalendars = require('../controllers/calendars');
 var ctrlAuthentication = require('../controllers/authentication');
 
@@ -55,7 +56,6 @@ router.delete('/users/:idUser/calendars/:idCalendar/:idCalendarEvent', authentic
 
 // Controllers for working with external sources
 router.get('/station/closest', ctrlExternal.getClosestStationArrivals);
-router.get('/station/arrivals/:stationName', ctrlExternal.getStationArrivals);
 router.get('/station/arrivals/:stationName', ctrlExternal.getStationArrivals);
 router.get('/restavracije/closest', ctrlExternal.getClosestRestaurantsData);
 router.get('/restavracije', ctrlExternal.getAllRestaurants);
