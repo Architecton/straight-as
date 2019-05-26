@@ -21,7 +21,7 @@ html
                     li.nav-item
                         a.nav-link(href='/food') Food
                     li.nav-item
-                        a.nav-link(href='/bus') Bus
+                        a.nav-link(onclick='loadBusses()') Bus
                 ul.navbar-nav.ml-auto
                     li.nav-item
                         a.nav-link(href="/login") Login
@@ -54,13 +54,13 @@ html
             else
                 ul.navbar-nav
                     li.nav-item
-                        a.nav-link(href='/') Home
+                        a.nav-link(onclick="loadIndex()") Home
                     li.nav-item
                         a.nav-link(href='/food') Food
                     li.nav-item
                         a.nav-link(href='/events') Events
                     li.nav-item
-                        a.nav-link(href='/bus') Bus
+                        a.nav-link(onclick='loadBusses()') Bus
 
                 ul.navbar-nav.ml-auto
                     li.nav-item.dropdown
@@ -80,5 +80,5 @@ html
 block scripts
 
 script(src='javascripts/logout.js')
-
+script(src="javascripts/JWT_routing.js")
 

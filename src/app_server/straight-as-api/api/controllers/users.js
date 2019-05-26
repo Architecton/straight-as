@@ -82,7 +82,7 @@ module.exports.userGetAll = function(request, response) {
         if (user.admin == true) {
           // Return all users
           User
-            .find({}, '_id admin eventAdmin')
+            .find({}, '_id admin eventAdmin status')
             .exec(function(error, users) {
               if (!users) {  // If user not found
                 getJsonResponse(response, 404, {

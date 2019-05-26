@@ -3,18 +3,19 @@ const request = require("request");
 const baseUrl = "http://localhost:3000";
 
 module.exports.bus = function (req, res) {
-    let id = verifyJWT(req.body.JWT_token);
+    let id = verifyJWT(req.query.JWT_token);
     console.log(req.body);
     if (!id) {
         res.render("bus", {
-                        user: null,
-                        busData: null});
+            user: null,
+            busData: null
+        });
     } else {
         request({
             url: baseUrl + '/users/' + id,
             method: 'get',
             headers: {
-                'Authorization': 'Bearer ' + req.body.JWT_token
+                'Authorization': 'Bearer ' + req.query.JWT_token
             }
         }, function (usererror, userresponse, userbody) {
             if (usererror || userresponse.statusCode !== 200) {
@@ -24,14 +25,16 @@ module.exports.bus = function (req, res) {
                 });
             } else {
                 let userObj = JSON.parse(userbody);
-                console.log(userObj);
+                //console.log(userObj);
 
-                res.render({user: {
-                                "username": userObj._id,
-                                "admin": userObj.admin,
-                                "eventAdmin": userObj.eventAdmin
-                            },
-                            busData: null});
+                res.render("bus", {
+                    user: {
+                        "username": userObj._id,
+                        "admin": userObj.admin,
+                        "eventAdmin": userObj.eventAdmin
+                    },
+                    busData: null
+                });
             }
         });
     }
@@ -56,7 +59,8 @@ module.exports.busPost = function (req, res) {
                 console.log(busObj);
                 res.render("bus", {
                     user: null,
-                    busData: busObj});
+                    busData: busObj
+                });
             }
         });
     } else {
@@ -77,7 +81,7 @@ module.exports.busPost = function (req, res) {
                 console.log(userObj);
 
                 request({
-                    url: "https://tpo-api-lpp.herokuapp.com/sation/arrivals/" + req.body.station,
+                    url: "https://tpo-api-lpp.herokuapp.com/station/arrivals/" + req.body.station,
                     method: 'get'
                 }, function (buserror, busresponse, busbody) {
                     console.log(busbody);
@@ -94,7 +98,8 @@ module.exports.busPost = function (req, res) {
                                 "admin": userObj.admin,
                                 "eventAdmin": userObj.eventAdmin
                             },
-                            busData: busObj});
+                            busData: busObj
+                        });
                     }
                 });
 
