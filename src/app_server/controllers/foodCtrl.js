@@ -1,4 +1,4 @@
 module.exports.food = function(req, res) {
-    //res.render('food', null);
-    res.redirect("/");
+    res.render('food', {user: require("../models/user"), restaurants: require("../models/food")});
+//    res.redirect("/");
 };

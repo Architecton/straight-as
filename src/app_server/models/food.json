@@ -1,1 +1,13 @@
-{"id": null}
+{
+  "closest_restaurants": [
+    {
+      "address": "Celjska cesta 7",
+      "city": "ŽALEC",
+      "latitude": 46.2509096,
+      "longitude": 15.1710035,
+      "name": "PICERIJA BONITAS ",
+      "price": 5.9,
+      "surcharge": 3.27
+    }
+  ]
+}
