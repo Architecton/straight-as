@@ -16,6 +16,8 @@ router.get('/', indexCtrl.index);
 router.post('/addtodo', indexCtrl.addTodo);
 //odstrani obstoječ zapis
 router.post("/deletetodo", indexCtrl.deleteTodo);
+//spremeni zapis
+router.post("/edittodo", indexCtrl.editTodo);
 
 router.get('/login', loginCtrl.login);
 

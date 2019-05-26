@@ -37,12 +37,25 @@ function deleteTodo(todoID) {
 }
 
 function editTodo() {
-    var textarea = $("#edit-todo-content")
-    var newContent = textarea.val();
+    let textarea = $("#edit-todo-content");
+    let newContent = textarea.val();
     textarea.val("");
 
-    console.log(currentSelectedTodoNote);
-    console.log(newContent);
+    //console.log(newContent);
+
+    $.post("/edittodo", {
+        "JWT_token": localStorage.getItem("JWT_token"),
+        "todoID": currentSelectedTodoNote,
+        "description": newContent
+    }, (data, status) => {
+        //$("html").html(data);
+        location.reload();
+    }).fail((jqXHR, textStatus, errorThrown) => {
+        $("html").html(jqXHR.responseText);
+    });
+
+    //console.log(currentSelectedTodoNote);
+    //console.log(newContent);
 }
 
 function selectTodoNote(todoID) {

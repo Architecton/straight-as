@@ -191,6 +191,57 @@ module.exports.deleteTodo = (req, res) => {
     }
 };
 
+module.exports.editTodo = (req, res) => {
+    id = verifyJWT(req.body.JWT_token);
+    if (!id) {
+        res.redirect("login");
+    } else {
+        //dobi id todolista na indeksu 0
+        request({
+            url: baseUrl + '/users/' + id + '/todolists',
+            method: 'get',
+            headers: {
+                'Authorization': 'Bearer ' + req.body.JWT_token
+            }
+        }, (todoerror, todoresponse, todobody) => {
+            if (todoerror || todoresponse.statusCode !== 200) {
+                res.render("error", {
+                    message: "Napaka pri pridobivanju podatkov o todo seznamu.",
+                    status: todoresponse.statusCode
+                });
+            } else {
+                let idFirst = JSON.parse(todobody)[0]._id;
+
+                //spremeni todo
+                request({
+                    url: baseUrl + '/users/' + id + '/todolists/' + idFirst + "/" + req.body.todoID,
+                    method: 'put',
+                    headers: {
+                        'Authorization': 'Bearer ' + req.body.JWT_token
+                    },
+                    form: {
+                        "description": req.body.description,
+                        "dueDate": 0
+                    },
+                }, (todoerror2, todoresponse2, todobody2) => {
+                    if (todoerror2 || todoresponse2.statusCode !== 200) {
+                        res.render("error", {
+                            message: "Napaka pri spreminjanju todo zapisa.",
+                            status: todoresponse2.statusCode
+                        });
+                    } else {
+                        //reload
+                        /*const query = querystring.stringify({
+                            "JWT_token": req.body.JWT_token
+                        });*/
+                        res.json({"message": "reload"});
+                    }
+                })
+            }
+        })
+    }
+};
+
 function verifyJWT(JWT_token) {
     if (!JWT_token) {
         return false;
