@@ -14,6 +14,7 @@ var ctrlTimetables = require('../controllers/timetables');
 var ctrlExternal = require('../controllers/extern');
 var ctrlCalendars = require('../controllers/calendars');
 var ctrlAuthentication = require('../controllers/authentication');
+var ctrlEvent = require('../controllers/events');
 
 
 router.delete('/nukeDB', authentication, ctrlUsers.nukeDB);                                                   // TESTED (13.5.2019) DOC
@@ -63,6 +64,10 @@ router.get('/restavracije/:idRestaurant', ctrlExternal.getRestaurantById);
 router.get('/restavracije/name/:nameRestaurant', ctrlExternal.getRestaurantByName);
 router.get('/mesta', ctrlExternal.getUniqueCities);
 router.get('/restavracije/mesto/:cityName', ctrlExternal.getRestaurantsOfCity);
+
+// Controllers for working with events
+router.post('/events/:idUser', authentication, ctrlEvent.createEvent);
+router.get('/events', ctrlEvent.getEvents);
 
 
 

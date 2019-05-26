@@ -12,7 +12,8 @@ function signup() {
         //pošlji zahtevo
         $.post("/signup", {
             "email": email,
-            "password": geslo1
+            "password1": geslo1,
+            "password2": geslo2
         }, (data, status) => {
             //če je signup uspešen, pojdi na login
             $.redirect("/login");

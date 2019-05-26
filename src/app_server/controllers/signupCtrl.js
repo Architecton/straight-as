@@ -14,10 +14,10 @@ module.exports.signupPost = function (req, res) {
         method: 'post',
         form: {
             "email": req.body.email,
-            "password": req.body.password
+            "password": [req.body.password1, req.body.password2]
         }
     }, (todoerror, todoresponse, todobody) => {
-        if (todoerror || todoresponse.statusCode !== 200) {
+        if (todoerror || todoresponse.statusCode !== 201) {
             res.render("error", {
                 message: "Napaka pri registraciji.",
                 status: todoresponse.statusCode
