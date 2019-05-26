@@ -1,8 +1,10 @@
-$(window).on('load', function () {
+"use strict";
+
+$(document).ready(() => {
     vanillaCalendar.init({
         disablePastDays: true
     });
-})
+});
 
 var currentSelectedTodoNote = null;
 
@@ -11,14 +13,30 @@ function createNewTodoNote() {
     var newContent = textarea.val();
     textarea.val("");
 
-    console.log(newContent);
+    $.post("/addtodo", {
+        "JWT_token": localStorage.getItem("JWT_token"),
+        "description": newContent
+    }, (data, status) => {
+        console.log("reload");
+        $("html").html(data);
+        //location.reload();
+    }).fail((jqXHR, textStatus, errorThrown) => {
+        $("html").html(jqXHR.responseText);
+    });
 }
 
-function deleteTodo(todoID){
-    console.log(todoID);
+function deleteTodo(todoID) {
+    $.post("/deletetodo", {
+        "JWT_token": localStorage.getItem("JWT_token"),
+        "todoID": todoID
+    }, (data, status) => {
+        location.reload();
+    }).fail((jqXHR, textStatus, errorThrown) => {
+        $("html").html(jqXHR.responseText);
+    });
 }
 
-function editTodo(){
+function editTodo() {
     var textarea = $("#edit-todo-content")
     var newContent = textarea.val();
     textarea.val("");
@@ -27,7 +45,7 @@ function editTodo(){
     console.log(newContent);
 }
 
-function selectTodoNote(todoID){
+function selectTodoNote(todoID) {
     currentSelectedTodoNote = todoID;
 }
 
@@ -46,18 +64,19 @@ function emptyScheduleClick(cellID) {
     $('#new-schedule-entry-modal').modal('toggle');
 }
 
-function confirmNewScheduleEntry(){
+function confirmNewScheduleEntry() {
     var colourField = $("#new-schedule-entry-colour");
     var newColour = colourField.val();
     colourField.val("#90EE90");
     var nameField = $("#new-schedule-entry-name");
     var newName = nameField.val();
     nameField.val("");
+
     var durationField = $("#new-schedule-entry-duration");
     var newDuration = durationField.val();
     durationField.val("");
     var split = currentSelectedScheduleEntry.split("-");
-    var row = split[0]-7;
+    var row = split[0] - 7;
     var col = split[1];
 
     console.log(row);
@@ -67,7 +86,7 @@ function confirmNewScheduleEntry(){
     console.log(newDuration);
 }
 
-function confirmEditScheduleEntry(){
+function confirmEditScheduleEntry() {
     var colourField = $("#edit-schedule-entry-colour");
     var newColour = colourField.val();
     colourField.val("#90EE90");
@@ -84,7 +103,7 @@ function confirmEditScheduleEntry(){
     console.log(newDuration);
 }
 
-function  deleteScheduleEntry() {
+function deleteScheduleEntry() {
     console.log(currentSelectedScheduleEntry);
 }
 

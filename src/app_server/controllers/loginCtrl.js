@@ -1,3 +1,5 @@
+"use strict";
+
 const request = require('request');
 const baseUrl = "http://localhost:3000";
 
@@ -15,14 +17,13 @@ module.exports.loginPost = function (req, res) {
         }
     }, function (error, response, body) {
         if (error || response.statusCode !== 200) {
-            console.log("Napaka pri prijavi.");
-            res.redirect("/login");
+            res.render("error", {message: "Napaka pri prijavi.", status: response.statusCode});
         } else {
             const bodyObj = JSON.parse(body);
             console.log("Login success!");
             res.json({
-                "JWT_token":bodyObj.token,
-                "redirect":"/"
+                "JWT_token": bodyObj.token,
+                "redirect": "/"
             });
         }
     });

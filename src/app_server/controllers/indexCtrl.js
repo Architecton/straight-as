@@ -1,6 +1,7 @@
 //var todoData = require("../models/todo.json");
 var jwt = require('jsonwebtoken');
 const request = require("request");
+const querystring = require('querystring');
 const baseUrl = "http://localhost:3000";
 
 /* GET home page */
@@ -118,7 +119,11 @@ module.exports.addTodo = (req, res) => {
                             status: todoresponse2.statusCode
                         });
                     } else {
-                        //reload na clientu
+                        //reload
+                        const query = querystring.stringify({
+                            "JWT_token": req.body.JWT_token
+                        });
+                        res.redirect("/?" + query);
                     }
                 })
             }

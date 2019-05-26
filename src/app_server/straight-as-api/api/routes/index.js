@@ -11,6 +11,7 @@ var authentication = jwt({
 var ctrlUsers = require('../controllers/users');
 var ctrlTodoLists = require('../controllers/todoLists');
 var ctrlTimetables = require('../controllers/timetables');
+var ctrlExternal = require('../controllers/extern');
 var ctrlCalendars = require('../controllers/calendars');
 var ctrlAuthentication = require('../controllers/authentication');
 
@@ -51,6 +52,17 @@ router.post('/users/:idUser/calendars/:idCalendar', authentication, ctrlCalendar
 router.put('/users/:idUser/calendars/:idCalendar/:idCalendarEvent', authentication, ctrlCalendars.calendarUpdateSelected);
 router.get('/users/:idUser/calendars/:idCalendar/:idCalendarEvent', authentication, ctrlCalendars.calendarGetEvent);
 router.delete('/users/:idUser/calendars/:idCalendar/:idCalendarEvent', authentication, ctrlCalendars.calendarDeleteEvent);
+
+
+// Controllers for working with external sources
+router.get('/station/closest', ctrlExternal.getClosestStationArrivals);
+router.get('/station/arrivals/:stationName', ctrlExternal.getStationArrivals);
+router.get('/restavracije/closest', ctrlExternal.getClosestRestaurantsData);
+router.get('/restavracije', ctrlExternal.getAllRestaurants);
+router.get('/restavracije/:idRestaurant', ctrlExternal.getRestaurantById);
+router.get('/restavracije/name/:nameRestaurant', ctrlExternal.getRestaurantByName);
+router.get('/mesta', ctrlExternal.getUniqueCities);
+router.get('/restavracije/mesto/:cityName', ctrlExternal.getRestaurantsOfCity);
 
 
 

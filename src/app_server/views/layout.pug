@@ -1,84 +1,83 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/stylesheets/vanillaCalendar.css')
-    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
-    script(src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin='anonymous')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
-    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
-    script(src='javascripts/login.js')
-    script(src='javascripts/logout.js')
-  body
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        link(rel='stylesheet', href='/stylesheets/vanillaCalendar.css')
+        link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
+        script(src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin='anonymous')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
+        script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
+        script(src='javascripts/jquery.redirect.js')
+    body
 
-    nav.navbar.navbar-expand-sm.bg-dark.navbar-dark
-      // Brand
-      a.navbar-brand(href='#') StraightAs
+        nav.navbar.navbar-expand-sm.bg-dark.navbar-dark
+            // Brand
+            a.navbar-brand(href='#') StraightAs
 
-      // If user is not registered, display only BUS and FOOD
-      if user == null
-        ul.navbar-nav
-          li.nav-item
-            a.nav-link(href='/food') Food - TODO
-          li.nav-item
-            a.nav-link(href='/bus') Bus - TODO
-        ul.navbar-nav.ml-auto
-          li.nav-item
-            a.nav-link(href="/login") Login
-          li.nav-item
-            a.nav-link(href="/signup") Signup
-      else if user.admin
-        ul.navbar-nav.ml-auto
-          li.nav-item.dropdown
-            a#navbardrop.nav-link.dropdown-toggle(href='#' data-toggle='dropdown')
-              | #{user.username}
-            ul.dropdown-menu
-              li.nav-item
-                a.dropdown-item(href='/change_password') Change password
-              li.nav-item
+            // If user is not registered, display only BUS and FOOD
+            if user == null
+                ul.navbar-nav
+                    li.nav-item
+                        a.nav-link(href='/food') Food
+                    li.nav-item
+                        a.nav-link(href='/bus') Bus
+                ul.navbar-nav.ml-auto
+                    li.nav-item
+                        a.nav-link(href="/login") Login
+                    li.nav-item
+                        a.nav-link(href="/signup") Signup
+            else if user.admin
+                ul.navbar-nav.ml-auto
+                    li.nav-item.dropdown
+                        a#navbardrop.nav-link.dropdown-toggle(href='#' data-toggle='dropdown')
+                            | #{user.username}
+                        ul.dropdown-menu
+                            li.nav-item
+                                a.dropdown-item(href='/change_password') Change password
+                            li.nav-item
 
-              a.dropdown-item(href='/logout' onclick="logout()") Logout
+                            a.dropdown-item(href='/logout' onclick="logout()") Logout
 
-      else if user.eventAdmin
-        ul.navbar-nav.ml-auto
-          li.nav-item.dropdown
-            a#navbardrop.nav-link.dropdown-toggle(href='#' data-toggle='dropdown')
-              | #{user.username}
-            ul.dropdown-menu
-              li.nav-item
-                a.dropdown-item(href='/change_password') Change password
-              li.nav-item
+            else if user.eventAdmin
+                ul.navbar-nav.ml-auto
+                    li.nav-item.dropdown
+                        a#navbardrop.nav-link.dropdown-toggle(href='#' data-toggle='dropdown')
+                            | #{user.username}
+                        ul.dropdown-menu
+                            li.nav-item
+                                a.dropdown-item(href='/change_password') Change password
+                            li.nav-item
 
-              a.dropdown-item(href='/logout' onclick="logout()") Logout
+                            a.dropdown-item(href='/logout' onclick="logout()") Logout
 
-      else
-        ul.navbar-nav
-          li.nav-item
-            a.nav-link(href='/') Home
-          li.nav-item
-            a.nav-link(href='/food') Food
-          li.nav-item
-            a.nav-link(href='/events') Events
-          li.nav-item
-            a.nav-link(href='/bus') Bus
+            else
+                ul.navbar-nav
+                    li.nav-item
+                        a.nav-link(href='/') Home
+                    li.nav-item
+                        a.nav-link(href='/food') Food
+                    li.nav-item
+                        a.nav-link(href='/events') Events
+                    li.nav-item
+                        a.nav-link(href='/bus') Bus
 
-        ul.navbar-nav.ml-auto
-          li.nav-item.dropdown
-            a#navbardrop.nav-link.dropdown-toggle(href='#' data-toggle='dropdown')
-              | #{user.username}
-            ul.dropdown-menu
-              li.nav-item
-                a.dropdown-item(href='/change_password') Change password
-              li.nav-item
+                ul.navbar-nav.ml-auto
+                    li.nav-item.dropdown
+                        a#navbardrop.nav-link.dropdown-toggle(href='#' data-toggle='dropdown')
+                            | #{user.username}
+                        ul.dropdown-menu
+                            li.nav-item
+                                a.dropdown-item(href='/change_password') Change password
+                            li.nav-item
 
-              a.dropdown-item(href='/logout' onclick="logout()") Logout
-
+                            a.dropdown-item(href='/logout' onclick="logout()") Logout
 
 
-    block content
+
+        block content
 
 block scripts
-
+    script(src='javascripts/logout.js')
 
 

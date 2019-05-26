@@ -12,6 +12,10 @@ var signupCtrl = require("../controllers/signupCtrl");
 
 /* GET home page. */
 router.get('/', indexCtrl.index);
+//dodaj nov todo zapis
+router.post('/addtodo', indexCtrl.addTodo);
+//odstrani obstoječ zapis
+router.post("/deletetodo", indexCtrl.deleteTodo);
 
 router.get('/login', loginCtrl.login);
 
