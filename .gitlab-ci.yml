@@ -25,6 +25,7 @@ testing:
   tags:
     - "main"
   script:
+    - npm start
     - npm test
 
 heroku:

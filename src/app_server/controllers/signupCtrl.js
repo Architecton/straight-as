@@ -12,9 +12,13 @@ module.exports.signupPost = function (req, res) {
     request({
         url: baseUrl + '/users/',
         method: 'post',
+        headers: {
+            "Content-Type": "application/json"
+        },
         form: {
             "email": req.body.email,
-            "password": [req.body.password1, req.body.password2]
+            "password1": req.body.password1,
+            "password2": req.body.password2
         }
     }, (todoerror, todoresponse, todobody) => {
         if (todoerror || todoresponse.statusCode !== 201) {
