@@ -1,19 +1,14 @@
 var mongoose = require('mongoose');
 
 var dbURI = 'mongodb://straightas:nimamdomislije123@ds261096.mlab.com:61096/tpo-straightas';
-// link za mLab bazo:
-// var dbURI = 'mongodb://payup:payup123@ds123844.mlab.com:23844/payup-tm';
 
-// Dodamo povezavo na lokalno bazo.
-// var dbURI = 'mongodb://localhost/mongodb';
 
 // If production, connect to MLAB
-/*if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   dbURI = process.env.MLAB_URI;
-  console.log("Environment is production.");
 }  else {
   dbURI = 'mongodb://localhost/mongodb';
-}*/
+}
 
 /*
 // If DB_RUI exists, set uri to local DB.
