@@ -21,11 +21,9 @@ router.get('/login', loginCtrl.login);
 
 router.post('/login', loginCtrl.loginPost);
 
-
 router.get('/logout', logoutCtrl.logout);
 
 router.get('/food', foodCtrl.food);
-
 
 router.get('/bus', busCtrl.bus);
 
