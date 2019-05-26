@@ -1,5 +1,6 @@
 {
   "username": "Potato",
-  "admin": true,
+
+  "admin": false,
   "eventAdmin": false
 }

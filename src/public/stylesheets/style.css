@@ -22,9 +22,17 @@ body{
   margin-top: 50px;
 }
 
+.label-hidden {
+  visibility: hidden;
+}
+
 .events-card {
   margin-top: 50px;
   padding: 2px;
+}
+
+.arrivals-card {
+  width: 500px;
 }
 
 a {

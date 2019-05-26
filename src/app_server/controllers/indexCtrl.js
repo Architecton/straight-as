@@ -1,3 +1,4 @@
+"use strict";
 //var todoData = require("../models/todo.json");
 var jwt = require('jsonwebtoken');
 const request = require("request");
@@ -7,14 +8,14 @@ const baseUrl = "http://localhost:3000";
 module.exports.index = function (req, res) {
     // If user == null -> pug renders only BUS and FOOD else pug renders all RU features
     if (!req.query.JWT_token) {
-        //res.render('index', {user: null});
-        res.redirect('login');
+        res.render('index', {user: require("../models/user"), todo: require("../models/todo"), schedule: require("../models/schedule")});
+        //res.redirect('login');
     } else {
         //dekodiraj token, dobi id in preko tega ostale podatke
         var decoded = jwt.decode(req.query.JWT_token);
         var id = decoded.id;
 
-        var userData = require("../models/todo");
+        var userData = require("../models/user");
         var todoData = require("../models/todo");
         var callendarData = null;
         var scheduleData = null;
@@ -35,13 +36,16 @@ module.exports.index = function (req, res) {
                 //console.log(bodyObj);
                 userData = bodyObj;
 
-                res.render('index', {
+                /*res.render('index', {
                     user: {
                         "username": userData._id,
+//                        "admin": false,
+//                        "eventAdmin": false,
                         "admin": userData.admin,
                         "eventAdmin": userData.eventAdmin
-                    }, todo: todoData, calendar: callendarData, schedule: scheduleData
-                });
+                    }, todo: todoData, calendar: callendarData, schedule: null
+                });*/
+                res.render('index', {user: require("../models/user"), todo: require("../models/todo"), schedule: require("../models/schedule")});
             }
         });
     }

@@ -7,23 +7,84 @@ block content
         .col-md-6.half-segment.mt-5
           .card.col-md-12
             .card-header
-              | Calendar - TODO
+              | Calendar
+            .card-body
+              #v-cal
+                .vcal-header
+                  button.vcal-btn(data-calendar-toggle='previous')
+                    svg(height='24' version='1.1' viewbox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg')
+                      path(d='M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z')
+                  .vcal-header__label(data-calendar-label='month')
+                    | March 2017
+                  button.vcal-btn(data-calendar-toggle='next')
+                    svg(height='24' version='1.1' viewbox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg')
+                      path(d='M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z')
+                .vcal-week
+                  span Mon
+                  span Tue
+                  span Wed
+                  span Thu
+                  span Fri
+                  span Sat
+                  span Sun
+                .vcal-body(data-calendar-area='month')
+              p.demo-picked
+                | Date picked:
+                span(data-calendar-label='picked')
+
+
+
+
           .card.col-md-12
             .card-header
-              | Schedule - TODO
+              | Schedule
+            .card-body.overflow-auto.todoList
+              table#schedule-table.table
+                thead
+                  tr
+                    th.text-center Time
+                    th.text-center Monday
+                    th.text-center Tuesday
+                    th.text-center Wednesday
+                    th.text-center Thursday
+                    th.text-center Friday
+                tbody
+                  - var i = 7
+                  for t_row in schedule.schedule
+                    tr
+                      td.text-center #{i}:00
+                      - var j = 0
+                      for day in t_row
+                        - var colour = day.colour
+                        - var id = day._id
+                          if id != null
+                              td.text-center(style="background-color:"+colour id=""+id onclick="occupiedScheduleClick(this.id)") #{day.name}
+                          else
+                            - var id = i + "-" + j
+                              td.text-center(style="background-color:"+colour id=""+id onclick="emptyScheduleClick(this.id)") #{day.name}
+                          - j++
+                    - i++
+
+
+
+
         .col-md-6.half-segment.mt-5
           .card.col-xs-12
             .card-header
               button#new-todo-btn.btn.btn-info.mr-2(type='button' data-toggle='modal' data-target='#create-new-todo-modal') + Add
-              button#remove-todo-btn.btn.btn-danger.mr-2(type='button' data-toggle='modal' data-target='#confirm-remove-todo-modal') - Remove
             .card-body.overflow-auto.todoList
               .row
+                - var i = 0
                 for todoNote in todo.todoNotes
-                  .card.col-lg-4.col-md-12(style='padding:0px')
+                  - var id = todoNote._id
+                  .card.col-lg-4.col-md-12(style='padding:0px; margin-bottom:10px')
                     .card-header
-                      | #{todoNote.id}
+                      button.btn.btn-sm.btn-info.mr-2(type='button' id=""+id data-toggle='modal' data-target='#edit-todo-modal' onclick="selectTodoNote(this.id)") Edit
+                      button.close(id=""+id onclick="deleteTodo(this.id)") &times
                     .card-body
                       | #{todoNote.content}
+                  - i++
+
 
   #create-new-todo-modal.modal
     .modal-dialog
@@ -38,7 +99,22 @@ block content
             .form-group
               label(for='new-todo-content') Note content:
               textarea#new-todo-content(rows='5' cols='50')
-            button#new-todo-confirm-btn.btn.btn-primary(type='submit' data-dismiss='modal') Confirm
+            button#new-todo-confirm-btn.btn.btn-primary(type='submit' data-dismiss='modal' onclick="createNewTodoNote()") Confirm
+
+  #edit-todo-modal.modal
+    .modal-dialog
+      .modal-content
+        // Modal Header
+        .modal-header
+          h4.modal-title Edit TODO note
+          button.close(type='button' data-dismiss='modal') &times;
+        // Modal body
+        .modal-body
+          form#edit-todo-form
+            .form-group
+              label(for='edit-todo-content') Note content:
+              textarea#edit-todo-content(rows='5' cols='50')
+            button#edit-todo-confirm-btn.btn.btn-primary(type='submit' data-dismiss='modal' onclick="editTodo()") Confirm
 
   #confirm-remove-todo-modal.modal
     .modal-dialog
@@ -52,3 +128,51 @@ block content
           form
             button#confirm-remove-todo-btn.btn.btn-danger.mr-2(type='button' data-dismiss='modal') Confirm
             button#cancel-remove-todo-btn.btn.btn-default.mr-2(type='button' data-dismiss='modal') Cancel
+
+  #edit-schedule-entry-modal.modal
+    .modal-dialog
+      .modal-content
+        // Modal Header
+        .modal-header
+          h4.modal-title#edit-schedule-title
+          button.close(type='button' data-dismiss='modal') &times;
+        // Modal body
+        .modal-body
+          .form-group
+            label(for="edit-schedule-entry-colour") Select colour:
+            input#edit-schedule-entry-colour(type='color' value="#90EE90")
+            br
+            label(for='edit-schedule-entry-name') Name:
+            input#edit-schedule-entry-name(type="text")
+            br
+            ="  "
+            label(for='edit-schedule-entry-duration') Duration:
+            input#edit-schedule-entry-duration(type="text")
+        .modal-footer
+            button#confirm-edit-schedule-entry-btn.btn.btn-info.mr-2(type='button' data-dismiss='modal' onclick="confirmEditScheduleEntry()") Confirm
+            button#cancel-edit-schedule-entry-btn.btn.btn-default.mr-2(type='button' data-dismiss='modal') Cancel
+            button#confirm-delete-schedule-entry-btn.btn.btn-danger.mr-2(type='button' data-dismiss='modal' onclick="deleteScheduleEntry()") Delete
+
+  #new-schedule-entry-modal.modal
+    .modal-dialog
+      .modal-content
+        // Modal Header
+        .modal-header
+          h4.modal-title#new-schedule-title
+          button.close(type='button' data-dismiss='modal') &times;
+        // Modal body
+        .modal-body
+          form
+            .form-group
+              label(for="new-schedule-entry-colour") Select colour:
+              input#new-schedule-entry-colour(type='color' value="#90EE90")
+              br
+              label(for='new-schedule-entry-name') Name:
+              input#new-schedule-entry-name(type="text")
+              br
+              ="  "
+              label(for='new-schedule-entry-duration') Duration:
+              input#new-schedule-entry-duration(type="text")
+        .modal-footer
+            button#confirm-new-schedule-entry-btn.btn.btn-info.mr-2(type='button' data-dismiss='modal' onclick="confirmNewScheduleEntry()") Confirm
+            button#cancel-new-schedule-entry-btn.btn.btn-default.mr-2(type='button' data-dismiss='modal') Cancel
