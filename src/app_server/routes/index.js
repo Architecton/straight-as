@@ -25,6 +25,8 @@ router.get('/logout', logoutCtrl.logout);
 
 router.get('/food', foodCtrl.food);
 
+router.post('/restaurants', foodCtrl.location);
+
 router.get('/bus', busCtrl.bus);
 
 router.post('/bus', busCtrl.busPost);

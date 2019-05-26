@@ -1,6 +1,6 @@
 var jwt = require('jsonwebtoken');
 const request = require("request");
-const baseUrl = "http://localhost:3000/";
+const baseUrl = "http://localhost:3000";
 
 module.exports.bus = function (req, res) {
     let id = verifyJWT(req.body.JWT_token);
