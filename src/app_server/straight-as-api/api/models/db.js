@@ -68,3 +68,4 @@ process.on('SIGTERM', function() {
 
 // Add schemas to DB.
 require("./users");
+require("./events");
