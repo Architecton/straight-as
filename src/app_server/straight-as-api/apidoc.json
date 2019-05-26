@@ -81,23 +81,11 @@
               "schema" : {
                 "type" : "object",
                 "properties" : {
-                  "name" : {
-                    "type" : "string"
-                  },
-                  "surname" : {
-                    "type" : "string"
-                  },
-                  "username" : {
-                    "type" : "string",
-                    "description" : "username - primary key"
-                  },
                   "password" : {
-                    "type" : "string"
+                    "type" : "string",
+					"description": "Array of two passwords"
                   },
                   "email" : {
-                    "type" : "string"
-                  },
-                  "gender" : {
                     "type" : "string"
                   }
                 }

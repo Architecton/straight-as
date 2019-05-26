@@ -10,7 +10,7 @@ let transporter = nodemailer.createTransport({
   secure: false,
   port: 25,
   auth: {
-    user: 'straight.as.app',
+    user: 'payup.app.2019@gmail.com',
     pass: process.env.EMAIL_PASSWORD
   },
   tls: {
@@ -114,60 +114,54 @@ var validateCaptchaResponse = function(response) {
 
 // authSignUp: create new user and store in DB
 module.exports.authSignUp = function(request, response) {
-  // Verify captcha
-  validateCaptchaResponse(request.body.response).then(function(result) {
+  // Check if passwords match.
+  console.log(request.body.email);
+  console.log(request.body.password.length);
+  console.log(request.body.password[0] == request.body.password[1]);
+  if(request.body.password.length == 2 && request.body.password[0] === request.body.password[1]) {
+    // Create new user.
+    var newUser = new User();
+    newUser._id = request.body.email;
+    newUser.setPassword(request.body.password[0]);
+    newUser.status = 0;
+    newUser.todoLists = [];
+    newUser.calendars = [];
+    newUser.timetables = [];
+    newUser.admin = false;
+    newUser.eventAdmin = false;
+  // if passwords do not match
+  } else {
+    getJsonResponse(response, 400, {
+      "message": "Passwords must match."
+    });
+    return;
+  }
+  // Validate created user.
+  validateUser(newUser).then(function(result) {
+    // If successfuly validated, create new user and send confirmation e-mail.
     if (result) {
-      // Check if passwords match.
-      if(request.body.user.password.length == 2 && request.body.user.password[0] === request.body.user.password[1]) {
-    	// Create new user.
-        var newUser = new User();
-        newUser._id = request.body.user.email;
-        newUser.setPassword(request.body.user.password[0]);
-        newUser.status = 0;
-        newUser.todoLists = [];
-        newUser.calendars = [];
-        newUser.timetables = [];
-        newUser.admin = false;
-		newUser.eventAdmin = false;
-      // if passwords do not match
-      } else {
-        getJsonResponse(response, 400, {
-          "message": "Passwords must match."
-        });
-        return;
-      }
-      // Validate created user.
-      validateUser(newUser).then(function(result) {
-        // If successfuly validated, create new user and send confirmation e-mail.
-        if (result) {
-          // Create new user.
-          User.create(newUser, function(error, user) {
-            // If there was an error
-            if (error) {
-              getJsonResponse(response, 500, error);
-            // If all went well, send confirmation e-mail.
+      // Create new user.
+      User.create(newUser, function(error, user) {
+        // If there was an error
+        if (error) {
+        getJsonResponse(response, 500, error);
+        // If all went well, send confirmation e-mail.
+        } else {
+          sendConfirmationMail(newUser._id, newUser._id, newUser.validationCode).then(function(result) {
+            // If confirmation mail successfuly sent, return new user as signal value.
+            if(result) {
+              getJsonResponse(response, 201, user);
             } else {
-              sendConfirmationMail(newUser.email, newUser._id, newUser.validationCode).then(function(result) {
-                // If confirmation mail successfuly sent, return new user as signal value.
-                if(result) {
-                  getJsonResponse(response, 201, user);
-                } else {
-                  // if trouble sending confirmation e-mail
-                  getJsonResponse(response, 500, {'status' : 'Error sending confirmation mail.'});
-                }
-              });
+              // if trouble sending confirmation e-mail
+              getJsonResponse(response, 500, {'status' : 'Error sending confirmation mail.'});
             }
           });
-        // If new user is not valid.
-        } else {
-          getJsonResponse(response, 400, {
-              "message": "invalid user parameters"
-          }); 
         }
       });
+    // If new user is not valid.
     } else {
       getJsonResponse(response, 400, {
-        "message": "error verifying captcha response"
+          "message": "invalid user parameters"
       }); 
     }
   });
@@ -199,7 +193,6 @@ var validateUser = function(newUser) {
     } else {
       resolve(false);
     }
-    
   });
 };
 
@@ -245,14 +238,16 @@ var sendMail = function(emailAddress, idUser, validationCode) {
   return new Promise(function(resolve, reject) {
     // Define helper options.
     let HelperOptions = {
-      from: 'straight.as.app@gmail.com',
+      from: 'payup.app.2019@gmail.com',
       to: emailAddress,
       subject: 'Confirm e-mail',
       text: 'Please click the link below to confirm your e-mail account.\n https://straight-asss.herokuapp.com/users/' + idUser + '/' + validationCode
+      // text: 'Please click the link below to confirm your e-mail account.\n http://localhost:3000' + idUser + '/' + validationCode
     };
     // Send mail via transporter.
     transporter.sendMail(HelperOptions, (error, info) => {
         if (error) {      // If encoutered error, resolve as false.
+		console.log(error.message);
           resolve(false);
         }
         resolve(true);  // If successfuly sent mail, resolve as true.
@@ -273,7 +268,7 @@ module.exports.authConfirm = function(request, response) {
             getJsonResponse(response, 400, error);
           } else {
             response.writeHeader(200, {"Content-Type": "text/html"});  
-            response.write('<div style="font-family: Times-New-Roman;"><h1>Account successfully verified!</h1><p>You can now log in with your account and start using our service!</p>Click <a href="https://sp-projekt2-excogitator.c9users.io/">here</a> to go back to the PayUp website and log in!</div>');  
+            response.write('<div style="font-family: Times-New-Roman;"><h1>Account successfully verified!</h1><p>You can now log in with your account and start using our service!</p>Click <a href="https://straight-asss.herokuapp.com">here</a> to go back to the StraightAs website and log in!</div>');  
             response.end();
           }
         });
