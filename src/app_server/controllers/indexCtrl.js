@@ -28,7 +28,7 @@ module.exports.index = function (req, res) {
                 });
             } else {
                 let userObj = JSON.parse(userbody);
-
+                console.log(userObj);
                 //dobi todolist na indeksu 0
                 request({
                     url: baseUrl + '/users/' + id + '/todolists',
@@ -44,7 +44,7 @@ module.exports.index = function (req, res) {
                         });
                     } else {
                         let todoObj = JSON.parse(todobody);
-
+                        console.log(todobody);
                         //sestavi objekt, ki bo po strukturi enak todo.json
                         todoObj = todoObj[0];
                         let todoList = {"todoNotes": []};
