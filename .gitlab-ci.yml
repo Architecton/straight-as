@@ -20,12 +20,18 @@ install_dependencies:
       - node_modules/
     expire_in: 30 min
 
-testing:
+execute:
   stage: test
   tags:
     - "main"
   script:
     - npm start
+
+testing:
+  stage: test
+  tags:
+    - "main"
+  script:
     - npm test
 
 heroku:
