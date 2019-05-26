@@ -17,9 +17,8 @@ function createNewTodoNote() {
         "JWT_token": localStorage.getItem("JWT_token"),
         "description": newContent
     }, (data, status) => {
-        console.log("reload");
-        $("html").html(data);
-        //location.reload();
+        //$("html").html(data);
+        location.reload();
     }).fail((jqXHR, textStatus, errorThrown) => {
         $("html").html(jqXHR.responseText);
     });
@@ -30,6 +29,7 @@ function deleteTodo(todoID) {
         "JWT_token": localStorage.getItem("JWT_token"),
         "todoID": todoID
     }, (data, status) => {
+        //$("html").html(data);
         location.reload();
     }).fail((jqXHR, textStatus, errorThrown) => {
         $("html").html(jqXHR.responseText);

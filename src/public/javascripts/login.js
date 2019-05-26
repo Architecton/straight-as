@@ -8,7 +8,6 @@ function login() {
 
     $.post("/login", userCredentials, (data, status) => {
         localStorage.setItem("JWT_token", data.JWT_token);
-        console.log(data);
         $.redirect(data.redirect, {"JWT_token": data.JWT_token}, "GET");
         /*$.get(data.redirect, {"JWT_token": data.JWT_token}, function (data1, status1) {
             if (status1 === "success") {

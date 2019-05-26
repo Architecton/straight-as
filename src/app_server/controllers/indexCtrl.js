@@ -57,13 +57,25 @@ module.exports.index = function (req, res) {
                             );
                         }
 
-                        res.render('index', {
-                            user: {
-                                "username": userObj._id,
-                                "admin": userObj._id,
-                                "eventAdmin": userObj.eventAdmin
-                            }, todo: todoList, schedule: require("../models/schedule")
-                        });
+                        if (userObj.admin === true) {
+                            res.render("admin_panel", {
+                                user: {
+                                    "username": userObj._id,
+                                    "admin": userObj.admin,
+                                    "eventAdmin": userObj.eventAdmin
+                                }
+                            });
+                        } else if (userObj.eventAdmin === true) {
+                            res.render("events");
+                        } else {
+                            res.render('index', {
+                                user: {
+                                    "username": userObj._id,
+                                    "admin": userObj.admin,
+                                    "eventAdmin": userObj.eventAdmin
+                                }, todo: todoList, schedule: require("../models/schedule")
+                            });
+                        }
 
 
                         /*res.render('index', {
@@ -120,10 +132,11 @@ module.exports.addTodo = (req, res) => {
                         });
                     } else {
                         //reload
-                        const query = querystring.stringify({
+                        /*const query = querystring.stringify({
                             "JWT_token": req.body.JWT_token
                         });
-                        res.redirect("/?" + query);
+                        res.redirect("/?" + query);*/
+                        res.json({"message": "reload"});
                     }
                 })
             }
@@ -166,7 +179,11 @@ module.exports.deleteTodo = (req, res) => {
                             status: todoresponse2.statusCode
                         });
                     } else {
-                        //client reload
+                        //reload
+                        /*const query = querystring.stringify({
+                            "JWT_token": req.body.JWT_token
+                        });*/
+                        res.json({"message": "reload"});
                     }
                 })
             }
