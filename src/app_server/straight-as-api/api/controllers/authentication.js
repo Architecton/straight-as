@@ -116,13 +116,12 @@ var validateCaptchaResponse = function(response) {
 module.exports.authSignUp = function(request, response) {
   // Check if passwords match.
   console.log(request.body.email);
-  console.log(request.body.password.length);
-  console.log(request.body.password[0] == request.body.password[1]);
-  if(request.body.password.length == 2 && request.body.password[0] === request.body.password[1]) {
+  console.log(request.body.password1 == request.body.password2);
+  if(request.body.password1 && request.body.password2 && request.body.password1 === request.body.password2) {
     // Create new user.
     var newUser = new User();
     newUser._id = request.body.email;
-    newUser.setPassword(request.body.password[0]);
+    newUser.setPassword(request.body.password1);
     newUser.status = 0;
     newUser.todoLists = [];
     newUser.calendars = [];
@@ -144,7 +143,7 @@ module.exports.authSignUp = function(request, response) {
       User.create(newUser, function(error, user) {
         // If there was an error
         if (error) {
-        getJsonResponse(response, 500, error);
+        getJsonResponse(response, 500, error.message);
         // If all went well, send confirmation e-mail.
         } else {
           sendConfirmationMail(newUser._id, newUser._id, newUser.validationCode).then(function(result) {
