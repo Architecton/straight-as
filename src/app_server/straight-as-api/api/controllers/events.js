@@ -23,6 +23,7 @@ module.exports.createEvent = function(request, response) {
           if (error) {
             getJsonResponse(response, 500, error);
           } else if (!user) {
+			console.log("I FAIL HERE");
             getJsonResponse(response, 404, {
               'message': 'User not found'
             });
