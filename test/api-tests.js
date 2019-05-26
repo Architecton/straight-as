@@ -14,8 +14,7 @@ var admin_jwt_token;
 var id_todo_list;
 var id_todo_list2;
 var id_todo_list_item;
-var dueDate_prev;
-
+var dueDate_prev; 
 var timetable_id;
 var created_table_id;
 var created_event_Id;
@@ -964,6 +963,53 @@ describe('CRUD operations on calendars', () => {
   });
 });
 
+// ## EVENTS MANAEMENT ##############################################################################
+
+describe('Adding and retrieving events', () => {
+  it('There should an event after creating it', (done) => {
+    request({
+      url: baseUrl + '/events/' + admin_account._id,
+      headers: {
+        'Authorization': 'Bearer ' + admin_jwt_token
+      },
+      method: 'post',
+      form: {
+        title: "tralala",
+        description: "hopsasa",
+        date: "1992-02-02"
+      }
+    }, function(error, response, body) {
+      expect(response.statusCode).to.equal(201);
+      const bodyObj = JSON.parse(body);
+      expect(bodyObj).to.haveOwnProperty('title');
+      expect(bodyObj.title).to.equal('tralala');
+      expect(bodyObj).to.haveOwnProperty('description');
+      expect(bodyObj.description).to.equal('hopsasa');
+      expect(bodyObj).to.haveOwnProperty('date');
+      expect(bodyObj.date).to.equal('1992-02-02');
+      request({
+        url: baseUrl + '/events',
+        method: 'get'
+      }, function(error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        const bodyObj = JSON.parse(body);
+        expect(bodyObj.length).to.gt(0);
+        const len = bodyObj.length;
+        expect(bodyObj[len-1]).to.haveOwnProperty('title');
+        expect(bodyObj[len-1].title).to.equal('tralala');
+        expect(bodyObj[len-1]).to.haveOwnProperty('description');
+        expect(bodyObj[len-1].description).to.equal('hopsasa');
+        expect(bodyObj[len-1]).to.haveOwnProperty('date');
+        expect(bodyObj[len-1].date).to.equal('1992-02-02');
+        done();
+      });
+    });
+  });
+});
+
+
+// ##################################################################################################
+
 
 // ### 5. USERS #####################################################################################
 
@@ -1016,6 +1062,9 @@ describe('Information about users', () => {
 });
 
 // ##################################################################################################
+
+
+
 
 /*
 describe('Database Management', () => {
