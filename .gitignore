@@ -3,14 +3,9 @@
 *.iml
 node_modules/
 npm-debug.log
-src/app_server/mongodb/data/diagnostic.data/*
 src/app_server/mongodb/data/
 *.swp
-*.wt
 *.swn
 *.swo
-*.wt
-*.bson
 *.lock
-*.turtle
 *.data

@@ -4,11 +4,11 @@ var dbURI = 'mongodb://straightas:nimamdomislije123@ds261096.mlab.com:61096/tpo-
 
 
 // If production, connect to MLAB
-if (process.env.NODE_ENV === 'production') {
+/*if (process.env.NODE_ENV === 'production') {
   dbURI = process.env.MLAB_URI;
 }  else {
   dbURI = 'mongodb://localhost/mongodb';
-}
+}*/
 
 /*
 // If DB_RUI exists, set uri to local DB.

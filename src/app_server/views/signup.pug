@@ -17,4 +17,7 @@ block content
                         label(for='signup-password-repeat') Repeat password:
                         input#signup-password-repeat.form-control(type='password' name="password_2")
 
-                    button#signup-confirm-btn.btn.btn-primary(type='submit') Submit
+                    button#signup-confirm-btn.btn.btn-primary(type='button' onclick="signup()") Submit
+
+block scripts
+    script(src='javascripts/signup.js')

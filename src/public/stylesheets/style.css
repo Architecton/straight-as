@@ -22,11 +22,24 @@ body{
   margin-top: 50px;
 }
 
+.label-hidden {
+  visibility: hidden;
+}
+
 .events-card {
   margin-top: 50px;
   padding: 2px;
 }
 
+.arrivals-card {
+  width: 500px;
+}
+
 a {
   color: #00B7FF;
+}
+
+#map {
+  height: 800px;  /* The height is 400 pixels */
+  width: 100%;  /* The width is the width of the web page */
 }

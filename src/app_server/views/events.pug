@@ -13,9 +13,9 @@ block content
                         th Organizer
                         th Description
                 tbody
-                    for e in events.events
+                    for e in events
                         tr
-                            td #{e.name}
+                            td #{e.title}
                             td #{e.date}
                             td #{e.organizer}
                             td #{e.description}
@@ -46,4 +46,7 @@ block content
                         .form-group
                             label(for='new-event-description') Note content:
                             textarea#new-event-description(rows='5' cols='50' name="description")
-                        button#new-event-confirm-btn.btn.btn-primary(type='submit' data-dismiss='modal') Confirm
+                        button#new-event-confirm-btn.btn.btn-primary(type='submit' data-dismiss='modal' onclick="newEvent()") Confirm
+
+block scripts
+    script(src='javascripts/events.js')

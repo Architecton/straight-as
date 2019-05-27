@@ -45,12 +45,3 @@ module.exports.events = function(req, res) {
 }
 
 /* POST for new user */
-
-
-/* GET food page */
-module.exports.food = function(req, res) {
-    res.render('food', {user: userData, food: foodData});
-}
-
-/* GET bus page */
-

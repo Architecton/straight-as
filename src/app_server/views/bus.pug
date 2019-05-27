@@ -5,32 +5,33 @@ block content
         .card-header
             | Search for bus arrivals:
         .card-body
-            form#bus-arrivals-form(action='/bus' method='post')
+            form#bus-arrivals-form
                 .form-group
                     label(for='bus-stop-id') Bus stop number or name:
                     input#bus-stop-id.form-control(type='text' name="id")
 
-                button#bus-search-btn.btn.btn-primary(type='submit') Search
+                button#bus-search-btn.btn.btn-primary(type='button' onclick="getArrivals()") Search
 
-    if buses != null
         .card.mx-auto.arrivals-card
             .card-header
                 | Bus arrivals:
             .card-body
-                if buses.found == false
-                    | Please enter a valid bus stop name or number
-                else
-                    table#bus-arrivals-table.table.table-striped
-                        thead
-                            tr
-                                th Bus number
-                                th Direction
-                                th ETA (minutes)
-                        tbody
-                            for b in buses.buses
-                                tr
-                                    td #{b.number}
-                                    td #{b.direction}
-                                    td
-                                        for time in b.ETA
-                                            | #{time}',#{' '}
+                table#bus-arrivals-table.table.table-striped
+                    thead
+                        tr
+                            th Bus number
+                            th Direction
+                            th ETA (minutes)
+                    tbody
+                        if busData != null
+                            for station in busData.stations
+                                for bus in station.buses
+                                    if bus.arrivals !== []
+                                        tr
+                                            td #{bus.number}
+                                            td #{bus.direction}
+                                            td #{bus.arrivals}
+
+
+block scripts
+    script(src='javascripts/bus.js')

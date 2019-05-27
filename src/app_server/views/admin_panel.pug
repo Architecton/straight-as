@@ -21,4 +21,7 @@ block content
                             .form-group
                                 label(for='new-message-content') Message content:
                                 textarea#new-message-content(rows='5' cols='50' name="content")
-                            button#new-message-confirm-btn.btn.btn-primary(type='submit' data-dismiss='modal') Send
+                            button#new-message-confirm-btn.btn.btn-primary(type='submit' data-dismiss='modal' onclick="sendMessage()") Send
+
+block scripts
+    script(src="javascripts/admin.js")
