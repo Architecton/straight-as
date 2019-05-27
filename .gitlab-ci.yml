@@ -2,7 +2,6 @@ image: node:latest
 
 stages:
   - install
-  - test
   - deploy
 
 cache:
@@ -19,20 +18,6 @@ install_dependencies:
     paths:
       - node_modules/
     expire_in: 30 min
-
-execute:
-  stage: test
-  tags:
-    - "main"
-  script:
-    - npm start
-
-testing:
-  stage: test
-  tags:
-    - "main"
-  script:
-    - npm test
 
 heroku:
   stage: deploy
