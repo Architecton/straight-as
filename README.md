@@ -13,3 +13,9 @@ Navodila za zagon aplikacije:
 * 2) Pomakni se v mapo tpo-lp4
 * 3) Po¾eni ukaz "npm install"
 * 4) Po¾eni ukaz "npm start"
+
+Testni uporabniki:
+
+* ADMIN: vrecekj@gmail.com | geslo: 123
+* EventAdmin: aljaz.pavisic@gmail.com | geslo: 123
+* Regular Joe: je.vivod@gmail.com | geslo: geselce
