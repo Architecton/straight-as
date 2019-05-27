@@ -33,7 +33,7 @@ router.get('/bus', busCtrl.bus);
 
 router.post('/bus', busCtrl.busPost);
 
-router.get('/events', eventCtrl.events);
+router.get('/list_events', eventCtrl.events);
 
 router.post('/events', eventCtrl.newEvent);
 

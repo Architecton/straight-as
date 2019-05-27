@@ -4,8 +4,8 @@ const querystring = require('querystring');
 const baseUrl = "http://localhost:3000";
 
 
-module.exports.events = function(req, res) {
-    let id = verifyJWT(req.body.JWT_token);
+module.exports.events = function (req, res) {
+    let id = verifyJWT(req.query.JWT_token);
     console.log(req.body);
     if (!id) {
         res.render("events", {
@@ -19,7 +19,7 @@ module.exports.events = function(req, res) {
             url: baseUrl + '/users/' + id,
             method: 'get',
             headers: {
-                'Authorization': 'Bearer ' + req.body.JWT_token
+                'Authorization': 'Bearer ' + req.query.JWT_token
             }
         }, function (usererror, userresponse, userbody) {
             if (usererror || userresponse.statusCode !== 200) {
@@ -31,14 +31,31 @@ module.exports.events = function(req, res) {
                 let userObj = JSON.parse(userbody);
                 console.log(userObj);
 
-                res.render('events', {user: {
-                        "username": userObj._id,
-                        "admin": userObj.admin,
-                        "eventAdmin": userObj.eventAdmin
-                        },
-                        events: {
-                            "events": []
-                        }
+                //dobi vse evente
+                request({
+                    url: baseUrl + '/events/',
+                    method: 'get',
+                    headers: {
+                        'Authorization': 'Bearer ' + req.query.JWT_token
+                    }
+                }, function (eventerror, eventresponse, eventbody) {
+                    if (eventerror || eventresponse.statusCode !== 200) {
+                        res.render("error", {
+                            message: "Napaka pri pridobivanju podatkov o uporabniku.",
+                            status: eventresponse.statusCode
+                        });
+                    } else {
+                        let eventObj = JSON.parse(eventbody);
+
+                        res.render('events', {
+                            user: {
+                                "username": userObj._id,
+                                "admin": userObj.admin,
+                                "eventAdmin": userObj.eventAdmin
+                            },
+                            events: eventObj
+                        })
+                    }
                 });
             }
         });
@@ -46,7 +63,7 @@ module.exports.events = function(req, res) {
 };
 
 
-module.exports.newEvent = function(req, res) {
+module.exports.newEvent = function (req, res) {
     id = verifyJWT(req.body.JWT_token);
     if (!id) {
         res.redirect("login");

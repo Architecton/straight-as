@@ -19,7 +19,7 @@ html
             if user == null
                 ul.navbar-nav
                     li.nav-item
-                        a.nav-link(href='/food') Food
+                        a.nav-link(onclick='loadFood()') Food
                     li.nav-item
                         a.nav-link(onclick='loadBusses()') Bus
                 ul.navbar-nav.ml-auto
@@ -34,7 +34,7 @@ html
                             | #{user.username}
                         ul.dropdown-menu
                             li.nav-item
-                                a.dropdown-item(href='/change_password') Change password
+                                a.dropdown-item(onclick='loadChangePassword()') Change password
                             li.nav-item
 
                             a.dropdown-item(href='/logout' onclick="logout()") Logout
@@ -46,7 +46,7 @@ html
                             | #{user.username}
                         ul.dropdown-menu
                             li.nav-item
-                                a.dropdown-item(href='/change_password') Change password
+                                a.dropdown-item(onclick='loadChangePassword()') Change password
                             li.nav-item
 
                             a.dropdown-item(href='/logout' onclick="logout()") Logout
@@ -56,9 +56,9 @@ html
                     li.nav-item
                         a.nav-link(onclick="loadIndex()") Home
                     li.nav-item
-                        a.nav-link(href='/food') Food
+                        a.nav-link(onclick='loadFood()') Food
                     li.nav-item
-                        a.nav-link(href='/events') Events
+                        a.nav-link(onclick='loadEvents()') Events
                     li.nav-item
                         a.nav-link(onclick='loadBusses()') Bus
 
@@ -68,7 +68,7 @@ html
                             | #{user.username}
                         ul.dropdown-menu
                             li.nav-item
-                                a.dropdown-item(href='/change_password') Change password
+                                a.dropdown-item(onclick='loadChangePassword()') Change password
                             li.nav-item
 
                             a.dropdown-item(href='/logout' onclick="logout()") Logout

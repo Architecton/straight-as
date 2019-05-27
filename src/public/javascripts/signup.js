@@ -16,7 +16,7 @@ function signup() {
             "password2": geslo2
         }, (data, status) => {
             //če je signup uspešen, pojdi na login
-            $.redirect("/login");
+            $("html").html(data);
         }).fail((jqXHR, textStatus, errorThrown) => {
             $("html").html(jqXHR.responseText);
         })

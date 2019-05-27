@@ -2,8 +2,8 @@ var jwt = require('jsonwebtoken');
 const request = require("request");
 const baseUrl = "http://localhost:3000";
 
-module.exports.food = function(req, res) {
-    let id = verifyJWT(req.body.JWT_token);
+module.exports.food = function (req, res) {
+    let id = verifyJWT(req.query.JWT_token);
     console.log(req.body);
     if (!id) {
         res.render("food", {
@@ -14,7 +14,7 @@ module.exports.food = function(req, res) {
             url: baseUrl + '/users/' + id,
             method: 'get',
             headers: {
-                'Authorization': 'Bearer ' + req.body.JWT_token
+                'Authorization': 'Bearer ' + req.query.JWT_token
             }
         }, function (usererror, userresponse, userbody) {
             if (usererror || userresponse.statusCode !== 200) {
@@ -24,19 +24,21 @@ module.exports.food = function(req, res) {
                 });
             } else {
                 let userObj = JSON.parse(userbody);
-                console.log(userObj);
+                //console.log(userObj);
 
-                res.render('food', {user: {
+                res.render('food', {
+                    user: {
                         "username": userObj._id,
                         "admin": userObj.admin,
                         "eventAdmin": userObj.eventAdmin
-                    }});
+                    }
+                });
             }
         });
     }
 };
 
-module.exports.location = function(req, res) {
+module.exports.location = function (req, res) {
     request({
         url: "https://tpo-api-restavracije.herokuapp.com//restavracije/closest/" + req.body.sort + "?lat=" + req.body.lat + "&lon=" + req.body.lon,
         method: 'get'
@@ -48,7 +50,7 @@ module.exports.location = function(req, res) {
             });
         } else {
             let resObj = JSON.parse(resbody);
-            console.log(resObj);
+            //console.log(resObj);
             res.json(resObj);
         }
     });

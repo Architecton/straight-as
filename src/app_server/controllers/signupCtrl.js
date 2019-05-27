@@ -27,16 +27,85 @@ module.exports.signupPost = function (req, res) {
                 status: todoresponse.statusCode
             });
         } else {
-            res.json({"message": "redirect"});
+            res.render("login");
         }
     })
     //res.render('signup', null);
 };
 
 module.exports.change_password = function (req, res) {
-    res.render('change_password', {user: userData});
+    let id = verifyJWT(req.query.JWT_token);
+
+    if (!id) {
+        res.redirect("login");
+        //res.redirect('login');
+    } else {
+        //dobi podatke o uporabniku
+        request({
+            url: baseUrl + '/users/' + id,
+            method: 'get',
+            headers: {
+                'Authorization': 'Bearer ' + req.query.JWT_token
+            }
+        }, function (usererror, userresponse, userbody) {
+            if (usererror || userresponse.statusCode !== 200) {
+                res.render("error", {
+                    message: "Napaka pri pridobivanju podatkov o uporabniku.",
+                    status: userresponse.statusCode
+                });
+            } else {
+                let userObj = JSON.parse(userbody);
+
+                res.render('change_password', {
+                    user: {
+                        "username": userObj._id,
+                        "admin": userObj.admin,
+                        "eventAdmin": userObj.eventAdmin
+                    }
+                });
+            }
+        })
+    }
 };
 
 module.exports.change_passwordPost = function (req, res) {
-    res.redirect("/");
+    let id = verifyJWT(req.body.JWT_token);
+
+    if (!id) {
+        res.redirect("login");
+        //res.redirect('login');
+    } else {
+        //dobi podatke o uporabniku
+        request({
+            url: baseUrl + '/users/' + id,
+            method: 'get',
+            headers: {
+                'Authorization': 'Bearer ' + req.body.JWT_token
+            }
+        }, function (usererror, userresponse, userbody) {
+            if (usererror || userresponse.statusCode !== 200) {
+                res.render("error", {
+                    message: "Napaka pri pridobivanju podatkov o uporabniku.",
+                    status: userresponse.statusCode
+                });
+            } else {
+                let userObj = JSON.parse(userbody);
+
+                //zamenjaj geslo
+                //api klic ne obstaja
+                res.render("login");
+            }
+        })
+    }
 };
+
+function verifyJWT(JWT_token) {
+    if (!JWT_token) {
+        return false;
+        //res.redirect('login');
+    } else {
+        //dekodiraj token, dobi id in preko tega ostale podatke
+        let decoded = jwt.decode(JWT_token);
+        return decoded.id;
+    }
+}
