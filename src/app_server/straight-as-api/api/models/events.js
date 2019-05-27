@@ -1,10 +1,11 @@
 var mongoose = require("mongoose");
 
 // Schema representing an event
-var eventSchema = new mongoose.Schema({     
-  date: {type: String, default: Date.now},
-  title: {type: String},
-  description: {type: String},
+var eventSchema = new mongoose.Schema({
+    date: {type: String, default: Date.now},
+    title: {type: String},
+    description: {type: String},
+    organizer: {type: String}
 });
 
 

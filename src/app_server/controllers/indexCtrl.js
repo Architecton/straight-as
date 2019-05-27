@@ -66,7 +66,32 @@ module.exports.index = function (req, res) {
                                 }
                             });
                         } else if (userObj.eventAdmin === true) {
-                            res.render("events");
+
+                            request({
+                                url: baseUrl + '/events',
+                                method: 'get',
+                                headers: {
+                                    'Authorization': 'Bearer ' + req.query.JWT_token
+                                }
+                            }, function (eventerror, eventresponse, eventbody) {
+                                if (eventerror || eventresponse.statusCode !== 200) {
+                                    res.render("error", {
+                                        message: "Napaka pri pridobivanju podatkov o todo seznamu.",
+                                        status: eventresponse.statusCode
+                                    });
+                                } else {
+                                    let eventObj = JSON.parse(eventbody)
+                                    console.log(eventObj);
+                                    res.render("events", {
+                                        user: {
+                                            "username": userObj._id,
+                                            "admin": userObj.admin,
+                                            "eventAdmin": userObj.eventAdmin
+                                        },
+                                        events: eventObj
+                                    });
+                                }
+                            });
                         } else {
                             res.render('index', {
                                 user: {

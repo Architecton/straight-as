@@ -35,6 +35,8 @@ router.post('/bus', busCtrl.busPost);
 
 router.get('/events', eventCtrl.events);
 
+router.post('/events', eventCtrl.newEvent);
+
 router.get('/change_password', signupCtrl.change_password);
 
 router.post('/change_password', signupCtrl.change_passwordPost);

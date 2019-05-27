@@ -32,7 +32,8 @@ module.exports.createEvent = function(request, response) {
               var newEvent = {
                 date: request.body.date,
                 title: request.body.title,
-                description: request.body.description
+                description: request.body.description,
+                organizer: request.body.organizer
               }
               Event.create(newEvent, function(error, createdEvent) {
                 if (error) {
